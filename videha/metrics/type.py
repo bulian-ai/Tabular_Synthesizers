@@ -13,6 +13,6 @@ class MetricType(Enum):
     IGNORE = 'ignore'
     LIKELIHOOD = 'Likelihood Metric'
     DETECTION = 'Real vs Synthetic Dectection Metric'
-    EFFICACY = 'ML Efficacy Metric R-Sq or F1'
+    EFFICACY = 'ML Efficacy Metric: R-Sq or F1' 
     STATISTICAL = 'Statistical Test Metric'
     ENTROPY = 'Distribution Similarity Metric'

@@ -25,7 +25,7 @@ __all__ = [
 ]
 
 
-def compute_metrics(metrics, real_data, synthetic_data, metadata=None, **kwargs):
+def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=False,**kwargs):
 
     """Compute a collection of metrics on the given data.
 
@@ -77,5 +77,7 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, **kwargs)
         out = out[out['MetricType']!=MetricType.EFFICACY.value].reset_index(drop=True)
     else:
         out = out[out['MetricType']==MetricType.EFFICACY.value].reset_index(drop=True)
-
+        
     return out
+
+
