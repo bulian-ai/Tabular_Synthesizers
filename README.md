@@ -1,5 +1,5 @@
 # Pytorch_Tabular_Synthesizers
-Videha.ai tabular data synthesizers for Pytorch
+Videha.ai Main Repo for Tabular data synthesizers for Pytorch
 
 **Methods Supported**
 
