@@ -52,7 +52,7 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=Fals
         kwargs['metadata'] = metadata
 
     scores = []
-    for name, metric in tqdm(metrics.items()):
+    for name, metric in (metrics.items()):
 
         try:
             raw_score = metric.compute(real_data, synthetic_data, **kwargs)
