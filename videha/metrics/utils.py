@@ -610,3 +610,90 @@ def gauge(value):
         'yanchor': 'top'})
 
     fig.show()
+
+
+def gauge_multi(MeanDict):
+    CountEntities = len(MeanDict)
+    sz = 12
+
+    if CountEntities == 0:
+        raise ValueError('No Metrics to plot!!')
+        
+    def getPlotName(key):
+        if 'Distribution' in key:
+            return 'Similarity Score'
+        elif 'Dectection' in key:
+            return 'Detection Score'
+        elif 'Statistical' in key:
+            return 'Statistical Score'
+        elif 'Efficacy' in key:
+            return 'ML Efficacy Score'
+    
+    if CountEntities == 3:
+        start = 0
+        end = 0.3
+        delta = 0.05
+        increase = 0.3
+    elif CountEntities == 2:
+        start = 0
+        end = 0.475
+        increase = 0.475
+        delta = 0.05
+    elif CountEntities == 1:
+        start = 0
+        end = 1
+        increase = 0.
+        delta = 0.
+    else:
+        start = 0
+        end = 0.3
+        delta = 0.05
+        increase = 0.3
+        
+    trace = []
+    i = 1
+    
+    for k,v in MeanDict.items():
+        if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Efficacy' in k): 
+            name = getPlotName(k)
+            temptrace = go.Indicator(        
+            mode = "gauge+number+delta",
+            value = round(MeanDict[f'{k}']*100),
+            number = {'prefix': f"<b>Avg. {name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'grey'}},
+            domain = {'x': [start, end], 'y': [0, 1]},
+            delta = {'reference': 0, 'increasing': {'color': "white"},'font': {'size': 12*2}},
+            gauge = {
+                'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "white"},
+                'bar': {'color': "grey",'thickness':0.3,},
+                'bgcolor': "white",
+                'borderwidth': 5,
+                'bordercolor': "white",
+                'steps': [
+                    {'range': [0, 20], 'color': '#FF8C19'},
+                    {'range': [20, 40], 'color': '#FFFF80'},                
+                    {'range': [40, 60], 'color': '#BFFFB3'},
+                    {'range': [60, 80], 'color': '#BBFF33'},                
+                    {'range': [80, 101], 'color': '#1EB300'}],
+                'threshold': {
+                    'line': {'color': "grey", 'width': 4},
+                    'thickness': 0.0,
+                    'value': 100}})
+            trace.append(temptrace)
+            start = end + delta
+            end   = start + increase
+            i += 1        
+            if i > 3:
+                break
+
+    # layout and figure production
+    layout = go.Layout(height = 300,
+                       width  = 1000,
+                       autosize = False,
+                       title = '')
+    fig = go.Figure(data = trace, layout = layout)
+    fig.update_layout(xaxis={'showgrid': False, 'showticklabels':True,'range':[0,1]},
+                      yaxis={'showgrid': False, 'showticklabels':True,'range':[0,1]},
+                     plot_bgcolor='rgba(0,0,0,0)',
+                      font = {'color': "black", 'family': "'Oswald', sans-serif"})
+
+    fig.show()

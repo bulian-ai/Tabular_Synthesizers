@@ -1,7 +1,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-from .utils import get_correlation_matrix, gauge
+from .utils import get_correlation_matrix, gauge, gauge_multi
 import numpy as np
 from ..metrics import compute_metrics
 from ..metrics.single_table import *
@@ -33,12 +33,14 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
     o = o[~np.isnan(o['normalized_score'])]
     o_min_0 = o[o['min_value']==0.0]
     o_min_neginf = o[o['min_value']==-np.inf]
+    multi_metrics_min_0 = o_min_0.groupby('MetricType')['normalized_score'].mean().to_dict()
+    multi_metrics_min_neginf = o_min_neginf.groupby('MetricType')['normalized_score'].mean().to_dict()
 
     efficiency_min_0 = 0
     efficiency_min_neginf = 0 
 
     if len(o_min_0)>0:
-        efficiency_min_0 = (o_min_0.groupby('MetricType')['normalized_score'].mean()>0.4).sum()/(o_min_0['MetricType'].nunique())
+        efficiency_min_0 = (o_min_0.groupby('MetricType')['normalized_score'].mean()>0.5).sum()/(o_min_0['MetricType'].nunique())
     if len(o_min_neginf)>0:
         efficiency_min_neginf = (o_min_neginf.groupby('MetricType')['normalized_score'].mean()>0.0).sum()/(o_min_neginf['MetricType'].nunique())
     
@@ -52,7 +54,7 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
         raise ValueError("Relevant metrics are NaN")
 
     gauge(avg_efficiency)    
-
+    gauge_multi(multi_metrics_min_0)
 
     # print("\n----------------------------------------- CORRELATION ANALYSIS -----------------------------------------\n")
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
