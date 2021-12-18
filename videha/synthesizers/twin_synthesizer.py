@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 from ..data_sampler import DataSampler
 from ..data_transformer import DataTransformer
-from ..synthesizers.base import BaseSynthesizer
+from .base import BaseSynthesizer
 from ..utils import MetricLogger, SmoothedValue
 
 
@@ -88,7 +88,7 @@ class Generator(nn.Module):
         return data
 
 
-class TwinSynthesizer(BaseSynthesizer):
+class TwinSynthesizer_upd(BaseSynthesizer):
     """Conditional Table GAN Synthesizer.
     For more details about the process, please check the [Modeling Tabular data using
     Conditional GAN](https://arxiv.org/abs/1907.00503) paper.
@@ -134,8 +134,6 @@ class TwinSynthesizer(BaseSynthesizer):
 
     def __init__(
         self,
-        data: pd.DataFrame,
-        discrete_columns: Union[List, Tuple] = tuple(),
         embedding_dim: int = 128,
         generator_dim: Union[Tuple[int], List[int]] = (256, 256),
         discriminator_dim: Union[Tuple[int], List[int]] = (256, 256),
@@ -149,12 +147,9 @@ class TwinSynthesizer(BaseSynthesizer):
         pac: int = 10,
         device: Union[str, torch.device] = "cpu",
     ):
-        super(TwinSynthesizer, self).__init__()
+        super(TwinSynthesizer_upd, self).__init__()
         assert batch_size % 2 == 0
 
-        self.data = data
-        self.discrete_columns = discrete_columns
-        self.validate_discrete_columns(data, self.discrete_columns)
 
         self.embedding_dim = embedding_dim
         self.generator_dim = generator_dim
@@ -172,32 +167,6 @@ class TwinSynthesizer(BaseSynthesizer):
         self.sampler = None
         self.generator = None
 
-        self.transformer = DataTransformer()
-        self.transformer.fit(self.data, self.discrete_columns)
-
-        transformed_data = self.transformer.transform(self.data)
-
-        self.sampler = DataSampler(
-            transformed_data,
-            self.transformer.output_info_list,
-            self.log_frequency,
-        )
-
-        data_dim = self.transformer.output_dimensions
-
-        self.generator = Generator(
-            self.embedding_dim + self.sampler.dim_cond_vec(),
-            self.generator_dim,
-            data_dim,
-        )
-
-        self.discriminator = Discriminator(
-            data_dim + self.sampler.dim_cond_vec(),
-            self.discriminator_dim,
-            pac=self.pac,
-        )
-
-        self.steps_per_epoch = max(len(transformed_data) // self.batch_size, 1)
 
     @staticmethod
     def gumbel_softmax(logits, tau=1, hard=False, eps=1e-10, dim=-1):
@@ -300,7 +269,7 @@ class TwinSynthesizer(BaseSynthesizer):
         if invalid_columns:
             raise ValueError("Invalid columns found: {}".format(invalid_columns))
 
-    def fit(self, epochs=300, print_freq=50):
+    def fit(self, data, epochs=300, discrete_columns=(),print_freq=50):
         """Fit the CTGAN Synthesizer models to the training data.
 
         Args:
@@ -312,9 +281,40 @@ class TwinSynthesizer(BaseSynthesizer):
                         contain the integer indices of the columns. Otherwise, if it is
                         a ``pandas.DataFrame``, this list should contain the column names.
         """
+
+        self.discrete_columns = discrete_columns
+        self.validate_discrete_columns(data, self.discrete_columns)
+        self.transformer = DataTransformer()
+        self.transformer.fit(data, self.discrete_columns)
+
+        transformed_data = self.transformer.transform(data)
+
+        self.sampler = DataSampler(
+            transformed_data,
+            self.transformer.output_info_list,
+            self.log_frequency,
+        )
+
+        data_dim = self.transformer.output_dimensions
+
+        self.generator = Generator(
+            self.embedding_dim + self.sampler.dim_cond_vec(),
+            self.generator_dim,
+            data_dim,
+        )
+
+        self.discriminator = Discriminator(
+            data_dim + self.sampler.dim_cond_vec(),
+            self.discriminator_dim,
+            pac=self.pac,
+        )
+
+        self.steps_per_epoch = max(len(transformed_data) // self.batch_size, 1)
+
         # device placement
         self.generator.to(self.device)
         self.discriminator.to(self.device)
+
         # Generate Optimizers
         optimizerG = optim.Adam(
             self.generator.parameters(),
