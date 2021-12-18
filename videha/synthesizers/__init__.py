@@ -1,2 +1,2 @@
-from .twin_synthesizer import TwinSynthesizer_upd
-from .private_twin_synthesizer import PATEGAN
+from .twin_synthesizer import TwinSynthesizer
+from .private_twin_synthesizer import PrivateTwinSynthesizer

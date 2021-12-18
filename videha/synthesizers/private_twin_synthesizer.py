@@ -6,9 +6,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from   torch.utils.data import DataLoader, TensorDataset
-from ..synthesizers.base import BaseSynthesizerPrivate
+from .base import BaseSynthesizerPrivate
 from ..privacy_utils import weights_init, pate, moments_acc
 from ..data_transformer import DataTransformer
+from ..utils import MetricLogger, SmoothedValue
+from .base import BaseSynthesizer
 
 class Discriminator(nn.Module):
     def __init__(self, input_dim, wasserstein=False):
@@ -50,10 +52,10 @@ class Generator(nn.Module):
         noise = self.layer_2(noise)
         return noise
 
-class TwinSynthesizer_upd(BaseSynthesizerPrivate):
+class PrivateTwinSynthesizer(BaseSynthesizer):
     def __init__(
         self,
-        epsilon=0.1,
+        epsilon,
         delta=None,
         binary=False,
         latent_dim=64,
@@ -62,7 +64,7 @@ class TwinSynthesizer_upd(BaseSynthesizerPrivate):
         student_iters=5,
         device: Union[str, torch.device] = "cpu",
     ):
-        super(PATEGAN, self).__init__()
+        super(PrivateTwinSynthesizer, self).__init__()
         self.epsilon = epsilon
         self.delta = delta
         self.binary = binary
@@ -70,18 +72,18 @@ class TwinSynthesizer_upd(BaseSynthesizerPrivate):
         self.batch_size = batch_size
         self.teacher_iters = teacher_iters
         self.student_iters = student_iters
-        # self.data = data
+
         self.device = torch.device(device) if isinstance(device, str) else device
 
         self.pd_cols = None
         self.pd_index = None
 
-    def fit(self,data,update_epsilon=None,discrete_columns: Union[List, Tuple] = tuple(),):
-        
-        # categorical_columns = self.discrete_columns
+    def fit(self, data, discrete_columns: Union[List, Tuple] = tuple(), ordinal_columns: Union[List, Tuple] = tuple(), update_epsilon=None):
+
         self.transformer = DataTransformer()
         self.transformer.fit(data, discrete_columns)
         data = self.transformer.transform(data)
+        self.steps_per_epoch = max(len(data) // self.batch_size, 1)
 
         if update_epsilon:
             self.epsilon = update_epsilon
@@ -143,7 +145,13 @@ class TwinSynthesizer_upd(BaseSynthesizerPrivate):
 
         iteration = 0
         while eps.item() < self.epsilon:
+            metric_logger = MetricLogger(delimiter="  ")
+            metric_logger.add_meter("loss_t_fake",SmoothedValue())
+            metric_logger.add_meter("loss_t_real",SmoothedValue())
+
+
             iteration += 1
+
 
             eps = min((alphas - math.log(self.delta)) / l_list)
 
@@ -156,58 +164,77 @@ class TwinSynthesizer_upd(BaseSynthesizerPrivate):
                 break
 
             # train teacher discriminators
-            for t_2 in range(self.teacher_iters):
-                for i in range(self.num_teachers):
-                    real_data = None
-                    for j, data in enumerate(loader[i], 0):
-                        real_data = data[0].to(self.device)
-                        break
+            header = f"Iteration: [{iteration}]"
 
-                    optimizer_t[i].zero_grad()
+            for _ in metric_logger.log_every(
+                            range(self.teacher_iters*self.num_teachers), 50, header
+                        ):
+                for t_2 in range(self.teacher_iters):
 
-                    # train with real data
-                    label_real = torch.full(
-                        (real_data.shape[0],), 1, dtype=torch.float, device=self.device
-                    )
-                    output = teacher_disc[i](real_data)
-                    loss_t_real = criterion(output.squeeze(), label_real.double())
-                    loss_t_real.backward()
+                    for i in range(self.num_teachers):
+                        real_data = None
+                        for j, data in enumerate(loader[i], 0):
+                            real_data = data[0].to(self.device)
+                            break
 
-                    # train with fake data
-                    noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
-                    label_fake = torch.full(
-                        (self.batch_size,), 0, dtype=torch.float, device=self.device
-                    )
-                    fake_data = self.generator(noise.double())
-                    output = teacher_disc[i](fake_data)
-                    loss_t_fake = criterion(output.squeeze(), label_fake.double())
-                    loss_t_fake.backward()
-                    optimizer_t[i].step()
+                        optimizer_t[i].zero_grad()
+
+                        # train with real data
+                        label_real = torch.full(
+                            (real_data.shape[0],), 1, dtype=torch.float, device=self.device
+                        )
+                        output = teacher_disc[i](real_data)
+                        loss_t_real = criterion(output.squeeze(), label_real.double())
+                        loss_t_real.backward()
+
+                        # train with fake data
+                        noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
+                        label_fake = torch.full(
+                            (self.batch_size,), 0, dtype=torch.float, device=self.device
+                        )
+                        fake_data = self.generator(noise.double())
+                        output = teacher_disc[i](fake_data)
+                        loss_t_fake = criterion(output.squeeze(), label_fake.double())
+                        loss_t_fake.backward()
+                        optimizer_t[i].step()
+                        # print(f"Loss:{loss_t_fake.item()}")
+                        metric_logger.update(loss_t_fake=loss_t_fake.item())
+                        metric_logger.update(loss_t_real=loss_t_real.item())
 
             # train student discriminator
-            for t_3 in range(self.student_iters):
-                noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
-                fake_data = self.generator(noise.double())
-                predictions, votes = pate(fake_data, teacher_disc, noise_multiplier)
-                output = student_disc(fake_data.detach())
+            metric_logger.add_meter("loss_s", SmoothedValue())
+            for _ in metric_logger.log_every(
+                            range(self.student_iters), 1, header
+                        ):
+                for t_3 in range(self.student_iters):
+                    noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
+                    fake_data = self.generator(noise.double())
+                    predictions, votes = pate(fake_data, teacher_disc, noise_multiplier)
+                    output = student_disc(fake_data.detach())
 
-                # update moments accountant
-                alphas = alphas + moments_acc(self.num_teachers, votes, noise_multiplier, l_list)
+                    # update moments accountant
+                    alphas = alphas + moments_acc(self.num_teachers, votes, noise_multiplier, l_list)
 
-                loss_s = criterion(output.squeeze(), predictions.to(self.device).squeeze())
-                optimizer_s.zero_grad()
-                loss_s.backward()
-                optimizer_s.step()
-
+                    loss_s = criterion(output.squeeze(), predictions.to(self.device).squeeze())
+                    optimizer_s.zero_grad()
+                    loss_s.backward()
+                    optimizer_s.step()
+                    metric_logger.update(loss_s=loss_s.item())
+                    
             # train generator
-            label_g = torch.full((self.batch_size,), 1, dtype=torch.float, device=self.device)
-            noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
-            gen_data = self.generator(noise.double())
-            output_g = student_disc(gen_data)
-            loss_g = criterion(output_g.squeeze(), label_g.double())
-            optimizer_g.zero_grad()
-            loss_g.backward()
-            optimizer_g.step()
+            metric_logger.add_meter("loss_g", SmoothedValue())
+            for _ in metric_logger.log_every(
+                            range(self.steps_per_epoch), 50, header
+                        ):
+                label_g = torch.full((self.batch_size,), 1, dtype=torch.float, device=self.device)
+                noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
+                gen_data = self.generator(noise.double())
+                output_g = student_disc(gen_data)
+                loss_g = criterion(output_g.squeeze(), label_g.double())
+                optimizer_g.zero_grad()
+                loss_g.backward()
+                optimizer_g.step()
+                metric_logger.update(loss_g=loss_g.item())
 
     def sample(self, n):
         steps = n // self.batch_size + 1
@@ -223,4 +250,3 @@ class TwinSynthesizer_upd(BaseSynthesizerPrivate):
         data = data[:n]
         data = self.transformer.inverse_transform(data)
         return data
-

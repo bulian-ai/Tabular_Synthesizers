@@ -56,9 +56,7 @@ class BaseSynthesizerPrivate(nn.Module, metaclass=ABCMeta):
         print(f"Loading pretrained from {path} ...")
         checkpoint = torch.load(path, map_location="cpu")
         model = checkpoint['model']
-        # model = cls(**cls_kwargs)
-        # print(model.state_dict())
-        # model.load_state_dict(checkpoint["model"])
+
         return model
 
 class BaseSynthesizer(nn.Module, metaclass=ABCMeta):

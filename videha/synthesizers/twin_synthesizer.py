@@ -421,7 +421,7 @@ class TwinSynthesizer(BaseSynthesizer):
                 optimizerG.zero_grad()
                 loss_g.backward()
                 optimizerG.step()
-
+                # print(f"Loss:{loss_g.item()}")
                 metric_logger.update(loss_g=loss_g.item())
                 metric_logger.update(loss=loss_d.item() + loss_g.item())
 
