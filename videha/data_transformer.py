@@ -18,7 +18,6 @@ ColumnTransformInfo = namedtuple(
     ],
 )
 
-
 class DataTransformer(object):
     """Data Transformer.
 

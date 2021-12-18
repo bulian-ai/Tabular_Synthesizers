@@ -53,28 +53,29 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
     else:
         raise ValueError("Relevant metrics are NaN")
 
-    gauge(avg_efficiency)    
-    gauge_multi(multi_metrics_min_0)
+    gauge(avg_efficiency)
+    if len(o_min_neginf)>0:  #### check why this isn;t working when using ML Efficacy charts
+        gauge_multi(multi_metrics_min_0)
 
     # print("\n----------------------------------------- CORRELATION ANALYSIS -----------------------------------------\n")
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
-    fig.suptitle('Correlation Analysis of Real vs. Synethtic Data\n',fontsize = 24,y=1.07)
+    fig.suptitle('Correlation Analysis\n',fontsize = 24,y=1.07)
     syn_corr = get_correlation_matrix(df=synthetic_data, discrete_columns=discrete_columns)
     syn_mask = np.zeros_like(syn_corr, dtype=np.bool)
     syn_mask[np.triu_indices_from(syn_mask)] = True
-    sns.heatmap(data=syn_corr,mask = syn_mask,cbar=False,ax=axes[0],cmap='BrBG')
+    sns.heatmap(data=syn_corr,mask = syn_mask,cbar=False,ax=axes[0],cmap='YlGn')
     axes[0].set_title('Synthetic Data Correlation')
 
     real_corr = get_correlation_matrix(df=real_data, discrete_columns = discrete_columns)
     real_mask = np.zeros_like(real_corr, dtype=np.bool)
     real_mask[np.triu_indices_from(real_mask)] = True
-    sns.heatmap(data=real_corr,mask = real_mask,cbar=False,ax=axes[1],cmap='BrBG')
+    sns.heatmap(data=real_corr,mask = real_mask,cbar=False,ax=axes[1],cmap='YlGn')
     axes[1].set_title('Real Data Correlation')
     
     diff_corr = np.abs(real_corr)-np.abs(syn_corr)
     diff_mask = np.zeros_like(diff_corr, dtype=np.bool)
     diff_mask[np.triu_indices_from(diff_mask)] = True
-    sns.heatmap(data=diff_corr,mask = diff_mask,ax=axes[2],cmap='BrBG')
+    sns.heatmap(data=diff_corr,mask = diff_mask,ax=axes[2],cmap='YlGn')
     axes[2].set_title('Diff (Δ) of Absolute Correlations')
     plt.show()
     
