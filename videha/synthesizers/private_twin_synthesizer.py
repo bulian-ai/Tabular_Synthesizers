@@ -50,7 +50,7 @@ class Generator(nn.Module):
         noise = self.layer_2(noise)
         return noise
 
-class PATEGAN(BaseSynthesizerPrivate):
+class TwinSynthesizer_upd(BaseSynthesizerPrivate):
     def __init__(
         self,
         epsilon=0.1,
