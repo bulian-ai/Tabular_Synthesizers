@@ -88,7 +88,7 @@ class Generator(nn.Module):
         return data
 
 
-class TwinSynthesizer_upd(BaseSynthesizer):
+class TwinSynthesizer(BaseSynthesizer):
     """Conditional Table GAN Synthesizer.
     For more details about the process, please check the [Modeling Tabular data using
     Conditional GAN](https://arxiv.org/abs/1907.00503) paper.
@@ -147,7 +147,7 @@ class TwinSynthesizer_upd(BaseSynthesizer):
         pac: int = 10,
         device: Union[str, torch.device] = "cpu",
     ):
-        super(TwinSynthesizer_upd, self).__init__()
+        super(TwinSynthesizer, self).__init__()
         assert batch_size % 2 == 0
 
 
