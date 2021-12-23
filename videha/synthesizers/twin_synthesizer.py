@@ -167,7 +167,6 @@ class TwinSynthesizer(BaseSynthesizer):
         self.sampler = None
         self.generator = None
 
-
     @staticmethod
     def gumbel_softmax(logits, tau=1, hard=False, eps=1e-10, dim=-1):
         """Deals with the instability of the gumbel_softmax for older versions of torch.

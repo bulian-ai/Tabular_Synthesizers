@@ -6,11 +6,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from   torch.utils.data import DataLoader, TensorDataset
-from .base import BaseSynthesizerPrivate
 from ..privacy_utils import weights_init, pate, moments_acc
 from ..data_transformer import DataTransformer
 from ..utils import MetricLogger, SmoothedValue
-from .base import BaseSynthesizer
+from .base import BaseSynthesizerPrivate
 
 class Discriminator(nn.Module):
     def __init__(self, input_dim, wasserstein=False):
@@ -52,7 +51,7 @@ class Generator(nn.Module):
         noise = self.layer_2(noise)
         return noise
 
-class PrivateTwinSynthesizer(BaseSynthesizer):
+class PrivateTwinSynthesizer(BaseSynthesizerPrivate):
     def __init__(
         self,
         epsilon,
@@ -78,7 +77,7 @@ class PrivateTwinSynthesizer(BaseSynthesizer):
         self.pd_cols = None
         self.pd_index = None
 
-    def fit(self, data, discrete_columns: Union[List, Tuple] = tuple(), ordinal_columns: Union[List, Tuple] = tuple(), update_epsilon=None):
+    def fit(self, data, discrete_columns: Union[List, Tuple] = tuple(), ordinal_columns: Union[List, Tuple] = tuple(), update_epsilon=None,print_freq=50):
 
         self.transformer = DataTransformer()
         self.transformer.fit(data, discrete_columns)
@@ -149,9 +148,7 @@ class PrivateTwinSynthesizer(BaseSynthesizer):
             metric_logger.add_meter("loss_t_fake",SmoothedValue())
             metric_logger.add_meter("loss_t_real",SmoothedValue())
 
-
             iteration += 1
-
 
             eps = min((alphas - math.log(self.delta)) / l_list)
 
@@ -167,7 +164,7 @@ class PrivateTwinSynthesizer(BaseSynthesizer):
             header = f"Iteration: [{iteration}]"
 
             for _ in metric_logger.log_every(
-                            range(self.teacher_iters*self.num_teachers), 50, header
+                            range(self.teacher_iters*self.num_teachers), print_freq, header
                         ):
                 for t_2 in range(self.teacher_iters):
 
@@ -224,7 +221,7 @@ class PrivateTwinSynthesizer(BaseSynthesizer):
             # train generator
             metric_logger.add_meter("loss_g", SmoothedValue())
             for _ in metric_logger.log_every(
-                            range(self.steps_per_epoch), 50, header
+                            range(self.steps_per_epoch), print_freq, header
                         ):
                 label_g = torch.full((self.batch_size,), 1, dtype=torch.float, device=self.device)
                 noise = torch.rand(self.batch_size, self.latent_dim, device=self.device)
