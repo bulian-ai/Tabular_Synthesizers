@@ -612,6 +612,7 @@ def gauge(value):
     fig.show()
 
 
+### To Do: Likelyhood metrics are excluded from report for now
 def gauge_multi(MeanDict):
     CountEntities = len(MeanDict)
     sz = 12
@@ -648,9 +649,9 @@ def gauge_multi(MeanDict):
         delta = 0.
     else:
         start = 0
-        end = 0.25
+        end = 0.2
         delta = 0.05
-        increase = 0.25
+        increase = 0.2
         
     trace = []
     i = 1
@@ -661,9 +662,9 @@ def gauge_multi(MeanDict):
             temptrace = go.Indicator(        
             mode = "gauge+number+delta",
             value = round(MeanDict[f'{k}']*100),
-            number = {'prefix': f"<b>Avg. {name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'grey'}},
+            number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'grey'}},
             domain = {'x': [start, end], 'y': [0, 1]},
-            delta = {'reference': 0, 'increasing': {'color': "white"},'font': {'size': 12*2}},
+            delta = {'reference': 0, 'increasing': {'color': "white"},'font': {'size': 12}},
             gauge = {
                 'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "white"},
                 'bar': {'color': "grey",'thickness':0.3,},
@@ -677,7 +678,7 @@ def gauge_multi(MeanDict):
                     {'range': [60, 80], 'color': '#BBFF33'},                
                     {'range': [80, 101], 'color': '#1EB300'}],
                 'threshold': {
-                    'line': {'color': "grey", 'width': 4},
+                    'line': {'color': "grey", 'width': 6},
                     'thickness': 0.0,
                     'value': 100}})
             trace.append(temptrace)
@@ -689,7 +690,7 @@ def gauge_multi(MeanDict):
 
     # layout and figure production
     layout = go.Layout(height = 300,
-                       width  = 1000,
+                       width  = 1200, 
                        autosize = False,
                        title = '')
     fig = go.Figure(data = trace, layout = layout)

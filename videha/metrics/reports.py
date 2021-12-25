@@ -10,19 +10,19 @@ import pandas as pd
 
 privacyMetrics =[
     'CategoricalCAP',
-    'CategoricalEnsemble',
-    'CategoricalGeneralizedCAP',
-    'CategoricalKNN',
+    # 'CategoricalEnsemble',
+    # 'CategoricalGeneralizedCAP',
+    # 'CategoricalKNN',
     'CategoricalNB',
-    'CategoricalPrivacyMetric',
+    # 'CategoricalPrivacyMetric',
     'CategoricalRF',
-    'CategoricalSVM',
-    'CategoricalZeroCAP',
+    # 'CategoricalSVM',
+    # 'CategoricalZeroCAP',
     'NumericalLR',
     'NumericalMLP',
     'NumericalPrivacyMetric',
-    'NumericalRadiusNearestNeighbor',
-    'NumericalSVR',
+    # 'NumericalRadiusNearestNeighbor',
+    # 'NumericalSVR',
 ]
 
 def get_map(avg_efficacy):
@@ -38,7 +38,7 @@ def get_map(avg_efficacy):
          print(f"Avg Efficacy {avg_efficacy} is not within 0-1 bounds")
          return 0
 
-
+# To Do: We are not pating attention to whether the goal is to maximize or minimize; we assume it all maximize
 def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,target=None,key_fields=None,sensitive_fields=None):
 
     ### To do: check no ID columns
@@ -55,20 +55,20 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
 
     #### Privacy metrics
     if (key_fields is not None) & (sensitive_fields is not None):
-        oP = compute_metrics(privacy_metrics,real_data, synthetic_data,key_fields=key_fields,sensitive_fields=sensitive_fields)
-        if len(oP)>0:
-            try:
-                o = pd.concat([o,oP],0)
-                o = o.reset_index(drop=True)
-            except:
-                warnings.warn("No privary metrics to show!!")
+        oPriv = compute_metrics(privacy_metrics,real_data, synthetic_data,key_fields=key_fields,sensitive_fields=sensitive_fields)
+        if len(oPriv)>0:
+            o = pd.concat([o,oPriv],0)
+            o = o.reset_index(drop=True)
 
     o = o[~np.isnan(o['normalized_score'])]
-    o_min_0 = o[o['min_value']==0.0]    ### what about case where Max value is not 1 but inf
+    
+    o_min_0 = o[o['min_value']==0.0]    ### what about case where Max value is not 1 but inf, for now we assume we have covered it
     o_min_neginf = o[o['min_value']==-np.inf]
-    multi_metrics_min_0 = o_min_0.groupby('MetricType')['normalized_score'].mean().to_dict()
-    multi_metrics_min_neginf = o_min_neginf.groupby('MetricType')['normalized_score'].mean().to_dict()
 
+    multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()
+    # multi_metrics_min_0 = o_min_0.groupby('MetricType')['normalized_score'].mean().to_dict()
+    # multi_metrics_min_neginf = o_min_neginf.groupby('MetricType')['normalized_score'].mean().to_dict()
+    
     efficiency_min_0 = 0
     efficiency_min_neginf = 0 
 
@@ -87,8 +87,8 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
         raise ValueError("Relevant metrics are NaN")
 
     gauge(avg_efficiency)
-    if len(o_min_neginf)>0:  #### check why this isn;t working when using ML Efficacy charts
-        gauge_multi(multi_metrics_min_0)
+    if len(o)>0:
+        gauge_multi(multi_metrics)
 
     # print("\n----------------------------------------- CORRELATION ANALYSIS -----------------------------------------\n")
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
