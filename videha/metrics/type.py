@@ -16,3 +16,6 @@ class MetricType(Enum):
     EFFICACY = 'ML Efficacy Metric: R-Sq or F1' 
     STATISTICAL = 'Statistical Test Metric'
     ENTROPY = 'Distribution Similarity Metric'
+    PRIVACY = 'Privacy Metric'
+    ATTACK = 'Privacy Metric'
+    ATTACKER = 'Privacy Metric'

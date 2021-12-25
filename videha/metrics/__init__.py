@@ -53,13 +53,14 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=Fals
 
     scores = []
     for name, metric in (metrics.items()):
-
+        error= None
         try:
             raw_score = metric.compute(real_data, synthetic_data, **kwargs)
             normalized_score = metric.normalize(raw_score)
-        except Exception:
+        except Exception as err:
             raw_score = None
             normalized_score = None
+            error = str(err)
 
         scores.append({
             'metric': name,
@@ -69,14 +70,15 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=Fals
             'min_value': metric.min_value,
             'max_value': metric.max_value,
             'goal': metric.goal.name,
-            'MetricType' : metric.MetricType.value
+            'MetricType' : metric.MetricType.value,
+            'error': error,
         })
     out = pd.DataFrame(scores)
 
-    if 'target' not in kwargs:
-        out = out[out['MetricType']!=MetricType.EFFICACY.value].reset_index(drop=True)
-    else:
-        out = out[out['MetricType']==MetricType.EFFICACY.value].reset_index(drop=True)
+    # if 'target' not in kwargs:
+    #     out = out[out['MetricType']!=MetricType.EFFICACY.value].reset_index(drop=True)
+    # else:
+    #     out = out[out['MetricType']==MetricType.EFFICACY.value].reset_index(drop=True)
         
     return out
 

@@ -628,7 +628,9 @@ def gauge_multi(MeanDict):
             return 'Statistical Score'
         elif 'Efficacy' in key:
             return 'ML Efficacy Score'
-    
+        elif 'Privacy' in key:
+            return 'Privacy Score'
+
     if CountEntities == 3:
         start = 0
         end = 0.3
@@ -646,15 +648,15 @@ def gauge_multi(MeanDict):
         delta = 0.
     else:
         start = 0
-        end = 0.3
+        end = 0.25
         delta = 0.05
-        increase = 0.3
+        increase = 0.25
         
     trace = []
     i = 1
     
     for k,v in MeanDict.items():
-        if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Efficacy' in k): 
+        if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Efficacy' in k) or ('Privacy' in k): 
             name = getPlotName(k)
             temptrace = go.Indicator(        
             mode = "gauge+number+delta",
@@ -682,7 +684,7 @@ def gauge_multi(MeanDict):
             start = end + delta
             end   = start + increase
             i += 1        
-            if i > 3:
+            if i > 4:
                 break
 
     # layout and figure production
