@@ -18,7 +18,7 @@ __all__ = [
     'column_pairs',
     'single_column',
     'single_table',
-    'timeseries',
+    # 'timeseries',
 ]
 
 
