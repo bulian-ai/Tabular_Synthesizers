@@ -44,6 +44,7 @@ class DataTransformer(object):
             weight_concentration_prior_type="dirichlet_process",
             weight_concentration_prior=0.001,
             n_init=1,
+            max_iter=2500,
         )
 
         gm.fit(raw_column_data.reshape(-1, 1))
