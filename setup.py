@@ -7,7 +7,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 #     history = history_file.read()
 
 install_requires = [
-    'llvmlite',
+    # 'llvmlite',
     'packaging>=20,<22',
     # 'numba',
     "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
@@ -16,7 +16,7 @@ install_requires = [
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
     'torchvision>=0.9.0,<1',
-    'torchaudio>=0.9.0<1',
+    # 'torchaudio>=0.9.0<1',
     'rdt>=0.6.1,<0.7',
     'plotly>=5.4.0',
     'tqdm>=4.62.3<4.63.0',
@@ -100,7 +100,7 @@ setup(
         'Development Status :: 1 - Pre-Alpha',
         'Intended Audience :: Developers/Data Scientists/Managers',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.6',
+        # 'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
