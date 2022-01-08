@@ -142,3 +142,4 @@ cython_debug/
 timelines.md
 Todo.md
 Library Structure.md
+requirements.txt
