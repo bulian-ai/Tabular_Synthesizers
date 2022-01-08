@@ -18,7 +18,7 @@ install_requires = [
     'torchaudio>=0.9.0<1',
     'rdt>=0.6.1,<0.7',
     'plotly>=5.4.0',
-    'tqdm>=4.62.3',
+    # 'tqdm>=4.62.3',
     'category-encoders==2.3.0',
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
@@ -26,7 +26,7 @@ install_requires = [
     'seaborn==0.11.2',
     # 'sklearn==0.0',
     'sktime==0.8.1',
-    'statsmodels==0.12.1',
+    # 'statsmodels==0.12.1',
 ]
 
 pomegranate_requires = [
