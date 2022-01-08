@@ -120,7 +120,7 @@ setup(
     keywords='GAN',
     name='videha',
     packages=find_packages(include=['videha', 'videha.*']),
-    python_requires='>=3.6,<3.10',
+    python_requires='>=3.7,<3.10',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
