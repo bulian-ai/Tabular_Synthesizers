@@ -7,7 +7,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 #     history = history_file.read()
 
 install_requires = [
-     'llvmlite'
+     'llvmlite',
     'packaging>=20,<22',
     "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
     "numpy>=1.20.0,<2;python_version>='3.7'",
