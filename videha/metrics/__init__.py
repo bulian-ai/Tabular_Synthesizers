@@ -2,9 +2,6 @@
 
 """Top-level package for Videha Metrics."""
 
-__author__ = 'Videha.AI'
-__version__ = '0.0.1'
-
 import pandas as pd
 from tqdm import tqdm
 from ..metrics import (
