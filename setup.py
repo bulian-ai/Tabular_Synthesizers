@@ -14,7 +14,7 @@ install_requires = [
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
     'torchvision>=0.9.0,<1',
-    'torchaudio==0.8.2',
+    'torchaudio==0.9.2<1',
     'rdt>=0.6.1,<0.7',
     'plotly>=5.4.0',
     'tqdm>=4.62.3',
