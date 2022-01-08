@@ -7,9 +7,9 @@ with open('README.md', encoding='utf-8') as readme_file:
 #     history = history_file.read()
 
 install_requires = [
-    # 'packaging>=20,<22',
-    # 'numba==0.54.1',
-    # "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
+    'packaging>=20,<22',
+    # 'numba==0.52.0',
+    "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
     "numpy>=1.20.0,<2;python_version>='3.7'",
     'pandas>=1.1.3,<2',
     'scikit-learn>=0.24,<2',
