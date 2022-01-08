@@ -26,7 +26,7 @@ install_requires = [
     # 'dython==0.6.8',
     # 'seaborn==0.11.2',
     # 'sklearn==0.0',
-    'sktime==0.8.1',
+    # 'sktime==0.8.1',
     # 'statsmodels==0.12.1',
 ]
 
