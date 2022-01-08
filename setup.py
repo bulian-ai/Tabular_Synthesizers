@@ -23,7 +23,7 @@ install_requires = [
     'category-encoders>=2.3.0<2.5.0',
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
-    # 'dython==0.6.8',
+    'dython>=0.6.8<0.7.0',
     # 'seaborn==0.11.2',
     # 'sklearn==0.0',
     # 'sktime==0.8.1',
