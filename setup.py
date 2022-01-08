@@ -26,7 +26,8 @@ install_requires = [
     'sklearn==0.0',
     'sktime==0.8.1',
     'statsmodels==0.12.1',
-    'distutils'
+    'setuptools==58.0.4',
+    'setuptools-scm==6.3.2',
 ]
 
 pomegranate_requires = [
