@@ -14,6 +14,7 @@ install_requires = [
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
     'torchvision>=0.9.0,<1',
+    'torchaudio==0.8.2',
     'rdt>=0.6.1,<0.7',
     'plotly>=5.4.0',
     'tqdm>=4.62.3',
@@ -22,7 +23,9 @@ install_requires = [
     'pyts>=0.12.0,<0.13.0',
     'dython==0.6.8',
     'seaborn==0.11.2',
-    
+    'sklearn==0.0',
+    'sktime==0.8.1',
+    'statsmodels==0.12.1',
 ]
 
 pomegranate_requires = [
