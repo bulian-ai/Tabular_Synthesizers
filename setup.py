@@ -8,7 +8,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 install_requires = [
     'packaging>=20,<22',
-    # 'numba==0.52.0',
+    'numba==0.52.0',
     "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
     "numpy>=1.20.0,<2;python_version>='3.7'",
     'pandas>=1.1.3,<2',
@@ -18,7 +18,7 @@ install_requires = [
     'torchaudio>=0.9.0<1',
     'rdt>=0.6.1,<0.7',
     'plotly>=5.4.0',
-    # 'tqdm>=4.62.3',
+    'tqdm>=4.62.3<4.63.0',
     'category-encoders==2.3.0',
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
