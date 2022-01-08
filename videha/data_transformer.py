@@ -40,7 +40,7 @@ class DataTransformer(object):
     def _fit_continuous(self, column_name, raw_column_data):
         """Train Bayesian GMM for continuous column."""
         gm = BayesianGaussianMixture(
-            self._max_clusters,
+            n_components = self._max_clusters,
             weight_concentration_prior_type="dirichlet_process",
             weight_concentration_prior=0.001,
             n_init=1,
