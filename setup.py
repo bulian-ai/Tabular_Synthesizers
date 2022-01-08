@@ -20,7 +20,7 @@ install_requires = [
     'rdt>=0.6.1,<0.7',
     # 'plotly>=5.4.0',
     # 'tqdm>=4.62.3<4.63.0',
-    # 'category-encoders==2.3.0',
+    'category-encoders>=2.3.0<2.5.0',
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
     # 'dython==0.6.8',
