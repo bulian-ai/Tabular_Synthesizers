@@ -3,16 +3,18 @@
 [![CodeCov](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml/badge.svg)](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml)
 
 
-**Videha AI** provides deep  learning based bleeding-edge synthetic data models for Tabular data. 
+                          Videha AI Overview
+**Videha AI** provides deep learning based bleeding-edge synthetic data models for Tabular data.
 
-We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation for companies looking for maximum data impact without compromising privacy or speed.
+We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation yielding maximum data impact without compromising privacy or speed.
 
-!https://imgur.com/a/Tyft2ui
+                          Videha AI Use Cases
+![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
 
 Website: https://videha.ai/
 
 
-**Methods Supported**
+ **Methods Supported**
 
 1. **Videha AI GAN**: Vanilla Tabular Conditional GAN model with support for advarsaial API 
 2. **Videha AI DP-GAN**:  Tabular GAN model with formal privacy guarantees; also supports advarsarial API
@@ -37,11 +39,10 @@ ___
 - dython (>=0.6.8<0.7.0)
 
 
+
 **Token Generation**
 - Our support team will provide a custom token for installation support. Reach out to us at contact@videha.ai 
 
+
 **Installation**
 - - Our support team will guide you for installation support. Reach out to us at contact@videha.ai
-
-
-
