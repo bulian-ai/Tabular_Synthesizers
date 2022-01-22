@@ -3,16 +3,27 @@
 [![CodeCov](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml/badge.svg)](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml)
 
 
-                          Videha AI Overview
+**Overview**
+---
 **Videha AI** provides deep learning based bleeding-edge synthetic data models for Tabular data.
 
 We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation yielding maximum data impact without compromising privacy or speed.
 
-                          Videha AI Use Cases
-![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
-
 Website: https://videha.ai/
 
+---     
+
+**Videha AI Use Cases**
+
+Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. Once learned, these generator models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code
+
+![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
+
+**Seamless MLOPs/DevOps workflow with Videha AI**
+
+![](https://i.imgur.com/R0dTQZ6.png)
+
+---
 
  **Methods Supported**
 
@@ -22,6 +33,7 @@ Website: https://videha.ai/
 
 **Installation**
 ___
+
 *Dependencies*
 
 - packaging (>=20,<22)
@@ -45,4 +57,23 @@ ___
 
 
 **Installation**
-- - Our support team will guide you for installation support. Reach out to us at contact@videha.ai
+- Our support team will guide you with installation support. Reach out to us at contact@videha.ai
+
+---
+
+**Social Reachout**
+
+
+[![alt text][1.1]][1]
+---
+
+[![alt text][2.1]][2]
+
+
+[1.1]: https://i.imgur.com/YCdR3o9.png 
+[1]:   https://twitter.com/VidehaAI
+
+[2.1]: https://i.imgur.com/rwYRqn6.png
+[2]:https://www.linkedin.com/company/videha-ai/
+
+
