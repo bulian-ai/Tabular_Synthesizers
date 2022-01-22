@@ -155,7 +155,7 @@ class PrivateTwinSynthesizer(BaseSynthesizerPrivate):
             if eps.item() > self.epsilon:
                 if iteration == 1:
                     raise ValueError(
-                                "Inputted epsilon parameter is too small to"
+                                "Input epsilon parameter is too small to"
                                 + " create a private dataset. Try increasing epsilon and rerunning."
                             )
                 break
