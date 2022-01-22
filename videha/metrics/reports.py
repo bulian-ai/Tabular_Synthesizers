@@ -40,7 +40,10 @@ def get_map(avg_efficacy):
 
 # To Do: We are not pating attention to whether the goal is to maximize or minimize; we assume it all maximize
 def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,target=None,key_fields=None,sensitive_fields=None):
-
+    
+    import warnings
+    warnings.filterwarnings('ignore')
+    
     ### To do: check no ID columns
     metrics = SingleTableMetric.get_subclasses()
 
