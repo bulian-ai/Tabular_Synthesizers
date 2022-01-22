@@ -26,6 +26,7 @@ jobs:
         pip install -r requirements.txt
         pip install coverage
         coverage run --source=. -m unittest discover -s .
+        coverage report
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
