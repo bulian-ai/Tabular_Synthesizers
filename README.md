@@ -7,7 +7,7 @@
 
 We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation for companies looking for maximum data impact without compromising privacy or speed.
 
-![Videha AI Workflow](https://imgur.com/a/Tyft2ui)
+!https://imgur.com/a/Tyft2ui
 
 Website: https://videha.ai/
 
