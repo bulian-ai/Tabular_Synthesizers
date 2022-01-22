@@ -1,10 +1,13 @@
 # Pytorch_Tabular_Synthesizers
+[![codecov](https://codecov.io/gh/videha-ai/Tabular_Synthesizers/branch/main/graph/badge.svg?token=5VSP2B3Y4Y)](https://codecov.io/gh/videha-ai/Tabular_Synthesizers)
+
+
 Videha.ai Main Repo for Tabular data synthesizers for Pytorch
 
 **Methods Supported**
 
 1. CTGAN: Vanilla tabular synthetic data generation method
-2. PATE-CTGAN: CTGAN with formal privary gurantees
+2. PATE-CTGAN: CTGAN with formal privacy guarantees
 
 **Requirements**
 - TBD
