@@ -15,7 +15,7 @@ Website: https://videha.ai/
 ---     
 
 **Videha AI Use Cases**
---
+---
 Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
 
 Once learned, these generator models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code
@@ -33,7 +33,7 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 ---
 
  **Methods Supported**
---
+---
 
 1. **Videha AI GAN**: Vanilla Tabular Conditional GAN model with support for adversaial API 
 2. **Videha AI DP-GAN**:  Tabular GAN model with formal privacy guarantees; also supports adversarial API
@@ -43,7 +43,7 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 
 **Installation**
 ---
-___
+
 *Dependencies*
 
 - python_version (>='3.7')
@@ -59,6 +59,7 @@ ___
 - pyts  (>=0.12.0,<0.13.0)
 - dython (>=0.6.8<0.7.0)
 - packaging (>=20,<22)
+
 ---
 *Token Generation*
 - Our support team will provide a custom token for installation support. Reach out to us at contact@videha.ai 
