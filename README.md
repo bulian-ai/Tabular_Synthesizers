@@ -19,7 +19,10 @@ Videha AI leverages the power of generative models called GANs to learn signals 
 
 Once learned, these generator models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code
 
+
 ![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
+
+---
 
 **Seamless MLOPs/DevOps workflow with Videha AI**
 
@@ -52,16 +55,16 @@ ___
 - pyts  (>=0.12.0,<0.13.0)
 - dython (>=0.6.8<0.7.0)
 
-
-
+---
 **Token Generation**
 - Our support team will provide a custom token for installation support. Reach out to us at contact@videha.ai 
 
-
+---
 **Installation**
 - Our support team will guide you with installation support. Reach out to us at contact@videha.ai
 
 ---
+
 
 **Social Reachout**
 
