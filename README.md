@@ -46,8 +46,8 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 ___
 *Dependencies*
 
-- numpy (>=1.20.0,<2)
 - python_version (>='3.7')
+- numpy (>=1.20.0,<2)
 - pandas (>=1.1.3,<2)
 - scikit-learn (>=0.24,<2)
 - torch (>=1.8.0,<2)
