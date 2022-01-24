@@ -14,7 +14,7 @@
 
 **Videha AI** provides deep learning based bleeding-edge synthetic data models for Tabular data.
 
-We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation yielding maximum data impact without compromising privacy or speed.
+We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation yielding maximum data impact with mathematical privacy guarantees.
 
 Website: https://videha.ai/
 
@@ -22,9 +22,9 @@ Website: https://videha.ai/
 
 **Videha AI Use Cases**
 ---
-Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
+Videha AI leverages the power of generative models called GANs (Generative Adversarial Networks) to learn signals and cross dependencies in the data. 
 
-Once learned, these generator models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code
+Once trained, these GAN models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code.
 
 
 ![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
@@ -43,7 +43,7 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 
 1. **Videha AI GAN**: Vanilla Tabular Conditional GAN model with support for adversaial API 
 2. **Videha AI DP-GAN**:  Tabular GAN model with formal privacy guarantees; also supports adversarial API
-3. **Adversarial API**: Various ML based Adversarial methods to finetune and distill the syntheic data samples to capture maximum represetational accuracy
+3. **Adversarial API**: Various ML-based adversarial methods to finetune and distill the syntheic data samples to capture maximum data structural accuracy
 
 ---
 
