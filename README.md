@@ -4,6 +4,9 @@
 
 [![codecov](https://codecov.io/gh/videha-ai/Tabular_Synthesizers/branch/main/graph/badge.svg?token=5VSP2B3Y4Y)](https://codecov.io/gh/videha-ai/Tabular_Synthesizers)
 [![CodeCov](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml/badge.svg)](https://github.com/videha-ai/Tabular_Synthesizers/actions/workflows/codeconv.yml)
+[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-1DA1F2?style=flat-square&logo=twitter&logoColor=white&link=https://twitter.com/VidehaAI)]( https://twitter.com/VidehaAI)
+[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-0A66C2?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/company/videha-ai/)](https://www.linkedin.com/company/videha-ai/)
+[![Gmail Badge](https://img.shields.io/badge/-contact@videha.ai-ffcc33?style=flat-square&logo=gmail&logoColor=black&link=mailto:contact@videha.ai)](mailto:contact@videha.ai)
 
 
 **Overview**
@@ -73,11 +76,6 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 
 ---
 
-
-**Social Reachout**
-
-[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-1DA1F2?style=flat-square&logo=twitter&logoColor=white&link=https://twitter.com/VidehaAI)]( https://twitter.com/VidehaAI)
-[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-0A66C2?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/company/videha-ai/)](https://www.linkedin.com/company/videha-ai/)
 
 
 
