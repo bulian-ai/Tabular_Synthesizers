@@ -76,17 +76,8 @@ Once learned, these generator models can perpetually generate high-fidelity, dif
 
 **Social Reachout**
 
+[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-1DA1F2?style=flat-square&logo=twitter&logoColor=white&link=https://twitter.com/VidehaAI)]( https://twitter.com/VidehaAI)
+[![Linkedin Badge](https://img.shields.io/badge/-Videha%20AI-0A66C2?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/company/videha-ai/)](https://www.linkedin.com/company/videha-ai/)
 
-[![alt text][1.1]][1]
----
-
-[![alt text][2.1]][2]
-
-
-[1.1]: https://i.imgur.com/YCdR3o9.png 
-[1]:   https://twitter.com/VidehaAI
-
-[2.1]: https://i.imgur.com/rwYRqn6.png
-[2]:https://www.linkedin.com/company/videha-ai/
 
 
