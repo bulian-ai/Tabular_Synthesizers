@@ -16,6 +16,7 @@ Website: https://videha.ai/
 
 **Videha AI Use Cases**
 ---
+
 Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
 
 Once learned, these generator models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code
