@@ -21,19 +21,12 @@ Website: https://videha.ai/
 ---     
 
 **Videha AI Use Cases**
----
-<<<<<<< HEAD
-Videha AI leverages the power of generative models called GANs (Generative Adversarial Networks) to learn signals and cross dependencies in the data. 
 
 =======
-<<<<<<< HEAD
 
 Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
-=======
-Videha AI leverages the power of generative models called GANs (Generative Adversarial Networks) to learn signals and cross dependencies in the data. 
->>>>>>> 0e528b595e4932a64250662050c4070ff3231a51
 
->>>>>>> 621c04be125b44e871d6c28b22991a53bc558e25
+
 Once trained, these GAN models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code.
 
 
@@ -68,7 +61,7 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
 - scikit-learn (>=0.24,<2)
 - torch (>=1.8.0,<2)
 - torchvision  (>=0.9.0,<1)
-- rdt (>=0.6.2,<0.7)
+- rdt (0.5.3)
 - plotly (>=5.4.0)
 - category-encoders (>=2.3.0<2.5.0)
 - scipy (>=1.5.4,<2)
