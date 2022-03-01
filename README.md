@@ -21,8 +21,8 @@ Website: https://videha.ai/
 ---     
 
 **Videha AI Use Cases**
+---
 
-=======
 
 Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
 
@@ -35,7 +35,7 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
 ---
 
 **Seamless MLOPs/DevOps workflow with Videha AI**
---
+---
 
 ![](https://i.imgur.com/R0dTQZ6.png)
 
