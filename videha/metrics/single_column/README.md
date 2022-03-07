@@ -12,11 +12,11 @@ Implemented metrics:
 
 ## SingleColumnMetric
 
-All the single column metrics are subclasses form the `sdmetrics.single_column.SingleColumnMetric`
+All the single column metrics are subclasses form the `videha.metrics.single_column.SingleColumnMetric`
 class, which can be used to locate all of them:
 
 ```python3
-In [1]: from sdmetrics.single_column import SingleColumnMetric
+In [1]: from videha.metrics.single_column import SingleColumnMetric
 
 In [2]: SingleColumnMetric.get_subclasses()
 Out[2]:
@@ -28,14 +28,14 @@ Out[2]:
 
 All the single column metrics operate on just two inputs:
 
-* `real_data`: A 1d numpy array, coming from the real dataset.
-* `synthetic_data`: A 1d numpy array, coming from the synthetic dataset.
+* `real_data`: A 1d numpy array/pd.Series, coming from the real dataset.
+* `synthetic_data`: A 1d numpy array/pd.Series, coming from the synthetic dataset.
 
 For example, this how the KSTest metric can be computed for the `age` column
 from the demo data:
 
 ```python3
-In [3]: from sdmetrics import load_demo
+In [3]: from videha.metrics import load_demo
 
 In [4]: real_data, synthetic_data, metadata = load_demo()
 

@@ -86,42 +86,42 @@ Implemented metrics:
 
 ## SingleTableMetric
 
-All the single table metrics are subclasses form the `sdmetrics.single_table.SingleTableMetric`
+All the single table metrics are subclasses form the `videha.metrics.single_table.SingleTableMetric`
 class, which can be used to locate all of them:
 
 ```python3
-In [1]: from sdmetrics.single_table import SingleTableMetric
+In [1]: from videha.metrics.single_table import SingleTableMetric
 
 In [2]: SingleTableMetric.get_subclasses()
 Out[2]:
-{'BNLogLikelihood': sdmetrics.single_table.bayesian_network.BNLogLikelihood,
- 'LogisticDetection': sdmetrics.single_table.detection.sklearn.LogisticDetection,
- 'SVCDetection': sdmetrics.single_table.detection.sklearn.SVCDetection,
- 'BinaryDecisionTreeClassifier': sdmetrics.single_table.efficacy.binary.BinaryDecisionTreeClassifier,
- 'BinaryAdaBoostClassifier': sdmetrics.single_table.efficacy.binary.BinaryAdaBoostClassifier,
- 'BinaryLogisticRegression': sdmetrics.single_table.efficacy.binary.BinaryLogisticRegression,
- 'BinaryMLPClassifier': sdmetrics.single_table.efficacy.binary.BinaryMLPClassifier,
- 'MulticlassDecisionTreeClassifier': sdmetrics.single_table.efficacy.multiclass.MulticlassDecisionTreeClassifier,
- 'MulticlassMLPClassifier': sdmetrics.single_table.efficacy.multiclass.MulticlassMLPClassifier,
- 'LinearRegression': sdmetrics.single_table.efficacy.regression.LinearRegression,
- 'MLPRegressor': sdmetrics.single_table.efficacy.regression.MLPRegressor,
- 'GMLogLikelihood': sdmetrics.single_table.gaussian_mixture.GMLogLikelihood,
- 'CSTest': sdmetrics.single_table.multi_single_column.CSTest,
- 'KSTest': sdmetrics.single_table.multi_single_column.KSTest,
- 'KSTestExtended': sdmetrics.single_table.multi_single_column.KSTestExtended,
- 'ContinuousKLDivergence': sdmetrics.single_table.multi_column_pairs.ContinuousKLDivergence,
- 'DiscreteKLDivergence': sdmetrics.single_table.multi_column_pairs.DiscreteKLDivergence,
- 'CategoricalCAP': sdmetrics.single_table.privacy.cap,
- 'CategoricalGeneralizedCAP': sdmetrics.single_table.privacy.cap,
- 'CategoricalZeroCAP': sdmetrics.single_table.privacy.cap,
- 'CategoricalKNN': sdmetrics.single_table.privacy.cap,
- 'CategoricalNB': sdmetrics.single_table.privacy.cap,
- 'CategoricalRF': sdmetrics.single_table.privacy.cap,
- 'CategoricalEnsemble': sdmetrics.single_table.privacy.ensemble,
- 'NumericalLR': sdmetrics.single_table.privacy.numerical_sklearn,
- 'NumericalMLP': sdmetrics.single_table.privacy.numerical_sklearn,
- 'NumericalSVR': sdmetrics.single_table.privacy.numerical_sklearn,
- 'NumericalRadiusNearestNeighbor': sdmetrics.single_table.privacy.radius_nearest_neighbor}
+{'BNLogLikelihood': videha.single_table.bayesian_network.BNLogLikelihood,
+ 'LogisticDetection': videha.single_table.detection.sklearn.LogisticDetection,
+ 'SVCDetection': videha.single_table.detection.sklearn.SVCDetection,
+ 'BinaryDecisionTreeClassifier': videha.single_table.efficacy.binary.BinaryDecisionTreeClassifier,
+ 'BinaryAdaBoostClassifier': videha.single_table.efficacy.binary.BinaryAdaBoostClassifier,
+ 'BinaryLogisticRegression': videha.single_table.efficacy.binary.BinaryLogisticRegression,
+ 'BinaryMLPClassifier': videha.single_table.efficacy.binary.BinaryMLPClassifier,
+ 'MulticlassDecisionTreeClassifier': videha.single_table.efficacy.multiclass.MulticlassDecisionTreeClassifier,
+ 'MulticlassMLPClassifier': videha.single_table.efficacy.multiclass.MulticlassMLPClassifier,
+ 'LinearRegression': videha.single_table.efficacy.regression.LinearRegression,
+ 'MLPRegressor': videha.single_table.efficacy.regression.MLPRegressor,
+ 'GMLogLikelihood': videha.single_table.gaussian_mixture.GMLogLikelihood,
+ 'CSTest': videha.single_table.multi_single_column.CSTest,
+ 'KSTest': videha.single_table.multi_single_column.KSTest,
+ 'KSTestExtended': videha.single_table.multi_single_column.KSTestExtended,
+ 'ContinuousKLDivergence': videha.single_table.multi_column_pairs.ContinuousKLDivergence,
+ 'DiscreteKLDivergence': videha.single_table.multi_column_pairs.DiscreteKLDivergence,
+ 'CategoricalCAP': videha.single_table.privacy.cap,
+ 'CategoricalGeneralizedCAP': videha.single_table.privacy.cap,
+ 'CategoricalZeroCAP': videha.single_table.privacy.cap,
+ 'CategoricalKNN': videha.single_table.privacy.cap,
+ 'CategoricalNB': videha.single_table.privacy.cap,
+ 'CategoricalRF': videha.single_table.privacy.cap,
+ 'CategoricalEnsemble': videha.single_table.privacy.ensemble,
+ 'NumericalLR': videha.single_table.privacy.numerical_sklearn,
+ 'NumericalMLP': videha.single_table.privacy.numerical_sklearn,
+ 'NumericalSVR': videha.single_table.privacy.numerical_sklearn,
+ 'NumericalRadiusNearestNeighbor': videha.single_table.privacy.radius_nearest_neighbor}
 ```
 
 ## Single Table Inputs and Outputs
@@ -135,9 +135,9 @@ For example, a `LogisticDetection` metric can be used on the `users` table from 
 demo data as follows:
 
 ```python3
-In [3]: from sdmetrics.single_table import LogisticDetection
+In [3]: from videha.metrics.single_table import LogisticDetection
 
-In [4]: from sdmetrics import load_demo
+In [4]: from videha import load_demo
 
 In [5]: real_data, synthetic_data, metadata = load_demo()
 
@@ -156,7 +156,7 @@ For example, this is how you would use a `MulticlassDecisionTreeClassifier` on t
 column from the demo table `users`:
 
 ```python3
-In [9]: from sdmetrics.single_table import MulticlassDecisionTreeClassifier
+In [9]: from videha.metrics.single_table import MulticlassDecisionTreeClassifier
 
 In [10]: MulticlassDecisionTreeClassifier.compute(real_table, synthetic_table, target='country')
 Out[10]: (0.05555555555555555,)
