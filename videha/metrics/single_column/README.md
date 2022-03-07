@@ -20,8 +20,8 @@ In [1]: from videha.metrics.single_column import SingleColumnMetric
 
 In [2]: SingleColumnMetric.get_subclasses()
 Out[2]:
-{'CSTest': sdmetrics.single_column.statistical.cstest.CSTest,
- 'KSTest': sdmetrics.single_column.statistical.kstest.KSTest}
+{'CSTest': videha.metrics.single_column.statistical.cstest.CSTest,
+ 'KSTest': videha.metrics.single_column.statistical.kstest.KSTest}
 ```
 
 ## Single Column Inputs and Outputs
@@ -35,11 +35,11 @@ For example, this how the KSTest metric can be computed for the `age` column
 from the demo data:
 
 ```python3
-In [3]: from videha.metrics import load_demo
+In [3]: from videha import load_demo
 
 In [4]: real_data, synthetic_data, metadata = load_demo()
 
-In [5]: from sdmetrics.single_column import KSTest
+In [5]: from videha.metrics.single_column import KSTest
 
 In [6]: real_column = real_data['users']['age'].to_numpy()
 
