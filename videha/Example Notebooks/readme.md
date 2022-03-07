@@ -1,3 +1,5 @@
+## Videha AI: Example notebook
+
 ```python
 import os,sys,torch
 import pandas as pd
@@ -56,6 +58,7 @@ torch.cuda.is_available()
 data = pd.read_csv("examples/csv/adult.csv")
 ```
 
+## Normal API: Non-privately differentiable synthesizer
 
 ```python
 synth = TwinSynthesizer(batch_size=200,device='cpu')   ### cpu else cuda
