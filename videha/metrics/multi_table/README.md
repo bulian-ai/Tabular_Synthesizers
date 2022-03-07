@@ -21,23 +21,23 @@ Implemented metrics:
 
 ## MultiTableMetric
 
-All the multi table metrics are subclasses form the `sdmetrics.multi_table.MultiTableMetric`
+All the multi table metrics are subclasses form the `videha.metrics.multi_table.MultiTableMetric`
 class, which can be used to locate all of them:
 
 ```python3
-In [1]: from sdmetrics.multi_table import MultiTableMetric
+In [1]: from videha.multi_table import MultiTableMetric
 
 In [2]: MultiTableMetric.get_subclasses()
 Out[2]:
-{'CSTest': sdmetrics.multi_table.multi_single_table.CSTest,
- 'KSTest': sdmetrics.multi_table.multi_single_table.KSTest,
- 'KSTestExtended': sdmetrics.multi_table.multi_single_table.KSTestExtended,
- 'LogisticDetection': sdmetrics.multi_table.multi_single_table.LogisticDetection,
- 'SVCDetection': sdmetrics.multi_table.multi_single_table.SVCDetection,
- 'BNLikelihood': sdmetrics.multi_table.multi_single_table.BNLikelihood,
- 'BNLogLikelihood': sdmetrics.multi_table.multi_single_table.BNLogLikelihood,
- 'LogisticParentChildDetection': sdmetrics.multi_table.detection.parent_child.LogisticParentChildDetection,
- 'SVCParentChildDetection': sdmetrics.multi_table.detection.parent_child.SVCParentChildDetection}
+{'CSTest': videha.multi_table.multi_single_table.CSTest,
+ 'KSTest': videha.multi_table.multi_single_table.KSTest,
+ 'KSTestExtended': videha.multi_table.multi_single_table.KSTestExtended,
+ 'LogisticDetection': videha.multi_table.multi_single_table.LogisticDetection,
+ 'SVCDetection': videha.multi_table.multi_single_table.SVCDetection,
+ 'BNLikelihood': videha.multi_table.multi_single_table.BNLikelihood,
+ 'BNLogLikelihood': videha.multi_table.multi_single_table.BNLogLikelihood,
+ 'LogisticParentChildDetection': videha.multi_table.detection.parent_child.LogisticParentChildDetection,
+ 'SVCParentChildDetection': videha.multi_table.detection.parent_child.SVCParentChildDetection}
 ```
 
 ## Multi Table Inputs and Outputs
@@ -52,9 +52,9 @@ All the multi table metrics operate on at least two inputs:
 For example, a `KStestExtended` metric can be used as follows:
 
 ```python3
-In [3]: from sdmetrics.multi_table import KSTestExtended
+In [3]: from videha.multi_table import KSTestExtended
 
-In [4]: from sdmetrics import load_demo
+In [4]: from videha import load_demo
 
 In [5]: real_data, synthetic_data, metadata = load_demo()
 
@@ -68,7 +68,7 @@ the tables.
 For example, this is how you would use a `LogisticParentChildDetection` metric:
 
 ```python3
-In [7]: from sdmetrics.multi_table import LogisticParentChildDetection
+In [7]: from videha.multi_table import LogisticParentChildDetection
 
 In [8]: foreign_keys = [
    ...: ('users', 'user_id', 'sessions', 'user_id'),
