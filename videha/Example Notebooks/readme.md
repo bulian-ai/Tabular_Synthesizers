@@ -1,6 +1,6 @@
-# single\_table\_Normal\_API\_nonPrivate
+# Example Notebooks
 
-### Videha AI: Single Table Demo
+### Videha AI: Example notebook
 
 ```python
 import os,sys,torch
@@ -51,7 +51,7 @@ True
 data = pd.read_csv("examples/csv/adult.csv")
 ```
 
-### Normal API: Non Privately Differentable Synthesizer
+### Normal API: Non-privately differentiable synthesizer
 
 ```python
 synth = TwinSynthesizer(batch_size=200,device='cpu')   ### cpu else cuda
@@ -102,31 +102,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_3.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_4.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_4.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_5.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_6.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_7.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_8.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_9.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_9.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_10.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_12.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_13.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_12\_14.png)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -134,31 +134,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_2.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_3.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_14\_14.png)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -166,31 +166,31 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_7.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_8.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_13.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_14\_14.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_16\_14.png)
 
 **Save model to disk**
 
@@ -261,31 +261,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_8.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_9.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_26\_14.png)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -293,31 +293,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_3.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_4.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_6.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_7.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_9.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_10.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_28\_14.png)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -325,31 +325,31 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_5.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_6.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_10.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_28\_11.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_30\_14.png)
 
 **Save model to disk**
 
@@ -523,31 +523,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_8.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_42\_9.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_40\_14.png)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -555,31 +555,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_42\_14.png)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -587,31 +587,31 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_3.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_42\_4.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_6.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_42\_7.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_44\_14.png)
 
 **Save model to disk**
 
@@ -782,31 +782,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_2.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_7.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_8.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_54\_14.png)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -814,31 +814,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_2.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_3.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_4.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_9.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_10.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_12.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_13.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_56\_14.png)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -846,31 +846,31 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_2.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (6).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_3.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_4.png)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_56\_5.png)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_5.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_6.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_7.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (4).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_8.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_9.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_10.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (1).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_11.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (3).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_12.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (2).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_13.png)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (5).png>)
+![png](../Example%20Notebooks/single\_table\_demo\_files/single\_table\_demo\_58\_14.png)
 
 **Save model to disk**
 
