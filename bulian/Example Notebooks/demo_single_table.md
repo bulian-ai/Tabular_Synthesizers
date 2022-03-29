@@ -1,6 +1,6 @@
 # demo\_single\_table
 
-### Videha AI: Single Table Demo
+### bulian AI: Single Table Demo
 
 ```python
 import os,sys,torch
@@ -8,15 +8,15 @@ import pandas as pd
 ```
 
 ```python
-from videha.synthesizers import TwinSynthesizer,PrivateTwinSynthesizer
+from bulian.synthesizers import TwinSynthesizer,PrivateTwinSynthesizer
 ```
 
 ```python
-from videha.metrics import *
-from videha.metrics.reports import *
-from videha.metrics import compute_metrics
-from videha.metrics.single_table import SingleTableMetric
-from videha.metrics.single_table import *
+from bulian.metrics import *
+from bulian.metrics.reports import *
+from bulian.metrics import compute_metrics
+from bulian.metrics.single_table import SingleTableMetric
+from bulian.metrics.single_table import *
 ```
 
 ```python

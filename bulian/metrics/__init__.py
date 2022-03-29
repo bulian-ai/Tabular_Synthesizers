@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for Videha Metrics."""
+"""Top-level package for bulian Metrics."""
 
 import pandas as pd
 from tqdm import tqdm
