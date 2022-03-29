@@ -86,42 +86,42 @@ Implemented metrics:
 
 ## SingleTableMetric
 
-All the single table metrics are subclasses form the `videha.metrics.single_table.SingleTableMetric`
+All the single table metrics are subclasses form the `bulian.metrics.single_table.SingleTableMetric`
 class, which can be used to locate all of them:
 
 ```python3
-In [1]: from videha.metrics.single_table import SingleTableMetric
+In [1]: from bulian.metrics.single_table import SingleTableMetric
 
 In [2]: SingleTableMetric.get_subclasses()
 Out[2]:
-{'BNLogLikelihood': videha.metrics.single_table.bayesian_network.BNLogLikelihood,
- 'LogisticDetection': videha.metrics.single_table.detection.sklearn.LogisticDetection,
- 'SVCDetection': videha.metrics.single_table.detection.sklearn.SVCDetection,
- 'BinaryDecisionTreeClassifier': videha.metrics.single_table.efficacy.binary.BinaryDecisionTreeClassifier,
- 'BinaryAdaBoostClassifier': videha.metrics.single_table.efficacy.binary.BinaryAdaBoostClassifier,
- 'BinaryLogisticRegression': videha.metrics.single_table.efficacy.binary.BinaryLogisticRegression,
- 'BinaryMLPClassifier': videha.metrics.single_table.efficacy.binary.BinaryMLPClassifier,
- 'MulticlassDecisionTreeClassifier': videha.metrics.single_table.efficacy.multiclass.MulticlassDecisionTreeClassifier,
- 'MulticlassMLPClassifier': videha.metrics.single_table.efficacy.multiclass.MulticlassMLPClassifier,
- 'LinearRegression': videha.metrics.single_table.efficacy.regression.LinearRegression,
- 'MLPRegressor': videha.metrics.single_table.efficacy.regression.MLPRegressor,
- 'GMLogLikelihood': videha.metrics.single_table.gaussian_mixture.GMLogLikelihood,
- 'CSTest': videha.metrics.single_table.multi_single_column.CSTest,
- 'KSTest': videha.metrics.single_table.multi_single_column.KSTest,
- 'KSTestExtended': videha.metrics.single_table.multi_single_column.KSTestExtended,
- 'ContinuousKLDivergence': videha.metrics.single_table.multi_column_pairs.ContinuousKLDivergence,
- 'DiscreteKLDivergence': videha.metrics.single_table.multi_column_pairs.DiscreteKLDivergence,
- 'CategoricalCAP': videha.metrics.single_table.privacy.cap,
- 'CategoricalGeneralizedCAP': videha.metrics.single_table.privacy.cap,
- 'CategoricalZeroCAP': videha.metrics.single_table.privacy.cap,
- 'CategoricalKNN': videha.metrics.single_table.privacy.cap,
- 'CategoricalNB': videha.metrics.single_table.privacy.cap,
- 'CategoricalRF': videha.metrics.single_table.privacy.cap,
- 'CategoricalEnsemble': videha.metrics.single_table.privacy.ensemble,
- 'NumericalLR': videha.metrics.single_table.privacy.numerical_sklearn,
- 'NumericalMLP': videha.metrics.single_table.privacy.numerical_sklearn,
- 'NumericalSVR': videha.metrics.single_table.privacy.numerical_sklearn,
- 'NumericalRadiusNearestNeighbor': videha.metrics.single_table.privacy.radius_nearest_neighbor}
+{'BNLogLikelihood': bulian.metrics.single_table.bayesian_network.BNLogLikelihood,
+ 'LogisticDetection': bulian.metrics.single_table.detection.sklearn.LogisticDetection,
+ 'SVCDetection': bulian.metrics.single_table.detection.sklearn.SVCDetection,
+ 'BinaryDecisionTreeClassifier': bulian.metrics.single_table.efficacy.binary.BinaryDecisionTreeClassifier,
+ 'BinaryAdaBoostClassifier': bulian.metrics.single_table.efficacy.binary.BinaryAdaBoostClassifier,
+ 'BinaryLogisticRegression': bulian.metrics.single_table.efficacy.binary.BinaryLogisticRegression,
+ 'BinaryMLPClassifier': bulian.metrics.single_table.efficacy.binary.BinaryMLPClassifier,
+ 'MulticlassDecisionTreeClassifier': bulian.metrics.single_table.efficacy.multiclass.MulticlassDecisionTreeClassifier,
+ 'MulticlassMLPClassifier': bulian.metrics.single_table.efficacy.multiclass.MulticlassMLPClassifier,
+ 'LinearRegression': bulian.metrics.single_table.efficacy.regression.LinearRegression,
+ 'MLPRegressor': bulian.metrics.single_table.efficacy.regression.MLPRegressor,
+ 'GMLogLikelihood': bulian.metrics.single_table.gaussian_mixture.GMLogLikelihood,
+ 'CSTest': bulian.metrics.single_table.multi_single_column.CSTest,
+ 'KSTest': bulian.metrics.single_table.multi_single_column.KSTest,
+ 'KSTestExtended': bulian.metrics.single_table.multi_single_column.KSTestExtended,
+ 'ContinuousKLDivergence': bulian.metrics.single_table.multi_column_pairs.ContinuousKLDivergence,
+ 'DiscreteKLDivergence': bulian.metrics.single_table.multi_column_pairs.DiscreteKLDivergence,
+ 'CategoricalCAP': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalGeneralizedCAP': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalZeroCAP': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalKNN': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalNB': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalRF': bulian.metrics.single_table.privacy.cap,
+ 'CategoricalEnsemble': bulian.metrics.single_table.privacy.ensemble,
+ 'NumericalLR': bulian.metrics.single_table.privacy.numerical_sklearn,
+ 'NumericalMLP': bulian.metrics.single_table.privacy.numerical_sklearn,
+ 'NumericalSVR': bulian.metrics.single_table.privacy.numerical_sklearn,
+ 'NumericalRadiusNearestNeighbor': bulian.metrics.single_table.privacy.radius_nearest_neighbor}
 ```
 
 ## Single Table Inputs and Outputs
@@ -135,9 +135,9 @@ For example, a `LogisticDetection` metric can be used on the `users` table from 
 demo data as follows:
 
 ```python3
-In [3]: from videha.metrics.single_table import LogisticDetection
+In [3]: from bulian.metrics.single_table import LogisticDetection
 
-In [4]: from videha import load_demo
+In [4]: from bulian import load_demo
 
 In [5]: real_data, synthetic_data, metadata = load_demo()
 
@@ -156,7 +156,7 @@ For example, this is how you would use a `MulticlassDecisionTreeClassifier` on t
 column from the demo table `users`:
 
 ```python3
-In [9]: from videha.metrics.single_table import MulticlassDecisionTreeClassifier
+In [9]: from bulian.metrics.single_table import MulticlassDecisionTreeClassifier
 
 In [10]: MulticlassDecisionTreeClassifier.compute(real_table, synthetic_table, target='country')
 Out[10]: (0.05555555555555555,)

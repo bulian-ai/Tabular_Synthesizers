@@ -12,16 +12,16 @@ Implemented metrics:
 
 ## SingleColumnMetric
 
-All the single column metrics are subclasses form the `videha.metrics.single_column.SingleColumnMetric`
+All the single column metrics are subclasses form the `bulian.metrics.single_column.SingleColumnMetric`
 class, which can be used to locate all of them:
 
 ```python3
-In [1]: from videha.metrics.single_column import SingleColumnMetric
+In [1]: from bulian.metrics.single_column import SingleColumnMetric
 
 In [2]: SingleColumnMetric.get_subclasses()
 Out[2]:
-{'CSTest': videha.metrics.single_column.statistical.cstest.CSTest,
- 'KSTest': videha.metrics.single_column.statistical.kstest.KSTest}
+{'CSTest': bulian.metrics.single_column.statistical.cstest.CSTest,
+ 'KSTest': bulian.metrics.single_column.statistical.kstest.KSTest}
 ```
 
 ## Single Column Inputs and Outputs
@@ -35,11 +35,11 @@ For example, this how the KSTest metric can be computed for the `age` column
 from the demo data:
 
 ```python3
-In [3]: from videha import load_demo
+In [3]: from bulian import load_demo
 
 In [4]: real_data, synthetic_data, metadata = load_demo()
 
-In [5]: from videha.metrics.single_column import KSTest
+In [5]: from bulian.metrics.single_column import KSTest
 
 In [6]: real_column = real_data['users']['age'].to_numpy()
 

@@ -1,4 +1,4 @@
-"""SDMetrics utils to be used across all the project."""
+"""bulian utils to be used across all the project."""
 
 import warnings
 from collections import Counter
@@ -602,7 +602,7 @@ def gauge(value):
 
     fig.update_layout(
     title={
-        'text': "<b>Videha Synthetic Data Quality Report<b>",
+        'text': "<b>Bulian Synthetic Data Quality Report<b>",
         'font': {'size': 32,'color': "black", 'family': "'Oswald', sans-serif"},
         'y':0.94,
         'x':0.5,
