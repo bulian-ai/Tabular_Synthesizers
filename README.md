@@ -1,4 +1,4 @@
-# Videha AI: Tabular Synthesizers
+# Bulian AI: Tabular Synthesizers
 ![](https://i.imgur.com/zC6hRlG.png)
 
 
@@ -12,29 +12,29 @@
 **Overview**
 ---
 
-**Videha AI** provides deep learning based bleeding-edge synthetic data models for Tabular data.
+**Bulian AI** provides deep learning based bleeding-edge synthetic data models for Tabular data.
 
 We enable enterprises with high-fidelity synthetic data which accelerates data-centric innovation yielding maximum data impact with mathematical privacy guarantees.
 
-Website: https://videha.ai/
+Website: https://bulian.ai/
 
 ---     
 
-**Videha AI Use Cases**
+**Bulian AI Use Cases**
 ---
 
 
-Videha AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
+Bulian AI leverages the power of generative models called GANs to learn signals and cross dependencies in the data. 
 
 
 Once trained, these GAN models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code.
 
 
-![](https://i.imgur.com/bXaJXZl.png "Videha AI Use Cases")
+![](https://i.imgur.com/bXaJXZl.png "Bulian AI Use Cases")
 
 ---
 
-**Seamless MLOPs/DevOps workflow with Videha AI**
+**Seamless MLOPs/DevOps workflow with Bulian AI**
 ---
 
 ![](https://i.imgur.com/R0dTQZ6.png)
@@ -44,8 +44,8 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
  **Methods Supported**
 ---
 
-1. **Videha AI GAN**: Vanilla Tabular Conditional GAN model with support for adversaial API 
-2. **Videha AI DP-GAN**:  Tabular GAN model with formal privacy guarantees; also supports adversarial API
+1. **Bulian AI GAN**: Vanilla Tabular Conditional GAN model with support for adversaial API 
+2. **Bulian AI DP-GAN**:  Tabular GAN model with formal privacy guarantees; also supports adversarial API
 3. **Adversarial API**: Various ML-based adversarial methods to finetune and distill the syntheic data samples to capture maximum data structural accuracy
 
 ---
@@ -71,11 +71,11 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
 
 ---
 *Token Generation*
-- Our support team will provide a custom token for installation support. Reach out to us at contact@videha.ai 
+- Our support team will provide a custom token for installation support. Reach out to us at contact@bulian.ai 
 
 ---
 *Installation*
-- Our support team will guide you with installation support. Reach out to us at contact@videha.ai
+- Our support team will guide you with installation support. Reach out to us at contact@bulian.ai
 
 ---
 
