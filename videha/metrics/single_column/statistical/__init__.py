@@ -1,9 +1,0 @@
-"""Univariate goodness-of-fit tests."""
-
-from ....metrics.single_column.statistical.cstest import CSTest
-from ....metrics.single_column.statistical.kstest import KSTest
-
-__all__ = [
-    'CSTest',
-    'KSTest'
-]
