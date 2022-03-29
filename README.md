@@ -1,5 +1,5 @@
 # Videha AI: Tabular Synthesizers
-![](https://imgur.com/JP2Hf8u.png)
+![](https://i.imgur.com/zC6hRlG.png)
 
 
 [![codecov](https://codecov.io/gh/videha-ai/Tabular_Synthesizers/branch/main/graph/badge.svg?token=5VSP2B3Y4Y)](https://codecov.io/gh/videha-ai/Tabular_Synthesizers)
