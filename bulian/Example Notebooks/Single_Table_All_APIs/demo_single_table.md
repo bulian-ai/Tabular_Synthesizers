@@ -102,31 +102,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (1) (1).png>)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -134,31 +134,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_2 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_3.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_4 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_5.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_6.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_7 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_8.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_9.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_10.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_11.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_12.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_13 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_14 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (1) (2).png>)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -166,39 +166,37 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_2.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_2 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_3 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_3 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_4.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_4 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_5 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_5 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_6 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_6 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_7.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_7 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_8 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_8 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_9 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_9 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_10 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_10 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_11 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_11 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_16\_12 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_12 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_13.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_13 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_16\_14.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_14\_14 (1).png>)
 
 **Save model to disk**
 
 ```python
 synth.save('NormalAPI.pth')
 ```
-
-
 
 ### Adversarial API: Non-privately differentiable synthesizer
 
@@ -261,31 +259,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (1) (2).png>)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -293,31 +291,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_2 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_3.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_4.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_5.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_6.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_7 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_8.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_9 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_10 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_11.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_12.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_13 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_14 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (1) (1).png>)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -325,39 +323,37 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_2.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_2 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_3 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_3 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_4 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_4 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_5 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_5 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_6 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_6 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_7.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_7 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_8 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_8 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_9.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_9 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_10.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_10 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_11 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_11 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_30\_12 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_12 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_13.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_13 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_30\_14.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_28\_14 (1).png>)
 
 **Save model to disk**
 
 ```python
 synth.save('AdversarialAPI.pth')
 ```
-
-
 
 ### Normal API: Privately differentiable synthesizer
 
@@ -523,31 +519,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (3).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (1) (1).png>)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -555,31 +551,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_2 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_3 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_4 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_5.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_6 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_7 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_8.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_9.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_10.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_11 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_12.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_13.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_14.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (1).png>)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -587,39 +583,37 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_2.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_2 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_3.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_3 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_4.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_4 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_5 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_5 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_6.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_6 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_7.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_7 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_8 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_8 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_9 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_9 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_10 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_10 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_44\_11.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_11 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_12 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_12 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_13 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_13 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_44\_14 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_42\_14 (1) (2).png>)
 
 **Save model to disk**
 
 ```python
 synth.save('PrivateModelNormalAPI.pth')
 ```
-
-
 
 ### Adversarial API: Privately differentiable synthesizer
 
@@ -782,31 +776,31 @@ discrete_columns = [
 get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age','workclass','education'],sensitive_fields = ['income'])
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (4).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (5).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (6).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (1) (1).png>)
 
 **Report without privacy metrics, but includes ML efficacy stuff**
 
@@ -814,31 +808,31 @@ get_full_report(data, sample,discrete_columns,numeric_features, key_fields=['age
 get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 ```
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_2.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_3.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_4 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_5 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_6.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_7 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_8.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_9.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (1) (2).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_10.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_11 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_12 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_13 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_14 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (1).png>)
 
 **Report without privacy metrics and without ML efficacy stuff**
 
@@ -846,39 +840,37 @@ get_full_report(data, sample,discrete_columns,numeric_features,target='income')
 get_full_report(data, sample,discrete_columns,numeric_features)
 ```
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_2 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_2 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_3 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_3 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_4.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_4 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_5.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_5 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_6 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_6 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_7.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_7 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_8 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_8 (1) (2).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_9 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_9 (1) (1).png>)
 
-![png](<demo\_single\_table\_files/demo\_single\_table\_58\_10 (1).png>)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_10 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_11.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_11 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_12.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_12 (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_13.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_13 (1) (1).png>)
 
-![png](demo\_single\_table\_files/demo\_single\_table\_58\_14.png)
+![png](<demo\_single\_table\_files/demo\_single\_table\_56\_14 (1) (2).png>)
 
 **Save model to disk**
 
 ```python
 synth.save('PrivateModelAdvAPI.pth')
 ```
-
-
 
 #### Fin
 
