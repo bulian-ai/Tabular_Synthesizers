@@ -4,7 +4,7 @@ The synthetic data models found on this folder operate on single datasets, passe
 
 # Implemented models:
  
-## Bulian Twin Synthesizer
+## Twin Synthesizer
 
 ***
 **GAN models inherits from `BaseSynthesizer` class; generate non-privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.** 
