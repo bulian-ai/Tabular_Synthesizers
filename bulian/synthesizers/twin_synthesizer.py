@@ -285,7 +285,7 @@ class TwinSynthesizer(BaseSynthesizer):
         self.validate_discrete_columns(data, self.discrete_columns)
         self.transformer = DataTransformer()
         self.transformer.fit(data, self.discrete_columns)
-
+        
         transformed_data = self.transformer.transform(data)
 
         self.sampler = DataSampler(

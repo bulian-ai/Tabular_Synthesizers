@@ -1,13 +1,5 @@
 # Twin Synthesizer
 
-## Bulian Synthesizers
-
-The synthetic data models found on this folder operate on single datasets, passed as python `pandas.DataFrame` and column list specified by Numeric and Categorical columns passes as python `list`.
-
-### Twin Synthesizer
-
-***
-
 GAN models inherits from `BaseSynthesizer` class; generate non-privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.
 
 ***
@@ -40,9 +32,8 @@ GAN models inherits from `BaseSynthesizer` class; generate non-privacy preservin
 
     * `model.sample` : Vanilla sample generator on the fit model object. Takes in number of samples `k` to be generated.
     * `model.sample_adversarial` : Adversarial sampling API for adversial fit models. Additional arguments:
-
-    > * `upsample_frac` : Ratio of samples to generate from which `k` distilled samples will be returned based on adversarial random forest model. Defaults to `4`.
-    > * `rf_params` : Parameters of adversarial `Random Forest` model. Defaults to `sklearn's` Random Forest model default params.
+    >- `upsample_frac` : Ratio of samples to generate from which `k` distilled samples will be returned based on adversarial random forest model. Defaults to `4`.
+    >- `rf_params` : Parameters of adversarial `Random Forest` model. Defaults to `sklearn's` Random Forest model default params.
 
 ***
 

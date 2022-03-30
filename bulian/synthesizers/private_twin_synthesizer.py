@@ -54,7 +54,7 @@ class Generator(nn.Module):
 class PrivateTwinSynthesizer(BaseSynthesizerPrivate):
     def __init__(
         self,
-        epsilon,
+        epsilon=1,
         delta=None,
         binary=False,
         latent_dim=64,
