@@ -91,18 +91,17 @@ development_requires = [
 
 
 setup(
-    author='Videha AI',
-    author_email='Rajneesh@videha.ai',
+    author='Bulian AI',
+    author_email='rajneesh@bulian.ai',
     classifiers=[
         'Development Status :: 1 - Pre-Alpha',
         'Intended Audience :: Developers/Data Scientists/Managers',
         'Natural Language :: English',
-        # 'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    description='Videha.ai GANs for Tabular Data',
+    description='Bulian.ai GANs for Tabular Data',
 
     extras_require={
         'test': tests_require + pomegranate_requires,
@@ -115,13 +114,13 @@ setup(
     long_description_content_type='text/markdown',
     include_package_data=True,
     keywords='GAN',
-    name='videha',
-    packages=find_packages(include=['videha', 'videha.*']),
+    name='bulian',
+    packages=find_packages(include=['bulian', 'bulian.*']),
     python_requires='>=3.7,<3.10',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,
     version='0.0.1.dev0',
-    url = 'https://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@github.com/videha-ai/Tabular_Synthesizers.git@0.0.1.dev0',
+    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
     zip_safe=False,
 )

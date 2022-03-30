@@ -30,14 +30,14 @@ Bulian AI leverages the power of generative models called GANs to learn signals 
 Once trained, these GAN models can perpetually generate high-fidelity, differentially-private synthetic data in less than 5 lines of code.
 
 
-![](https://i.imgur.com/bXaJXZl.png "Bulian AI Use Cases")
+![](https://bulian.ai/docs/usecases.png "Bulian AI Use Cases")
 
 ---
 
 **Seamless MLOPs/DevOps workflow with Bulian AI**
 ---
 
-![](https://i.imgur.com/R0dTQZ6.png)
+![](https://bulian.ai/docs/workflow.png)
 
 ---
 
