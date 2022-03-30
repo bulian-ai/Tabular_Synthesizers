@@ -1,53 +1,37 @@
----
-description: Documentation for Twin Synthesizer
----
-
 # Twin Synthesizer
 
-<<<<<<< HEAD
-=======
-### Twin Synthesizer
-
->>>>>>> a5d17895cd65c7aefeee06d8a465b03de270382d
 GAN models inherits from `BaseSynthesizer` class; generate non-privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.
 
-*   **Suported arguments**
-
-    * `discrete_columns (list-like)` : List of discrete columns to be used to generate the Conditional Vector. This list should contain the column names.
-    * `embedding_dim (int)` : Size of the random sample passed to the Generator. Defaults to `128`.
-    * `generator_dim (tuple or list of ints)` : Size of the output samples for each one of the Residuals. Defaults to `(256, 256)`.
-    * `discriminator_dim (tuple or list of ints)` : Size of the output samples for each one of the Discriminator Layers. A Linear Layer will be created for each one of the values provided. Defaults to `(256, 256)`.
-    * `generator_lr (float)` : Learning rate for the generator. Defaults to `2e-4`.
-    * `generator_decay (float)` : Generator weight decay for the Adam Optimizer. Defaults to `1e-6`.
-    * `discriminator_lr (float)` : Learning rate for the discriminator. Defaults to `2e-4`.
-    * `discriminator_decay (float)` : Discriminator weight decay for the Adam Optimizer. Defaults to `1e-6`.
-    * `batch_size (int)` : Number of data samples to process in each step. Defaults to `500`.
-    * `discriminator_steps (int)` : Number of discriminator updates to do for each generator update. WGAN paper default is 5. Here we use `1` to match original CTGAN implementation.
-    * `log_frequency (boolean)` : Whether to use log frequency of categorical levels in conditional sampling. Defaults to `True`.
-    * `epochs (int)` : Number of training epochs. Defaults to `300`.
-    * `pac (int)` : Number of samples to group together when applying the discriminator. Defaults to `10`.
-    * `device (torch.device or str)` : Device to use. Defaults to `cpu`.
-
-
-*   **Suported fit methods**
-
-    * `model.fit` : Vanilla fit method over Twin Synthesize models.
-    * `model.fit_adversarial` : Adversarial fit API which has an additional parameter called `test_pct` defaults to `0.2`. The distilled samples will mimic these `test_pct` samples from data closely.
-
-
+* **Suported arguments**
+  * `discrete_columns (list-like)` : List of discrete columns to be used to generate the Conditional Vector. This list should contain the column names.
+  * `embedding_dim (int)` : Size of the random sample passed to the Generator. Defaults to `128`.
+  * `generator_dim (tuple or list of ints)` : Size of the output samples for each one of the Residuals. Defaults to `(256, 256)`.
+  * `discriminator_dim (tuple or list of ints)` : Size of the output samples for each one of the Discriminator Layers. A Linear Layer will be created for each one of the values provided. Defaults to `(256, 256)`.
+  * `generator_lr (float)` : Learning rate for the generator. Defaults to `2e-4`.
+  * `generator_decay (float)` : Generator weight decay for the Adam Optimizer. Defaults to `1e-6`.
+  * `discriminator_lr (float)` : Learning rate for the discriminator. Defaults to `2e-4`.
+  * `discriminator_decay (float)` : Discriminator weight decay for the Adam Optimizer. Defaults to `1e-6`.
+  * `batch_size (int)` : Number of data samples to process in each step. Defaults to `500`.
+  * `discriminator_steps (int)` : Number of discriminator updates to do for each generator update. WGAN paper default is 5. Here we use `1` to match original CTGAN implementation.
+  * `log_frequency (boolean)` : Whether to use log frequency of categorical levels in conditional sampling. Defaults to `True`.
+  * `epochs (int)` : Number of training epochs. Defaults to `300`.
+  * `pac (int)` : Number of samples to group together when applying the discriminator. Defaults to `10`.
+  * `device (torch.device or str)` : Device to use. Defaults to `cpu`.
+* **Suported fit methods**
+  * `model.fit` : Vanilla fit method over Twin Synthesize models.
+  * `model.fit_adversarial` : Adversarial fit API which has an additional parameter called `test_pct` defaults to `0.2`. The distilled samples will mimic these `test_pct` samples from data closely.
 *   **Suported sampling mechanisms**
 
-    * `model.sample` : Vanilla sample generator on the fit model object. Takes in number of samples `k` to be generated.
-<<<<<<< HEAD
+    * `model.sample` : Vanilla sample generator on the fit model object. Takes in number of samples `k` to be generated. <<<<<<< HEAD
     * `model.sample_adversarial` : Adversarial sampling API for adversial fit models. Additional arguments:
-    >- `upsample_frac` : Ratio of samples to generate from which `k` distilled samples will be returned based on adversarial random forest model. Defaults to `4`.
-    >- `rf_params` : Parameters of adversarial `Random Forest` model. Defaults to `sklearn's` Random Forest model default params.
-=======
+
+    > * `upsample_frac` : Ratio of samples to generate from which `k` distilled samples will be returned based on adversarial random forest model. Defaults to `4`.
+    > * `rf_params` : Parameters of adversarial `Random Forest` model. Defaults to `sklearn's` Random Forest model default params. =======
+
     * `model.sample_adversarial` : Adversarial sampling API for adversarial fit models. Additional arguments:
 
     > * `upsample_frac` : Ratio of samples to generate from which `k` distilled samples will be returned based on adversarial random forest model. Defaults to `4`.
     > * `rf_params` : Parameters of adversarial `Random Forest` model. Defaults to `sklearn's` Random Forest model default params.
->>>>>>> a5d17895cd65c7aefeee06d8a465b03de270382d
 
 ***
 
