@@ -1,5 +1,5 @@
 # Bulian AI: Tabular Synthesizers
-![](https://i.imgur.com/zC6hRlG.png)
+![](https://bulian.ai/docs/Tabular%20Synthesizers.png)
 
 
 [![codecov](https://codecov.io/gh/bulian-ai/Tabular_Synthesizers/branch/main/graph/badge.svg?token=5VSP2B3Y4Y)](https://codecov.io/gh/bulian-ai/Tabular_Synthesizers)
