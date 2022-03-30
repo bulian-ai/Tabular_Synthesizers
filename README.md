@@ -1,4 +1,5 @@
 # Bulian AI: Tabular Synthesizers
+
 ![](https://bulian.ai/docs/Tabular%20Synthesizers.png)
 
 
