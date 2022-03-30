@@ -2,15 +2,13 @@
 
 ## Bulian Synthesizers
 
-The synthetic data models found on this folder operate on single datasets, passed as python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.
-
-## Implemented models:
+The synthetic data models found on this folder operate on single datasets, passed as python `pandas.DataFrame` and column list specified by Numeric and Categorical columns passes as python `list`.
 
 ### Twin Synthesizer
 
 ***
 
-**GAN models inherits from `BaseSynthesizer` class; generate non-privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.**
+GAN models inherits from `BaseSynthesizer` class; generate non-privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.
 
 ***
 
