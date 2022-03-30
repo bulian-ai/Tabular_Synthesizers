@@ -146,6 +146,6 @@ cython_debug/
 #md stuff to ignore
 timelines.md
 Todo.md
-summary.md
+SUMMARY.md
 Library Structure.md
 requirements.txt
