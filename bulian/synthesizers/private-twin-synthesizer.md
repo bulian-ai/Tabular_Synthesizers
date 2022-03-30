@@ -1,10 +1,4 @@
----
-description: Documentation for Privacy preserving Twin Synthesizer
----
-
 # Private Twin Synthesizer
-
-### Private Twin Synthesizer
 
 Differtially private GAN models inherits from `BaseSynthesizerPrivate` class and generate privacy preserving synthetic datasets given an input python `pandas.DataFrame` and column list broken by numeric and categorical columns passes as python `list`.
 
