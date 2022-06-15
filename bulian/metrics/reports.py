@@ -1,3 +1,4 @@
+from ast import excepthandler
 import warnings
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -40,7 +41,8 @@ def get_map(avg_efficacy):
 
 # To Do: We are not pating attention to whether the goal is to maximize or minimize; we assume it all maximize
 def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,target=None,key_fields=None,sensitive_fields=None):
-    
+    _OVERALL_SCORE_GRPS = ['Real vs Synthetic Dectection Metric','Statistical Test Metric','Distribution Similarity Metric']
+
     import warnings
     warnings.filterwarnings('ignore')
     
@@ -64,30 +66,37 @@ def get_full_report(real_data, synthetic_data,discrete_columns,numeric_columns,t
             o = o.reset_index(drop=True)
 
     o = o[~np.isnan(o['normalized_score'])]
-    
-    o_min_0 = o[o['min_value']==0.0]    ### what about case where Max value is not 1 but inf, for now we assume we have covered it
-    o_min_neginf = o[o['min_value']==-np.inf]
+    o_overall = o[o['MetricType'].isin(_OVERALL_SCORE_GRPS)]
+    # o_min_0 = o[o['min_value']==0.0]    ### what about case where Max value is not 1 but inf, for now we assume we have covered it
+    # o_min_neginf = o[o['min_value']==-np.inf]
 
     multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()
     # multi_metrics_min_0 = o_min_0.groupby('MetricType')['normalized_score'].mean().to_dict()
     # multi_metrics_min_neginf = o_min_neginf.groupby('MetricType')['normalized_score'].mean().to_dict()
     
-    efficiency_min_0 = 0
-    efficiency_min_neginf = 0 
+    # efficiency_min_0 = 0
+    # efficiency_min_neginf = 0 
 
-    if len(o_min_0)>0:
-        efficiency_min_0 = (o_min_0.groupby('MetricType')['normalized_score'].mean()>0.5).sum()/(o_min_0['MetricType'].nunique())
-    if len(o_min_neginf)>0:
-        efficiency_min_neginf = (o_min_neginf.groupby('MetricType')['normalized_score'].mean()>0.0).sum()/(o_min_neginf['MetricType'].nunique())
+    # if len(o_min_0)>0:
+    #     efficiency_min_0 = (o_min_0.groupby('MetricType')['normalized_score'].mean()>0.5).sum()/(o_min_0['MetricType'].nunique())
+    # if len(o_min_neginf)>0:
+    #     efficiency_min_neginf = (o_min_neginf.groupby('MetricType')['normalized_score'].mean()>0.0).sum()/(o_min_neginf['MetricType'].nunique())
     
-    if (len(o_min_0)>0) & (len(o_min_neginf)>0):
-        avg_efficiency = round(100*np.mean((efficiency_min_0,efficiency_min_neginf)))   ### Min: 0, max: 1
-    elif (len(o_min_0)>0):
-        avg_efficiency = round(100*efficiency_min_0)
-    elif (len(o_min_neginf)>0):
-        avg_efficiency = round(100*efficiency_min_neginf)
-    else:
-        raise ValueError("Relevant metrics are NaN")
+    # if (len(o_min_0)>0) & (len(o_min_neginf)>0):
+    #     avg_efficiency = round(100*np.mean((efficiency_min_0,efficiency_min_neginf)))   ### Min: 0, max: 1
+    # elif (len(o_min_0)>0):
+    #     avg_efficiency = round(100*efficiency_min_0)
+    # elif (len(o_min_neginf)>0):
+    #     avg_efficiency = round(100*efficiency_min_neginf)
+    # else:
+    #     raise ValueError("Relevant metrics are NaN")
+
+
+    try:
+        avg_efficiency = 100*(o_overall['normalized_score'].mean())
+        # print('avg_efficiency',avg_efficiency)
+    except:
+         ValueError("Some of the Relevant metrics are NaN")
 
     gauge(avg_efficiency)
     if len(o)>0:

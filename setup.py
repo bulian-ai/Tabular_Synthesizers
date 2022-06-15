@@ -20,11 +20,6 @@ install_requires = [
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
     'dython>=0.6.8<0.7.0',
-    # 'rdt>=0.6.2,<0.7',
-    # 'seaborn==0.11.2',
-    # 'sklearn==0.0',
-    # 'sktime==0.8.1',
-    # 'statsmodels==0.12.1',
 ]
 
 pomegranate_requires = [
