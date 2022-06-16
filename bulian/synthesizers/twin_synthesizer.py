@@ -47,9 +47,14 @@ class Discriminator(nn.Module):
             only_inputs=True,
         )[0]
 
-        gradient_penalty = (
-            (gradients.view(-1, pac * real_data.size(1)).norm(2, dim=1) - 1) ** 2
-        ).mean() * lambda_
+        
+        gradients_view = gradients.view(-1, pac * real_data.size(1)).norm(2, dim=1) - 1
+        gradient_penalty = ((gradients_view) ** 2).mean() * lambda_
+
+
+        # gradient_penalty = (
+        #     (gradients.view(-1, pac * real_data.size(1)).norm(2, dim=1) - 1) ** 2
+        # ).mean() * lambda_
 
         return gradient_penalty
 
@@ -300,19 +305,15 @@ class TwinSynthesizer(BaseSynthesizer):
             self.embedding_dim + self.sampler.dim_cond_vec(),
             self.generator_dim,
             data_dim,
-        )
-
+        ).to(self.device)
+        
         self.discriminator = Discriminator(
             data_dim + self.sampler.dim_cond_vec(),
             self.discriminator_dim,
             pac=self.pac,
-        )
+        ).to(self.device)
 
         self.steps_per_epoch = max(len(transformed_data) // self.batch_size, 1)
-
-        # device placement
-        self.generator.to(self.device)
-        self.discriminator.to(self.device)
 
         # Generate Optimizers
         optimizerG = optim.Adam(
@@ -327,6 +328,7 @@ class TwinSynthesizer(BaseSynthesizer):
             betas=(0.5, 0.9),
             weight_decay=self.discriminator_lr,
         )
+        
         mean = torch.zeros(self.batch_size, self.embedding_dim, device=self.device)
         std = mean + 1
         for i in range(
