@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
 
-from ..utils import is_main_process, save_on_master
+from ...utils import is_main_process, save_on_master
 
 class BaseSynthesizerPrivate(nn.Module, metaclass=ABCMeta):
     """Base class for all default synthesizers"""

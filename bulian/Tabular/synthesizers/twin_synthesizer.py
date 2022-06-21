@@ -7,10 +7,10 @@ from packaging import version
 from torch import nn, optim
 import torch.nn.functional as F
 
-from ..data_sampler import DataSampler
-from ..data_transformer import DataTransformer
+from ...data_sampler import DataSampler
+from ...data_transformer import DataTransformer
 from .base import BaseSynthesizer
-from ..utils import MetricLogger, SmoothedValue
+from ...utils import MetricLogger, SmoothedValue
 
 
 class Discriminator(nn.Module):
