@@ -8,8 +8,8 @@ import torch.optim as optim
 from   torch.utils.data import DataLoader, TensorDataset
 from ..privacy_utils import weights_init, pate, moments_acc
 from ..data_transformer import DataTransformer
-from ..utils import MetricLogger, SmoothedValue
 from .base import BaseSynthesizerPrivate
+from ..utils import MetricLogger, SmoothedValue
 
 class Discriminator(nn.Module):
     def __init__(self, input_dim, wasserstein=False):
