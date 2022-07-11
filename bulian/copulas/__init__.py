@@ -2,10 +2,6 @@
 
 """Top-level package for Copulas."""
 
-__author__ = 'MIT Data To AI Lab'
-__email__ = 'dailabmit@gmail.com',
-__version__ = '0.7.1.dev0'
-
 import contextlib
 import importlib
 from copy import deepcopy
@@ -15,6 +11,7 @@ import pandas as pd
 
 EPSILON = np.finfo(np.float32).eps
 
+from ..copulas import *
 
 class NotFittedError(Exception):
     """NotFittedError class."""

@@ -7,13 +7,13 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from copulas import (
+from ...copulas import (
     EPSILON, check_valid_values, get_qualified_name, random_state, store_args,
     validate_random_state)
-from copulas.bivariate.base import Bivariate, CopulaTypes
-from copulas.multivariate.base import Multivariate
-from copulas.multivariate.tree import Tree, get_tree
-from copulas.univariate.gaussian_kde import GaussianKDE
+from ...copulas.bivariate.base import Bivariate, CopulaTypes
+from ...copulas.multivariate.base import Multivariate
+from ...copulas.multivariate.tree import Tree, get_tree
+from ...copulas.univariate.gaussian_kde import GaussianKDE
 
 LOGGER = logging.getLogger(__name__)
 

@@ -22,6 +22,11 @@ install_requires = [
     'dython>=0.6.8<0.7.0',
     'Faker>=3.0.0,<10',
     'graphviz>=0.13.2,<1',
+    'seaborn>=0.12,<0.13',
+    'threadpoolctl>=3.1.0,<4',
+    "matplotlib>=3.2.0,<3.4;python_version<'3.7'",
+    "matplotlib>=3.4.0,<4;python_version>='3.7'",
+    'tqdm>=4.15,<5',
 ]
 
 pomegranate_requires = [

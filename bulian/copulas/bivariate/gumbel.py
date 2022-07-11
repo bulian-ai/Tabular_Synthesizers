@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from copulas.bivariate.base import Bivariate, CopulaTypes
-from copulas.bivariate.utils import split_matrix
+from ...copulas.bivariate.base import Bivariate, CopulaTypes
+from ...copulas.bivariate.utils import split_matrix
 
 
 class Gumbel(Bivariate):

@@ -3,12 +3,12 @@
 import numpy as np
 import pandas as pd
 
-from copulas import EPSILON
-from copulas.bivariate.base import Bivariate, CopulaTypes
-from copulas.bivariate.clayton import Clayton
-from copulas.bivariate.frank import Frank
-from copulas.bivariate.gumbel import Gumbel
-from copulas.bivariate.utils import split_matrix
+from ...copulas import EPSILON
+from ...copulas.bivariate.base import Bivariate, CopulaTypes
+from ...copulas.bivariate.clayton import Clayton
+from ...copulas.bivariate.frank import Frank
+from ...copulas.bivariate.gumbel import Gumbel
+from ...copulas.bivariate.utils import split_matrix
 
 __all__ = (
     'Bivariate',
@@ -18,9 +18,7 @@ __all__ = (
     'Gumbel',
 )
 
-
 COMPUTE_EMPIRICAL_STEPS = 50
-
 
 def _compute_empirical(X):
     """Compute empirical distribution.

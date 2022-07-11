@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 from rdt import HyperTransformer, transformers
 
-from metadata import visualization
-from metadata.errors import MetadataError
+from ..metadata import visualization
+from ..metadata.errors import MetadataError
 
 LOGGER = logging.getLogger(__name__)
 

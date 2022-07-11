@@ -8,11 +8,11 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from copulas import (
+from ...copulas import (
     EPSILON, check_valid_values, get_instance, get_qualified_name, random_state, store_args,
     validate_random_state)
-from copulas.multivariate.base import Multivariate
-from copulas.univariate import GaussianUnivariate, Univariate
+from ...copulas.multivariate.base import Multivariate
+from ...copulas.univariate import GaussianUnivariate, Univariate
 
 LOGGER = logging.getLogger(__name__)
 DEFAULT_DISTRIBUTION = Univariate

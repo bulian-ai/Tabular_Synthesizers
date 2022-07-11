@@ -6,12 +6,11 @@ from enum import Enum
 import numpy as np
 import scipy
 
-from copulas import EPSILON, get_qualified_name
-from copulas.bivariate.base import Bivariate
-from copulas.multivariate.base import Multivariate
+from ...copulas import EPSILON, get_qualified_name
+from ...copulas.bivariate.base import Bivariate
+from ...copulas.multivariate.base import Multivariate
 
 LOGGER = logging.getLogger(__name__)
-
 
 class TreeTypes(Enum):
     """The available types of trees."""

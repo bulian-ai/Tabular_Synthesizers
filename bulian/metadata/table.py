@@ -11,8 +11,8 @@ from faker import Faker
 
 # from sdv.constraints.base import Constraint
 # from sdv.constraints.errors import MissingConstraintColumnError, MultipleConstraintsErrors
-from metadata.errors import MetadataError, MetadataNotFittedError
-from metadata.utils import strings_from_regex
+from ..metadata.errors import MetadataError, MetadataNotFittedError
+from ..metadata.utils import strings_from_regex
 
 LOGGER = logging.getLogger(__name__)
 

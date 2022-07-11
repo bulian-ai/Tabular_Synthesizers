@@ -4,7 +4,7 @@ import pickle
 
 import numpy as np
 
-from copulas import NotFittedError, get_instance, validate_random_state
+from ...copulas import NotFittedError, get_instance, validate_random_state
 
 
 class Multivariate(object):

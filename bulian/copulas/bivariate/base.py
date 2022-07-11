@@ -8,8 +8,8 @@ import numpy as np
 from scipy import stats
 from scipy.optimize import brentq
 
-from copulas import EPSILON, NotFittedError, random_state, validate_random_state
-from copulas.bivariate.utils import split_matrix
+from ...copulas import EPSILON, NotFittedError, random_state, validate_random_state
+from ...copulas.bivariate.utils import split_matrix
 
 
 class CopulaTypes(Enum):

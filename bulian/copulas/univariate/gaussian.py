@@ -3,7 +3,7 @@
 import numpy as np
 from scipy.stats import norm
 
-from copulas.univariate.base import BoundedType, ParametricType, ScipyModel
+from ...copulas.univariate.base import BoundedType, ParametricType, ScipyModel
 
 
 class GaussianUnivariate(ScipyModel):

@@ -5,8 +5,8 @@ import logging
 import numpy as np
 import pandas as pd
 
-from relational.base import BaseRelationalModel
-from copulas import GaussianCopula
+from ..relational.base import BaseRelationalModel
+from ..Tabular.synthesizers.copula_synth import GaussianCopula
 
 LOGGER = logging.getLogger(__name__)
 
