@@ -565,9 +565,11 @@ class Table:
         # constrained = self._fit_transform_constraints(data)
         # extra_columns = set(constrained.columns) - set(data.columns)
 
-        # LOGGER.info('Fitting HyperTransformer for table %s', self.name)
+        LOGGER.info('Fitting HyperTransformer for table %s', self.name)
+        self._fit_hyper_transformer(data, extra_columns=None)
+ 
         # self._fit_hyper_transformer(constrained, extra_columns)
-        # self.fitted = True
+        self.fitted = True
 
     # def _transform_constraints(self, data, on_missing_column='error'):
     #     for constraint in self._constraints:
@@ -606,7 +608,6 @@ class Table:
         fields = [field for field in self.get_dtypes(ids=False) if field in data.columns]
         LOGGER.debug('Anonymizing table %s', self.name)
         data = self._anonymize(data[fields])
-
         # LOGGER.debug('Transforming constraints for table %s', self.name)
         # data = self._transform_constraints(data, on_missing_column)
 
@@ -665,19 +666,19 @@ class Table:
 
         return reversed_data[self._field_names]
 
-    # def filter_valid(self, data):
-    #     """Filter the data using the constraints and return only the valid rows.
-    #     Args:
-    #         data (pandas.DataFrame):
-    #             Table data.
-    #     Returns:
-    #         pandas.DataFrame:
-    #             Table containing only the valid rows.
-    #     """
-    #     for constraint in self._constraints:
-    #         data = constraint.filter_valid(data)
+    def filter_valid(self, data):
+        """Filter the data using the constraints and return only the valid rows.
+        Args:
+            data (pandas.DataFrame):
+                Table data.
+        Returns:
+            pandas.DataFrame:
+                Table containing only the valid rows.
+        """
+        # for constraint in self._constraints:
+        #     data = constraint.filter_valid(data)
 
-    #     return data
+        return data
 
     def make_ids_unique(self, data):
         """Repopulate any id fields in provided data to guarantee uniqueness.

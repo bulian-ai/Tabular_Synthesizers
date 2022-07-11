@@ -4,7 +4,7 @@ import logging
 
 import numpy as np
 import pandas as pd
-
+from ..metadata.errors import *
 from ..relational.base import BaseRelationalModel
 from ..Tabular.synthesizers.copula_synth import GaussianCopula
 

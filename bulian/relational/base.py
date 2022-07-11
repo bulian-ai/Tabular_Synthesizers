@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from ..metadata.errors import NotFittedError 
+from ..metadata.errors import NotFittedError , MetadataNotFittedError
 from ..metadata import Metadata, utils
 # from sdv.utils import get_package_versions, throw_version_mismatch_warning
 
