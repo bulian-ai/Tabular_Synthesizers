@@ -5,6 +5,7 @@ import warnings
 
 from ...copulas import *
 from ...copulas import univariate,multivariate,bivariate
+from bulian import copulas
 
 
 import numpy as np
@@ -14,7 +15,7 @@ from ...metadata import Table
 from .base import BaseTabularModel, NonParametricError
 from .utils import flatten_dict, unflatten_dict
 from ...copulas.multivariate.gaussian import GaussianMultivariate
-from ...copulas import univariate
+from ...copulas.univariate import *
 from ...copulas.univariate import Univariate
 
 LOGGER = logging.getLogger(__name__)
@@ -113,12 +114,12 @@ class GaussianCopula(BaseTabularModel):
 
 
     _DISTRIBUTIONS = {
-        'gaussian': univariate.GaussianUnivariate,
-        'gamma':    univariate.GammaUnivariate,
-        'beta':     univariate.BetaUnivariate,
-        'student_t': univariate.StudentTUnivariate,
-        'gaussian_kde': univariate.GaussianKDE,
-        'truncated_gaussian': univariate.TruncatedGaussian,
+        'gaussian': GaussianUnivariate,
+        'gamma':    GammaUnivariate,
+        'beta':     BetaUnivariate,
+        'student_t': StudentTUnivariate,
+        'gaussian_kde': GaussianKDE,
+        'truncated_gaussian': TruncatedGaussian,
     }
     _DEFAULT_DISTRIBUTION = _DISTRIBUTIONS['truncated_gaussian']
     _DEFAULT_TRANSFORMER = 'categorical_fuzzy'
@@ -235,16 +236,15 @@ class GaussianCopula(BaseTabularModel):
                 self._field_distributions[column] = self._field_distributions.get(
                     column_name, self._default_distribution)
 
-        self._model = multivariate.GaussianMultivariate(
+        self._model = GaussianMultivariate(
             distribution=self._field_distributions)
-
+        # print(f'Fitting {self._model.__class__.__name__} to table {self._metadata.name}; shape: {table_data.shape}')
         LOGGER.debug('Fitting %s to table %s; shape: %s', self._model.__class__.__name__,
                      self._metadata.name, table_data.shape)
 
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', module='scipy')
             self._model.fit(table_data)
-
         self._update_metadata()
 
     def _sample(self, num_rows, conditions=None):
@@ -287,25 +287,20 @@ class GaussianCopula(BaseTabularModel):
                 If a non-parametric distribution has been used.
         """
 
-
-
         for univariate in self._model.univariates:
             univariate_type = type(univariate)
-            if univariate_type is Univariate:
+            if univariate_type is copulas.univariate.Univariate:
                 univariate = univariate._instance
-
-            if univariate.PARAMETRIC == univariate.ParametricType.NON_PARAMETRIC:
+            if univariate.PARAMETRIC == copulas.univariate.ParametricType.NON_PARAMETRIC:
                 raise NonParametricError("This GaussianCopula uses non parametric distributions")
 
         params = self._model.to_dict()
-
         covariance = list()
         for index, row in enumerate(params['covariance'][1:]):
             covariance.append(row[:index + 1])
 
         params['covariance'] = covariance
         params['univariates'] = dict(zip(params.pop('columns'), params['univariates']))
-
         return flatten_dict(params)
 
     @staticmethod

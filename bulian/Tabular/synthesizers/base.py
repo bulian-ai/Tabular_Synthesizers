@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
+from ...copulas.multivariate import GaussianMultivariate
 
 from ...utils import is_main_process, save_on_master
 
@@ -28,7 +29,6 @@ import tqdm
 
 from ...metadata import Table
 from .utils import check_num_rows, handle_sampling_error
-
 
 LOGGER = logging.getLogger(__name__)
 COND_IDX = str(uuid.uuid4())
@@ -418,7 +418,6 @@ class BaseTabularModel:
     """
 
     _DTYPE_TRANSFORMERS = None
-
     _metadata = None
 
     def __init__(self, field_names=None, field_types=None, field_transformers=None,
@@ -708,7 +707,7 @@ class BaseTabularModel:
                 user_msg = ('Unable to sample any rows for the given conditions '
                             f'`{transformed_condition}`. ')
                 if hasattr(self, '_model') and isinstance(
-                        self._model, copulas.multivariate.GaussianMultivariate):
+                        self._model, GaussianMultivariate):
                     user_msg = user_msg + (
                         'This may be because the provided values are out-of-bounds in the '
                         'current model. \nPlease try again with a different set of values.'
@@ -949,7 +948,7 @@ class BaseTabularModel:
                     sampled = pd.concat([sampled, sampled_for_condition], ignore_index=True)
 
             is_reject_sampling = (hasattr(self, '_model') and not isinstance(
-                self._model, copulas.multivariate.GaussianMultivariate))
+                self._model, GaussianMultivariate))
             check_num_rows(
                 num_rows=len(sampled),
                 expected_num_rows=num_rows,
@@ -1019,7 +1018,7 @@ class BaseTabularModel:
                 num_rows=len(sampled),
                 expected_num_rows=len(known_columns),
                 is_reject_sampling=(hasattr(self, '_model') and isinstance(
-                    self._model, copulas.multivariate.GaussianMultivariate)),
+                    self._model, GaussianMultivariate)),
                 max_tries_per_batch=max_tries_per_batch,
                 batch_size=batch_size,
             )
@@ -1086,11 +1085,13 @@ class BaseTabularModel:
                 If the model is not parametric or cannot be described
                 using a simple dictionary.
         """
+        # print('self._metadata.get_dtypes(ids=False)',self._metadata.get_dtypes(ids=False))
         if self._metadata.get_dtypes(ids=False):
             parameters = self._get_parameters()
         else:
             parameters = {}
-
+            print("Params are empty")
+        
         parameters['num_rows'] = self._num_rows
         return parameters
 

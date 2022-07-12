@@ -10,7 +10,6 @@ from ..Tabular.synthesizers.copula_synth import GaussianCopula
 
 LOGGER = logging.getLogger(__name__)
 
-
 class HMA1(BaseRelationalModel):
     """Hierarchical Modeling Algorithm One.
     Args:
@@ -69,7 +68,6 @@ class HMA1(BaseRelationalModel):
             pandas.DataFrame
         """
         table_meta = self._models[child_name].get_metadata()
-
         extension_rows = list()
         foreign_key_values = child_table[foreign_key].unique()
         child_table = child_table.set_index(foreign_key)
@@ -77,15 +75,17 @@ class HMA1(BaseRelationalModel):
 
         index = []
         scale_columns = None
+
         for foreign_key_value in foreign_key_values:
+
             child_rows = child_table.loc[[foreign_key_value]]
             if child_primary in child_rows.columns:
-                del child_rows[child_primary]
-
+                del child_rows[child_primary]           
             try:
                 model = self._model(table_metadata=table_meta)
                 model.fit(child_rows.reset_index(drop=True))
                 row = model.get_parameters()
+
                 row = pd.Series(row)
                 row.index = f'__{child_name}__{foreign_key}__' + row.index
 
@@ -104,7 +104,6 @@ class HMA1(BaseRelationalModel):
             except Exception:
                 # Skip children rows subsets that fail
                 pass
-
         return pd.DataFrame(extension_rows, index=index)
 
     def _load_table(self, tables, table_name):
@@ -152,9 +151,8 @@ class HMA1(BaseRelationalModel):
                 extension = self._get_extension(child_name, child_table, foreign_key)
                 table = table.merge(extension, how='left', right_index=True, left_index=True)
                 num_rows_key = f'__{child_name}__{foreign_key}__num_rows'
-                table[num_rows_key].fillna(0, inplace=True)
+                table[num_rows_key].fillna(0, inplace=True)     #### this is problem
                 self._max_child_rows[num_rows_key] = table[num_rows_key].max()
-
         return table
 
     def _prepare_for_modeling(self, table_data, table_name, primary_key):
@@ -220,7 +218,6 @@ class HMA1(BaseRelationalModel):
                 table data with the extensions created while modeling its children.
         """
         LOGGER.info('Modeling %s', table_name)
-
         table = self._load_table(tables, table_name)
         self._table_sizes[table_name] = len(table)
 
@@ -236,7 +233,6 @@ class HMA1(BaseRelationalModel):
         model = self._model(**self._model_kwargs, table_metadata=table_meta)
         model.fit(table)
         self._models[table_name] = model
-
         if primary_key:
             table.reset_index(inplace=True)
 
@@ -244,7 +240,6 @@ class HMA1(BaseRelationalModel):
             table[name] = values
 
         tables[table_name] = table
-
         return table
 
     def _fit(self, tables=None):
@@ -260,13 +255,12 @@ class HMA1(BaseRelationalModel):
             tables = tables.copy()
         else:
             tables = {}
-
+        
         for table_name in self.metadata.get_tables():
             if not self.metadata.get_parents(table_name):
                 self._model_table(table_name, tables)
 
         LOGGER.info('Modeling Complete')
-
     # ######## #
     # SAMPLING #
     # ######## #
