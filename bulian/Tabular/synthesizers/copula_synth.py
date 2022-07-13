@@ -33,7 +33,7 @@ class GaussianCopula(BaseTabularModel):
         field_types (dict[str, dict]):
             Dictinary specifying the data types and subtypes
             of the fields that will be modeled. Field types and subtypes
-            combinations must be compatible with the SDV Metadata Schema.
+            combinations must be compatible with the Bulian Metadata Schema.
         field_transformers (dict[str, str]):
             Dictinary specifying which transformers to use for each field.
             Available transformers are:

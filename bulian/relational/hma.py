@@ -21,7 +21,7 @@ class HMA1(BaseRelationalModel):
             metadata is a dict, the current working directory is used.
         model (type):
             Class of the ``copula`` to use. Defaults to
-            ``sdv.models.copulas.GaussianCopula``.
+            ``bulian.copulas.GaussianCopula``.
         model_kwargs (dict):
             Keyword arguments to pass to the model. If the default model is used, this
             defaults to using a ``gaussian`` distribution and a ``categorical_fuzzy``
@@ -534,7 +534,7 @@ class HMA1(BaseRelationalModel):
                 sampled datatables as ``pandas.DataFrame``.
         Raises:
             NotFittedError:
-                A ``NotFittedError`` is raised when the ``SDV`` instance has not been fitted yet.
+                A ``NotFittedError`` is raised when the ``Bulian`` instance has not been fitted yet.
         """
         if table_name:
             sampled_data = self._sample_table(table_name, num_rows, sample_children)
