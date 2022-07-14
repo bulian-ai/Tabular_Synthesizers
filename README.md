@@ -55,20 +55,26 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
 ---
 
 *Dependencies*
-
 - python_version (>='3.7')
+- packaging>=20,<22
 - numpy (>=1.20.0,<2)
-- pandas (>=1.1.3,<2)
-- scikit-learn (>=0.24,<2)
-- torch (>=1.8.0,<2)
-- torchvision  (>=0.9.0,<1)
-- rdt (0.5.3)
-- plotly (>=5.4.0)
-- category-encoders (>=2.3.0<2.5.0)
-- scipy (>=1.5.4,<2)
-- pyts  (>=0.12.0,<0.13.0)
-- dython (>=0.6.8<0.7.0)
-- packaging (>=20,<22)
+- pandas>=1.1.3,<2
+- scikit-learn>=0.24,<2
+- torch>=1.8.0,<2
+- torchvision>=0.9.0,<1
+- rdt>=0.6.2,<0.7
+- plotly>=5.4.0
+- category-encoders>=2.3.0<2.5.0
+- scipy>=1.5.4,<2
+- pyts>=0.12.0,<0.13.0
+- dython>=0.6.8<0.7.0
+- Faker>=3.0.0,<10
+- graphviz>=0.13.2,<1
+- seaborn>=0.12,<0.13
+- threadpoolctl>=3.1.0,<4
+- matplotlib>=3.2.0,<4
+- tqdm>=4.15,<5
+
 
 ---
 *Token Generation*
