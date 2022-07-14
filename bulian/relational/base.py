@@ -163,7 +163,7 @@ class BaseRelationalModel:
                 A ``NotFittedError`` is raised when the model has not been fitted yet.
         """
         if not self.fitted:
-            raise NotFittedError('SDV instance has not been fitted')
+            raise NotFittedError('Bulian instance has not been fitted')
 
         if reset_primary_keys:
             self._reset_primary_keys_generators()

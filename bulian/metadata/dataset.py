@@ -126,7 +126,7 @@ class Metadata:
 
     @staticmethod
     def _dict_metadata(metadata):
-        """Get a metadata ``dict`` with SDV format.
+        """Get a metadata ``dict`` with bulian format.
         For each table create a dict of fields from a previous list of fields.
         Args:
             metadata (dict):

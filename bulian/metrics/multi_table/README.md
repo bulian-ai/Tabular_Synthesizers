@@ -80,7 +80,7 @@ Out[9]: 0.7569444444444444
 ```
 
 Additionally, all the metrics accept a `metadata` argument which must be a dict following
-the Metadata JSON schema from SDV, which will be used to determine which columns are compatible
+the Metadata JSON schema from Bulian, which will be used to determine which columns are compatible
 with each one of the different metrics, as well as to extract any additional information required
 by the metrics, such as the mentioned relationships.
 

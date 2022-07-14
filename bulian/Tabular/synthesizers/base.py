@@ -375,7 +375,7 @@ class BaseTabularModel:
         field_types (dict[str, dict]):
             Dictinary specifying the data types and subtypes
             of the fields that will be modeled. Field types and subtypes
-            combinations must be compatible with the SDV Metadata Schema.
+            combinations must be compatible with the Bulian Metadata Schema.
         field_transformers (dict[str, str]):
             Dictinary specifying which transformers to use for each field.
             Available transformers are:
@@ -483,14 +483,14 @@ class BaseTabularModel:
 
     def get_metadata(self):
         """Get metadata about the table.
-        This will return an ``sdv.metadata.Table`` object containing
+        This will return an ``bulian.metadata.Table`` object containing
         the information about the data that this model has learned.
         This Table metadata will contain some common information,
         such as field names and data types, as well as additional
         information that each Sub-class might add, such as the
         observed data field distributions and their parameters.
         Returns:
-            sdv.metadata.Table:
+            bulian.metadata.Table:
                 Table metadata.
         """
         return self._metadata
@@ -664,8 +664,8 @@ class BaseTabularModel:
     def _make_condition_dfs(self, conditions):
         """Transform `conditions` into a list of dataframes.
         Args:
-            conditions (list[sdv.sampling.Condition]):
-                A list of `sdv.sampling.Condition`, where each `Condition` object
+            conditions (list[bulian.sampling.Condition]):
+                A list of `bulian.sampling.Condition`, where each `Condition` object
                 represents a desired column value mapping and the number of rows
                 to generate for that condition.
         Returns:
@@ -779,14 +779,14 @@ class BaseTabularModel:
                 write rows anywhere.
             conditions:
                 Deprecated argument. Use the `sample_conditions` method with
-                `sdv.sampling.Condition` objects instead.
+                `bulian.sampling.Condition` objects instead.
         Returns:
             pandas.DataFrame:
                 Sampled data.
         """
         if conditions is not None:
             raise TypeError('This method does not support the conditions parameter. '
-                            'Please create `sdv.sampling.Condition` objects and pass them '
+                            'Please create `bulian.sampling.Condition` objects and pass them '
                             'into the `sample_conditions` method. '
                             'See User Guide or API for more details.')
 
@@ -970,8 +970,8 @@ class BaseTabularModel:
                           randomize_samples=True, output_file_path=None):
         """Sample rows from this table with the given conditions.
         Args:
-            conditions (list[sdv.sampling.Condition]):
-                A list of sdv.sampling.Condition objects, which specify the column
+            conditions (list[bulian.sampling.Condition]):
+                A list of bulian.sampling.Condition objects, which specify the column
                 values in a condition, along with the number of rows for that
                 condition.
             max_tries_per_batch (int):
@@ -1121,7 +1121,7 @@ class BaseTabularModel:
         """Save this model instance to the given path using pickle.
         Args:
             path (str):
-                Path where the SDV instance will be serialized.
+                Path where the bulian instance will be serialized.
         """
         # self._package_versions = get_package_versions(getattr(self, '_model', None))
 
