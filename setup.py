@@ -103,7 +103,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    description='Bulian.ai GANs for Tabular Data',
+    description='Bulian AI Tabular Data Synthesizers',
 
     extras_require={
         'test': tests_require + pomegranate_requires,
@@ -123,6 +123,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     version='0.0.1.dev0',
-    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
+    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
     zip_safe=False,
 )
