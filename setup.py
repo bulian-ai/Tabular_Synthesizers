@@ -8,8 +8,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 install_requires = [
     'packaging>=20,<22',
-    # "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
-    "numpy>=1.20.0,<2;python_version>='3.7'",
+    'numpy>=1.20.0,<2',
     'pandas>=1.1.3,<2',
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
@@ -22,11 +21,9 @@ install_requires = [
     'dython>=0.6.8<0.7.0',
     'Faker>=3.0.0,<10',
     'graphviz>=0.13.2,<1',
+    'matplotlib>=3.4.0,<4', 
     'seaborn>=0.10,<0.12',
     'threadpoolctl>=3.1.0,<4',
-    # "matplotlib>=3.2.0,<3.4;python_version<'3.7'",
-    'matplotlib>=3.4.0,<4', 
-    #;python_version>='3.7'",
     'tqdm>=4.15,<5',
 ]
 
