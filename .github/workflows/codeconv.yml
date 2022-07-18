@@ -23,7 +23,7 @@ jobs:
         python-version: 3.7
     - name: Generate Report
       run: |
-        pip install -r requirements.txt
+        python setup.py install
         pip install coverage
         coverage run --source=. -m unittest discover -s .
         coverage report
