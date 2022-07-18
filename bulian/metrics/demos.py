@@ -28,11 +28,11 @@ def load_demo(modality='multi_table'):
 def load_multi_table_demo():
     """Load multi-table demo data.
 
-    The dataset is the ``SDV`` demo data, which consists of three
+    The dataset is the multi table demo data, which consists of three
     tables, ``users``, ``sessions`` and ``transactions``, with
     simulated data about user browsing sessions and transactions
     made during those sessions, and a synthetic copy of it made
-    by the ``sdv.relational.HMA1`` model.
+    by the ``bulian.relational.HMA1`` model.
 
     Returns:
         tuple:
@@ -46,8 +46,8 @@ def load_multi_table_demo():
 def load_single_table_demo():
     """Load multi-table demo data.
 
-    The dataset is the ``student_placements`` tabular demo from SDV
-    and a synthetic copy of it made using he ``sdv.tabular.CTGAN``
+    The dataset is the ``student_placements`` tabular demo from Bulian
+    and a synthetic copy of it made using he ``bulian.Tabular.synthesizer.TwinSynthesizer``
     model.
 
     Returns:
@@ -64,7 +64,7 @@ def load_timeseries_demo():
 
     The dataset is the ``sunglasses`` demo data from the DeepEcho
     project, which contains simulated data from a chain of sunglasses
-    stores, and a synthetic copy of it made by the ``sdv.timeseries.PAR``
+    stores, and a synthetic copy of it made by the ``bulian.timeseries.PAR``
     model.
 
     It has 1 entity column, 1 context column and a datetime sequence index.

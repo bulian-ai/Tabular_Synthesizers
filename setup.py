@@ -8,22 +8,27 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 install_requires = [
     'packaging>=20,<22',
-    "numpy>=1.18.0,<1.20.0;python_version<'3.7'",
-    "numpy>=1.20.0,<2;python_version>='3.7'",
+    'numpy>=1.20.0,<2',
     'pandas>=1.1.3,<2',
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
     'torchvision>=0.9.0,<1',
-    'rdt==0.5.3',
+    'rdt>=0.6.2,<0.7',
     'plotly>=5.4.0',
     'category-encoders>=2.3.0<2.5.0',
     'scipy>=1.5.4,<2',
     'pyts>=0.12.0,<0.13.0',
     'dython>=0.6.8<0.7.0',
+    'Faker>=3.0.0,<10',
+    'graphviz>=0.13.2,<1',
+    'matplotlib>=3.4.0,<4', 
+    'seaborn>=0.10,<0.12',
+    'threadpoolctl>=3.1.0,<4',
+    'tqdm>=4.15,<5',
 ]
 
 pomegranate_requires = [
-    "pomegranate>=0.13.4,<0.14.2;python_version<'3.7'",
+    # "pomegranate>=0.13.4,<0.14.2;python_version<'3.7'",
     "pomegranate>=0.14.1,<0.15;python_version>='3.7'",
 ]
 
@@ -96,7 +101,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    description='Bulian.ai GANs for Tabular Data',
+    description='Bulian AI Tabular Data Synthesizers',
 
     extras_require={
         'test': tests_require + pomegranate_requires,
@@ -116,6 +121,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     version='0.0.1.dev0',
-    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
+    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
     zip_safe=False,
 )
