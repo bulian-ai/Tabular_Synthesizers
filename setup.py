@@ -25,7 +25,11 @@ install_requires = [
     'seaborn>=0.10,<0.12',
     'threadpoolctl>=3.1.0,<4',
     'tqdm>=4.15,<5',
-]
+    'dash>=2.5.1',
+    'jupyter-dash>=0.4.2',
+    'dash-bootstrap-components>=1.2.0',
+    'dash_daq>=0.5.0',
+    ]
 
 pomegranate_requires = [
     # "pomegranate>=0.13.4,<0.14.2;python_version<'3.7'",
