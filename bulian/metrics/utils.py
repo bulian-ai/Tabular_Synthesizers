@@ -567,7 +567,7 @@ def getColor(value):
     else:
         return '#1EB300'
     
-def gauge(value):
+def gauge(value, show_dashboard=False):
     try:
         value = np.ceil(value)
     except Exception as e:
@@ -578,9 +578,9 @@ def gauge(value):
         value = value,
         number = {'prefix': "<b>Overall Score<b>: ", 'font': {'size': 24,'family': "'Oswald', sans-serif",'color':'grey'}},
         domain = {'x': [0, 1], 'y': [0, 1]},
-        delta = {'reference': 0, 'increasing': {'color': "white"},'font': {'size': 60}},
+        delta = {'reference': 0, 'increasing': {'color': "grey"},'font': {'size': 60}},
         gauge = {
-            'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "white"},
+            'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "grey"},
             'bar': {'color': "grey",'thickness':0.3,},
             'bgcolor': "white",
             'borderwidth': 5,
@@ -602,18 +602,19 @@ def gauge(value):
 
     fig.update_layout(
     title={
-        'text': "<b>Bulian Synthetic Data Quality Report<b>",
-        'font': {'size': 32,'color': "black", 'family': "'Oswald', sans-serif"},
+        'text': "<b>Bulian AI Synthetic Data Quality Report<b>",
+        'font': {'size': 32, 'family': "'Oswald', sans-serif", 'color':'#000000'},
         'y':0.94,
         'x':0.5,
         'xanchor': 'center',
         'yanchor': 'top'})
-
+    if show_dashboard:
+        return (fig, value)
     fig.show()
 
 
 ### To Do: Likelyhood metrics are excluded from report for now
-def gauge_multi(MeanDict):
+def gauge_multi(MeanDict, show_dashboard=False):
     CountEntities = len(MeanDict)
     sz = 12
 
@@ -655,18 +656,21 @@ def gauge_multi(MeanDict):
         
     trace = []
     i = 1
-    
+    values = []
     for k,v in MeanDict.items():
         if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Efficacy' in k) or ('Privacy' in k): 
             name = getPlotName(k)
+            values.append(
+                {name: round(MeanDict[f'{k}']*100)}
+            )
             temptrace = go.Indicator(        
             mode = "gauge+number+delta",
             value = round(MeanDict[f'{k}']*100),
-            number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'grey'}},
+            number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'#000000'}},
             domain = {'x': [start, end], 'y': [0, 1]},
-            delta = {'reference': 0, 'increasing': {'color': "white"},'font': {'size': 12}},
+            delta = {'reference': 0, 'increasing': {'color': "black"},'font': {'size': 12}},
             gauge = {
-                'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "white"},
+                'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "black"},
                 'bar': {'color': "grey",'thickness':0.3,},
                 'bgcolor': "white",
                 'borderwidth': 5,
@@ -698,5 +702,6 @@ def gauge_multi(MeanDict):
                       yaxis={'showgrid': False, 'showticklabels':True,'range':[0,1]},
                      plot_bgcolor='rgba(0,0,0,0)',
                       font = {'color': "black", 'family': "'Oswald', sans-serif"})
-
+    if show_dashboard:
+        return fig, values
     fig.show()

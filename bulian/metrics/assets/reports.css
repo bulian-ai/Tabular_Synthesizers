@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+h1{
+    font-weight: bold;
+}
+
+h1, h2, h3{
+    text-align: center;
+    color: black !important;
+}
+
+hr {
+    margin:3em;
+    border: 0 !important;
+    border-color: transparent !important;
+    height: 1px;
+}
+
+body{
+    margin:0;
+}
+
+button{
+    all: unset;
+    font-weight: bold !important;
+}
+
+.card{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+}
+
+.card > .card-body > a{
+    text-decoration: none;
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.card-title{
+    font-weight: bold;
+}
+
+circle {
+    stroke-width: 20px;
+}
+
+#correlation-div{
+    margin-top: 4rem;
+}
+
+#docs_btn{
+    position: relative;
+    margin-left: 81%;
+}
+
+#metric_info_div{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    height: fit-content;
+    width: 75%;
+}
+
+#metric_info_div > .row{
+    height: fit-content;
+}
+
+#metric_info_div > .row > .col-4{
+    display: flex;
+    flex-wrap: wrap;
+    min-height: fit-content
+}
+
+#metric_info_div > .row > .col-4 > .card{
+    flex: 1;
+}
+
+#metric_info_div > .row > .col-4 > .card > .card-body >.card-title{
+    font-size:18px;
+}
+
+#metric_info_div > .row > .col-4 > .card > .card-body >.card-text{
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#metric_info_div > .row > .col-4 > .card > .card-body >.card-link{
+    text-decoration: underline;
+    color: black;
+    font-weight: bold;
+}
+
+#main_heading{
+    margin-bottom: 5rem;
+}
+
+#numeric_density_heading{
+    margin-bottom: 3rem;
+}
+
+#learn_more_btn{
+    position:absolute;
+    top:98%;
+    left: 70%;
+}
+
+#graphs{
+    margin: 2%;
+}
+
+#js{
+    position:absolute;
+    margin-top: 0.5rem;
+    margin-left: 2rem;
+}
+
+#gauge, #gauge-multi-div {
+    margin-top:0.5%;
+    margin-bottom: 0.5%;
+    width:fit-content;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#gauge{
+    font-weight: bold;
+    font-size:xx-large !important;
+}
+
+#correlation-graphs{
+    margin-top: 2%;
+    width:85%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#gauge-multi-div > #learn_more_btn{
+    position: relative;
+    margin-right: 10%;
+}
+
+.dash-filter > div > input{
+    background-color: #0a0c3d !important;
+    color: #FAFAFA !important;
+}
+
+.dash-filter--case{
+    background-color: #0a0c3d !important;
+    color: #FAFAFA !important;
+}
+
+.cAPXWV{
+    color: black !important;
+}
+
+
+#cards_row_1, #cards_row_2{
+    margin-top:2%;
+    width:70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gauge > div > div > div > div{
+    font-size: 35px;
+}
+
+#gauge-Similarity\ Score > div > div > div > div{
+    font-size: 28px;
+}
+
+#gauge-Privacy\ Score > div > div > div > div{
+    font-size: 28px;
+}
+
+#gauge-Detection\ Score > div > div > div > div{
+    font-size: 28px;
+}
+
+#gauge-Statistical\ Score > div > div > div > div{
+    font-size: 28px;
+}
