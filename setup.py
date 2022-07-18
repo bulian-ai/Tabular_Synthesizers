@@ -8,7 +8,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 install_requires = [
     'packaging>=20,<22',
-    'numpy>=1.20.0,<2',
+    'numpy>=1.20.0,<1.23',
     'pandas>=1.1.3,<2',
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
