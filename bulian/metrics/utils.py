@@ -632,6 +632,8 @@ def gauge_multi(MeanDict, show_dashboard=False):
             return 'ML Efficacy Score'
         elif 'Privacy' in key:
             return 'Privacy Score'
+        elif 'Likelihood' in key:
+            return 'Likelihood Score'
 
     if CountEntities == 3:
         start = 0
@@ -658,7 +660,7 @@ def gauge_multi(MeanDict, show_dashboard=False):
     i = 1
     values = []
     for k,v in MeanDict.items():
-        if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Efficacy' in k) or ('Privacy' in k): 
+        if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Privacy' in k) or ('Efficacy' in k) or ('Likelihood' in k ): 
             name = getPlotName(k)
             values.append(
                 {name: round(MeanDict[f'{k}']*100)}
@@ -688,13 +690,13 @@ def gauge_multi(MeanDict, show_dashboard=False):
             trace.append(temptrace)
             start = end + delta
             end   = start + increase
-            i += 1        
+            i += 1
             if i > 4:
                 break
 
     # layout and figure production
     layout = go.Layout(height = 300,
-                       width  = 1200, 
+                       width  = 1500, 
                        autosize = False,
                        title = '')
     fig = go.Figure(data = trace, layout = layout)

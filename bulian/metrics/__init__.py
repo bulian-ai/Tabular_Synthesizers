@@ -5,7 +5,7 @@
 import pandas as pd
 # from tqdm import tqdm
 from ..metrics import (
-    column_pairs, demos, type, goal, multi_table, single_column, single_table)
+    column_pairs, demos, type, goal, multi_table, single_column, single_table,demo)
 from ..metrics.demo import load_demo
 from ..metrics.type import MetricType
 
@@ -18,6 +18,7 @@ __all__ = [
     'column_pairs',
     'single_column',
     'single_table',
+    'demo'
     # 'timeseries',
 ]
 

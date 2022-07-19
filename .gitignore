@@ -148,6 +148,7 @@ cython_debug/
 
 #md stuff to ignore
 timelines.md
+Feature_List.md
 Todo.md
 SUMMARY.md
 Library Structure.md

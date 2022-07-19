@@ -2,6 +2,7 @@
 
 import numpy as np
 import rdt
+from rdt.transformers import OneHotEncodingTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import RobustScaler
@@ -47,7 +48,9 @@ class MLEfficacyMetric(SingleTableMetric):
         if len(unique_labels) == 1:
             predictions = np.full(len(real_data), unique_labels[0])
         else:
-            transformer = rdt.HyperTransformer(dtype_transformers={'O': 'one_hot_encoding'})
+            transformer = rdt.HyperTransformer(default_data_type_transformers={
+                        'categorical': OneHotEncodingTransformer(error_on_unknown=False),
+                    })
             real_data = transformer.fit_transform(real_data)
             synthetic_data = transformer.transform(synthetic_data)
 

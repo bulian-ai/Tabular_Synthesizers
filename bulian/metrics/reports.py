@@ -97,10 +97,15 @@ def get_metric_info(metric_name):
         return str(METRIC_INFO[metric_name])
     return None
 
-# To Do: We are not pating attention to whether the goal is to maximize or minimize; we assume it all maximize
+# To Do: We are not paying attention to whether the goal is to maximize or minimize; we assume it all maximize
+
 def get_full_report(real_data, synthetic_data, discrete_columns, 
     numeric_columns, target=None, key_fields=None, sensitive_fields=None, show_dashboard=False):
-    _OVERALL_SCORE_GRPS = ['Real vs Synthetic Dectection Metric','Statistical Test Metric','Distribution Similarity Metric']
+    _OVERALL_SCORE_GRPS = ['Real vs Synthetic Dectection Metric',
+                            'Statistical Test Metric',
+                            'Distribution Similarity Metric',
+                            'ML Efficacy Metric: R-Sq or F1',
+                            'Privacy Metric']
 
     import warnings
     warnings.filterwarnings('ignore')
@@ -112,10 +117,23 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
     privacy_metrics = {k:v for k,v in metrics.items() if k in privacyMetrics}
 
     #### Non privacy metrics
+
+    #### Non privacy metrics
+    ML_Efficacy = None
     if target is not None:
-        o = compute_metrics(nonPrivacy_metrics,real_data, synthetic_data,target=target)
+        ML_Efficacy = compute_metrics(nonPrivacy_metrics,real_data, synthetic_data,target=target)
+        ML_Efficacy = ML_Efficacy[ML_Efficacy['MetricType'].isin(['ML Efficacy Metric: R-Sq or F1'])].reset_index(drop=True)
+
+    overall = compute_metrics(nonPrivacy_metrics,real_data, synthetic_data)        
+    overall = overall[~overall['MetricType'].isin(['ML Efficacy Metric: R-Sq or F1'])].reset_index(drop=True)
+
+    if ML_Efficacy is not None:
+        o = pd.concat([ML_Efficacy,overall],0).reset_index(drop=True)
+        del ML_Efficacy
     else:
-        o = compute_metrics(nonPrivacy_metrics,real_data, synthetic_data)        
+        o = overall
+    
+    del overall       
 
     #### Privacy metrics
     if (key_fields is not None) & (sensitive_fields is not None):
@@ -123,33 +141,12 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         if len(oPriv)>0:
             o = pd.concat([o,oPriv],0)
             o = o.reset_index(drop=True)
+        del oPriv
 
     o = o[~np.isnan(o['normalized_score'])]
     o_overall = o[o['MetricType'].isin(_OVERALL_SCORE_GRPS)]
-    # o_min_0 = o[o['min_value']==0.0]    ### what about case where Max value is not 1 but inf, for now we assume we have covered it
-    # o_min_neginf = o[o['min_value']==-np.inf]
     multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()
-    # multi_metrics_min_0 = o_min_0.groupby('MetricType')['normalized_score'].mean().to_dict()
-    # multi_metrics_min_neginf = o_min_neginf.groupby('MetricType')['normalized_score'].mean().to_dict()
     
-    # efficiency_min_0 = 0
-    # efficiency_min_neginf = 0 
-
-    # if len(o_min_0)>0:
-    #     efficiency_min_0 = (o_min_0.groupby('MetricType')['normalized_score'].mean()>0.5).sum()/(o_min_0['MetricType'].nunique())
-    # if len(o_min_neginf)>0:
-    #     efficiency_min_neginf = (o_min_neginf.groupby('MetricType')['normalized_score'].mean()>0.0).sum()/(o_min_neginf['MetricType'].nunique())
-    
-    # if (len(o_min_0)>0) & (len(o_min_neginf)>0):
-    #     avg_efficiency = round(100*np.mean((efficiency_min_0,efficiency_min_neginf)))   ### Min: 0, max: 1
-    # elif (len(o_min_0)>0):
-    #     avg_efficiency = round(100*efficiency_min_0)
-    # elif (len(o_min_neginf)>0):
-    #     avg_efficiency = round(100*efficiency_min_neginf)
-    # else:
-    #     raise ValueError("Relevant metrics are NaN")
-
-
     try:
         avg_efficiency = 100*(o_overall['normalized_score'].mean())
         # print('avg_efficiency',avg_efficiency)
