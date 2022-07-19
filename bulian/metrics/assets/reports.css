@@ -54,9 +54,38 @@ circle {
     margin-top: 4rem;
 }
 
+#date_time{
+    position: absolute;
+    margin-top: -6.5%;
+    margin-left: 80%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#data_summary_table{
+    width: 30%;
+    margin-top: -2%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#data_summary_table > thead{
+    text-align: center;
+}
+
 #docs_btn{
     position: relative;
     margin-left: 81%;
+}
+
+#divider{
+    background-color: grey;
+    opacity: 0.5;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 1px;
+    margin-top: 4%;
 }
 
 #metric_info_div{

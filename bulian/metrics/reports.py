@@ -22,6 +22,7 @@ from dash.dependencies import Input, Output
 from jupyter_dash import JupyterDash
 import pandas as pd
 from math import ceil
+from datetime import datetime
 
 
 privacyMetrics =[
@@ -70,7 +71,8 @@ METRIC_INFO = {
     'NumericalSVR': 'Privacy Metric for numerical columns, based on SVR from scikit-learn.',
     'NumericalRadiusNearestNeighbor': 'Privacy Metric for numerical columns, based on an implementation of the Radius Nearest Neighbor method.',
     'ContinuousKLDivergence': 'KL-Divergence Metric applied to all possible pairs of numerical columns.',
-    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.'
+    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.',
+    'MLEfficacy': 'Generic ML Efficacy metric that detects the type of ML Problem associated with the dataset'
 }
 
 def get_map(avg_efficacy):
@@ -361,22 +363,23 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 style={'width':'70%','margin-left':'auto', 'margin-right':'auto'}
             )
         )
-
+        file_name = 'report-'+datetime.utcnow().strftime("%d/%m/%Y-%I:%M")+'.pdf'
         app.clientside_callback(
             """
             function(n_clicks){
                 if(n_clicks > 0){
                     var elmnt = document.getElementById("graphs");
                     var opt = {
-                        filename: 'output.pdf',
-                        image: { type: 'jpeg', quality: 0.98 },
-                        jsPDF: { unit: 'cm', format: 'a2', orientation: 'p', precision:20},
-                        pagebreak: { mode: ['avoid-all'], before: 'hr' }
+                        margin:[0,0,0,1],
+                        filename: '"""+file_name+"""',
+                        image: { type: 'jpeg', quality: 1 },
+                        jsPDF: { unit: 'cm', format: 'a2', orientation: 'p', precision:40},
+                        pagebreak: { mode: ['avoid-all'], before: 'hr' },
                     };
                     html2pdf().from(elmnt).set(opt).toPdf().get('pdf').then(function(pdf){
                         var image_data = 'data:image/png;base64,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';
                         pdf.setPage(1);
-                        pdf.addImage(image_data, 'PNG', 39, 32.7);
+                        pdf.addImage(image_data, 'PNG', 39, 38.7);
                     }).save();
                 }
             }
@@ -524,9 +527,17 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
         else:
             gauge_multi_figures = []
+        
+        table_header = [
+            html.Thead(html.Tr([html.Th(""), html.Th("Real Data"), html.Th("Synthetic Data")]))
+        ]
 
+        row1 = html.Tr([html.Td("Row Count"), html.Td(len(real_data)), html.Td(len(synthetic_data))])
+        row2 = html.Tr([html.Td("Column Count"), html.Td(len(real_data.columns)), html.Td(len(synthetic_data.columns))])
 
+        table_body = [html.Tbody([row1, row2,])]
 
+        date_time = 'Generated on \n'+ datetime.utcnow().strftime("%d/%m/%Y, %I:%M %p")
         app.layout = html.Div(
             style={
                 'backgroundColor':colors['background'],
@@ -544,6 +555,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                     id='graphs',
                     children=[
                         html.H1("Bulian AI Synthetic Data Quality Report", id='main_heading'),
+                        html.H4(date_time, id='date_time'),
                         html.Div(
                             id='gauge-div',
                             children=[
@@ -564,6 +576,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                             style={'align': 'center', 'margin-bottom':'2em'}, 
                             children=gauge_multi_figures
                         ),
+                        dbc.Table(table_header + table_body, bordered=True, id='data_summary_table', size='sm'),
+                        html.Div(id="divider"),
                         html.Div(
                             id='correlation-div',
                             style={'align': 'center'},
@@ -596,10 +610,14 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                             "Statistics based measure to quantify statistical distribution similarity. Based on K-S and C-S tests.",
                             target="gauge-Statistical Score",
                         ),
+                        dbc.Tooltip(
+                            "Generic ML Efficacy metric that detects the type of ML Problem associated with the dataset by analyzing the target column type and then applies all the metrics that are compatible with it.",
+                            target="gauge-ML Efficacy Score",
+                        ),
                     ]+graph_objects+tables+metric_info_div
                 )
             ])
-        app.run_server(debug=False)
+        app.run_server(debug=True)
     else:
         fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
         fig.suptitle('Correlation Analysis\n',fontsize = 24,y=1.07)
