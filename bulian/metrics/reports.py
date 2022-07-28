@@ -6,7 +6,7 @@ import warnings
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-from .utils import get_correlation_matrix, gauge, gauge_multi
+from .utils import get_correlation_matrix, gauge, gauge_multi, compute_pca, count_memorized_lines
 import numpy as np
 from ..metrics import compute_metrics
 from ..metrics.single_table import *
@@ -22,6 +22,7 @@ from dash.dependencies import Input, Output
 from jupyter_dash import JupyterDash
 import pandas as pd
 from math import ceil
+from datetime import datetime
 
 
 privacyMetrics =[
@@ -70,7 +71,8 @@ METRIC_INFO = {
     'NumericalSVR': 'Privacy Metric for numerical columns, based on SVR from scikit-learn.',
     'NumericalRadiusNearestNeighbor': 'Privacy Metric for numerical columns, based on an implementation of the Radius Nearest Neighbor method.',
     'ContinuousKLDivergence': 'KL-Divergence Metric applied to all possible pairs of numerical columns.',
-    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.'
+    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.',
+    'MLEfficacy': 'Generic ML Efficacy metric that detects the type of ML Problem associated with the dataset'
 }
 
 def get_map(avg_efficacy):
@@ -100,7 +102,7 @@ def get_metric_info(metric_name):
 # To Do: We are not paying attention to whether the goal is to maximize or minimize; we assume it all maximize
 
 def get_full_report(real_data, synthetic_data, discrete_columns, 
-    numeric_columns, target=None, key_fields=None, sensitive_fields=None, show_dashboard=False):
+    numeric_columns, target=None, key_fields=None, sensitive_fields=None, show_dashboard=False, port=8050):
     _OVERALL_SCORE_GRPS = ['Real vs Synthetic Dectection Metric',
                             'Statistical Test Metric',
                             'Distribution Similarity Metric',
@@ -146,7 +148,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
     o = o[~np.isnan(o['normalized_score'])]
     o_overall = o[o['MetricType'].isin(_OVERALL_SCORE_GRPS)]
     multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()
-    
+
     try:
         avg_efficiency = 100*(o_overall['normalized_score'].mean())
         # print('avg_efficiency',avg_efficiency)
@@ -187,6 +189,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 font_color=colors['text'],
             )
 
+        # Correlation Plots
         correlation_fig = make_subplots(
             rows=1,
             cols=3,
@@ -221,6 +224,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             coloraxis_colorbar_x=-2
         )
 
+        # Density Distribution
         graph_objects = [
             html.Hr(),
             html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading")
@@ -251,6 +255,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 )
             )
         
+        # Categorical Count Plots
         category_subplot_titles = []
         for i, categ_feat in enumerate(discrete_columns):
             category_subplot_titles.append(f'{categ_feat}')
@@ -306,10 +311,12 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             )
         )
 
+
+        # Detailed Metrics Table
         metrics_df = o[['metric', 'name', 'normalized_score', 'MetricType']]
         metrics_df = metrics_df.round(2)
 
-        tables = [html.H1("Detailed Metrics View")]
+        tables = [html.Hr(), html.H1("Detailed Metrics View")]
         tables.append(
             html.Div(
                 children=[
@@ -359,21 +366,24 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             )
         )
 
+        # Download PDF
+        file_name = 'report-'+datetime.utcnow().strftime("%d/%m/%Y-%I:%M")+'.pdf'
         app.clientside_callback(
             """
             function(n_clicks){
                 if(n_clicks > 0){
                     var elmnt = document.getElementById("graphs");
                     var opt = {
-                        filename: 'output.pdf',
-                        image: { type: 'jpeg', quality: 0.98 },
-                        jsPDF: { unit: 'cm', format: 'a2', orientation: 'p', precision:20},
-                        pagebreak: { mode: ['avoid-all'], before: 'hr' }
+                        margin:[0,0,0,1],
+                        filename: '"""+file_name+"""',
+                        image: { type: 'jpeg', quality: 1 },
+                        jsPDF: { unit: 'cm', format: 'a2', orientation: 'p', precision:40},
+                        pagebreak: { mode: ['avoid-all'], before: 'hr' },
                     };
                     html2pdf().from(elmnt).set(opt).toPdf().get('pdf').then(function(pdf){
                         var image_data = 'data:image/png;base64,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';
-                        pdf.setPage(1);
-                        pdf.addImage(image_data, 'PNG', 39, 32.7);
+                        pdf.setPage(2);
+                        pdf.addImage(image_data, 'PNG', 39, 7);
                     }).save();
                 }
             }
@@ -385,6 +395,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             ]
         )
 
+
+        # Metric Cards
         if gauge_multi_fig:
             metric_info_cards = [
                 dbc.Col(
@@ -451,7 +463,41 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                         color='warning',
                     ),
                     width=4
-                )]
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("ML Efficacy Score", className="card-title"),
+                                html.P(
+                                    "Compare the performance of ML models when run on the synthetic and real data. Based on F1 or R-sq scores.",
+                                    className="card-text",
+                                    style={'font-size': '14px'}
+                                ),
+                            ]
+                        ),
+                        color='warning',
+                    ),
+                    width=4
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("Likelihood Score", className="card-title"),
+                                html.P(
+                                    "Metrics which learn the distribution of the real data and evaluate the likelihood of the synthetic data.",
+                                    className="card-text",
+                                    style={'font-size': '14px'}
+                                ),
+                            ]
+                        ),
+                        color='warning',
+                    ),
+                    width=4
+                )
+                
+                ]
         else:
             metric_info_cards = []
 
@@ -483,7 +529,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 dbc.Row(elements)
             )
         metric_info_div = [
-            html.Hr(),
+            html.Br(),
             html.H1("Metric Cards"),
             html.Div(
                 children=metric_info_cards_rows,
@@ -494,53 +540,140 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 href="https://docs.bulian.ai/bulianai-overview/api-docs/getting-started-with-bulian-ai/metrics/single-table-metrics",
                 target="_blank",
                 children=[
-                    dbc.Button("Learn More", color="warning", className="me-1"),
+                    dbc.Button("View Docs", color="warning", className="me-1"),
                 ],
             ),
         ]
 
+        # Multi Gauge plots
         if gauge_multi_fig:
             gauge_multi_figures = []
+            plot_count = len(gauge_multi_values)
             row = []
-            for item in gauge_multi_values:
-                name = list(item.keys())[0]
-                value = list(item.values())[0]
-                row.append(
-                        dbc.Col(daq.Gauge(
-                            id=f'gauge-{name}',
-                            label=name,
-                            labelPosition='bottom',
-                            value=int(value),
-                            max=100,
-                            min=0,
-                            showCurrentValue=True,
-                            color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
-                            style={'font-weight':'bold', 'font-size': '1.2em'}
-                    )
-                ))
-            gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
+            row_2 = []
+            if plot_count>4:
+                for i, item in enumerate(gauge_multi_values, start=1):
+                    name = list(item.keys())[0]
+                    value = list(item.values())[0]
+                    if i>3:
+                            row_2.append(
+                                    dbc.Col(daq.Gauge(
+                                        id=f'gauge-{name}',
+                                        label=name,
+                                        labelPosition='bottom',
+                                        value=int(value),
+                                        max=100,
+                                        min=0,
+                                        showCurrentValue=True,
+                                        color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                        style={'font-weight':'bold', 'font-size': '1.2em'}
+                                )
+                            ))
+                    else:
+                        row.append(
+                                dbc.Col(daq.Gauge(
+                                    id=f'gauge-{name}',
+                                    label=name,
+                                    labelPosition='bottom',
+                                    value=int(value),
+                                    max=100,
+                                    min=0,
+                                    showCurrentValue=True,
+                                    color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                    style={'font-weight':'bold', 'font-size': '1.2em'}
+                            )
+                        ))
+                gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
+                gauge_multi_figures.append(dbc.Row(row_2, id='metrics_row_2'))
+            else:
+                for item in gauge_multi_values:
+                    name = list(item.keys())[0]
+                    value = list(item.values())[0]
+                    row.append(
+                            dbc.Col(daq.Gauge(
+                                id=f'gauge-{name}',
+                                label=name,
+                                labelPosition='bottom',
+                                value=int(value),
+                                max=100,
+                                min=0,
+                                showCurrentValue=True,
+                                color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                style={'font-weight':'bold', 'font-size': '1.2em'}
+                        )
+                    ))
+                gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
+
+            gauge_multi_figures.append(
+                html.A(
+                    id='learn_more_btn',
+                    href="#cards",
+                    children=[
+                        dbc.Button("Metric Cards", color="warning", className="me-1"),
+                    ],
+                ),
+            )
         else:
             gauge_multi_figures = []
+        
+        # Data summary table
+        table_header = [
+            html.Thead(html.Tr([html.Th(""), html.Th("Real Data"), html.Th("Synthetic Data")]))
+        ]
+        row1 = html.Tr([html.Td("Row Count"), html.Td(len(real_data)), html.Td(len(synthetic_data))])
+        row2 = html.Tr([html.Td("Column Count"), html.Td(len(real_data.columns)), html.Td(len(synthetic_data.columns))])
+        row3 = html.Tr([html.Td("Duplicated lines"), html.Td(len(real_data)-len(real_data.drop_duplicates())), html.Td(count_memorized_lines(real_data, synthetic_data))])
+        table_body = [html.Tbody([row1, row2, row3])]
 
+        # Timestamp for report
+        date_time = 'Generated on \n'+ datetime.utcnow().strftime("%d/%m/%Y, %I:%M %p") + ' UTC'
 
+        # PCA plots
+        real_pca = compute_pca(real_data)
+        synthetic_pca = compute_pca(synthetic_data)
 
+        real_pca_fig = go.Figure(data=go.Scattergl(
+            x = real_pca['pc1'],
+            y = real_pca['pc2'],
+            mode='markers',
+            name='Real Data',
+            opacity=0.6,
+            marker_color='#e04e14',
+        ))
+
+        synthetic_pca_fig = go.Figure(data=go.Scattergl(
+            x = synthetic_pca['pc1'],
+            y = synthetic_pca['pc2'],
+            mode='markers',
+            name='Synthetic Data',
+            opacity=0.6,
+            marker_color='#03b1fc',
+        ))
+
+        layout = go.Layout(
+            height=700,
+        )
+        pca_fig = go.Figure(data=[real_pca_fig.data[0], synthetic_pca_fig.data[0]], layout=layout)
+        pca_fig.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
+        pca_fig.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+        pca_fig.update_layout(
+            plot_bgcolor=colors['sub-background'],
+            paper_bgcolor=colors['sub-background'],
+            font_color=colors['text'],
+        )
+
+        # Main dash app layout
         app.layout = html.Div(
             style={
                 'backgroundColor':colors['background'],
             },
             children=[
                 dbc.Button("Download PDF", color="warning", className="me-1", id='js', n_clicks=0),
-                html.A(
-                    id='learn_more_btn',
-                    href="#cards",
-                    children=[
-                        dbc.Button("Learn More", color="warning", className="me-1"),
-                    ],
-                ),
                 html.Div(
                     id='graphs',
                     children=[
                         html.H1("Bulian AI Synthetic Data Quality Report", id='main_heading'),
+                        html.H4(date_time, id='date_time'),
                         html.Div(
                             id='gauge-div',
                             children=[
@@ -561,6 +694,9 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                             style={'align': 'center', 'margin-bottom':'2em'}, 
                             children=gauge_multi_figures
                         ),
+                        html.H3('Data Summary Statistics', id='data_summary_heading'),
+                        dbc.Table(table_header + table_body, bordered=True, id='data_summary_table', size='sm'),
+                        html.Hr(),
                         html.Div(
                             id='correlation-div',
                             style={'align': 'center'},
@@ -571,32 +707,56 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                                     figure=correlation_fig,
                                     style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
                                 ),
-                                ]
+                            ]
+                        ),
+                        html.Div(id="divider"),
+                        html.Div(
+                            id='pca-div',
+                            style={'align': 'center'},
+                            children=[
+                                html.H1("PCA Overlap: Real vs Synthetic Data"),
+                                dcc.Graph(
+                                    id='pca-graph',
+                                    figure=pca_fig,
+                                )
+                            ]
                         ),
                         dbc.Tooltip(
-                            "The overall score represents the utility score or confidence score for synthetic datasets.",
+                            "Higher overlap between Real and Synthetic Data PCA components represents higher structural stability",
+                            target="pca-div",
+                        ),
+                        dbc.Tooltip(
+                            "The overall score represents the utility score or confidence score for Synthetic Datasets.",
                             target="gauge",
                         ),
                         dbc.Tooltip(
-                            "Distribution similarity between real and synthetic data; based on Kullback–Leibler divergence measures.",
+                            "Distribution similarity between Real and Synthetic Data; based on Kullback–Leibler divergence measures.",
                             target="gauge-Similarity Score",
                         ),
                         dbc.Tooltip(
-                            "Numerical and categorical attack models and their ability to predict real data's sensitive attributes.",
+                            "Numerical and categorical attack models and their ability to predict Real Data's sensitive attributes.",
                             target="gauge-Privacy Score",
                         ),
                         dbc.Tooltip(
-                            "Quantifies ability of ML algorithms to separate real vs synthetic data. Indicates deep structural stability.",
+                            "Quantifies ability of ML algorithms to separate Real vs Synthetic Data. Indicates deep structural stability.",
                             target="gauge-Detection Score",
                         ),
                         dbc.Tooltip(
                             "Statistics based measure to quantify statistical distribution similarity. Based on K-S and C-S tests.",
                             target="gauge-Statistical Score",
                         ),
+                        dbc.Tooltip(
+                            "Generic ML Efficacy metric that detects the type of ML Problem associated with the Dataset by analyzing the target column type and then applies all the metrics that are compatible with it.",
+                            target="gauge-ML Efficacy Score",
+                        ),
+                        dbc.Tooltip(
+                            "Metrics which learn the distribution of the Real Data and evaluate the likelihood of the Synthetic Data belonging to the learned distribution.",
+                            target="gauge-Likelihood Score",
+                        ),
                     ]+graph_objects+tables+metric_info_div
                 )
             ])
-        app.run_server(debug=False)
+        app.run_server(debug=False, port=port)
     else:
         fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
         fig.suptitle('Correlation Analysis\n',fontsize = 24,y=1.07)

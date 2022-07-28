@@ -54,9 +54,46 @@ circle {
     margin-top: 4rem;
 }
 
+#date_time{
+    position: absolute;
+    margin-top: -6.5%;
+    margin-left: 80%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#data_summary_heading{
+    margin-top:5%;
+    margin-bottom: 3%;
+    font-weight: bold;
+}
+
+#data_summary_table{
+    width: 30%;
+    margin-top: -2%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+#data_summary_table > thead{
+    text-align: center;
+}
+
 #docs_btn{
     position: relative;
     margin-left: 81%;
+}
+
+#divider{
+    background-color: grey;
+    opacity: 0.5;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 1px;
+    margin-top: 4%;
 }
 
 #metric_info_div{
@@ -107,10 +144,12 @@ circle {
     margin-bottom: 3rem;
 }
 
-#learn_more_btn{
-    position:absolute;
-    top:98%;
-    left: 70%;
+#pca-div{
+    margin-top: 2rem;
+    width:50%;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #graphs{
@@ -143,9 +182,10 @@ circle {
     margin-right:auto;
 }
 
-#gauge-multi-div > #learn_more_btn{
-    position: relative;
-    margin-right: 10%;
+#learn_more_btn{
+    overflow-y: visible;
+    margin-top: 10%;
+    margin-left: 75%;
 }
 
 .dash-filter > div > input{
@@ -187,5 +227,13 @@ circle {
 }
 
 #gauge-Statistical\ Score > div > div > div > div{
+    font-size: 28px;
+}
+
+#gauge-Likelihood\ Score > div > div > div > div{
+    font-size: 28px;
+}
+
+#gauge-ML\ Efficacy\ Score > div > div > div > div{
     font-size: 28px;
 }

@@ -22,6 +22,7 @@ from matplotlib.patches import Circle, Wedge, Rectangle
 from matplotlib import pyplot as plt
 from matplotlib import cm
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def nested_attrs_meta(nested):
     """Metaclass factory that defines a Metaclass with a dynamic attribute name."""
@@ -659,47 +660,98 @@ def gauge_multi(MeanDict, show_dashboard=False):
     trace = []
     i = 1
     values = []
+
+    plot_count=0
     for k,v in MeanDict.items():
         if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Privacy' in k) or ('Efficacy' in k) or ('Likelihood' in k ): 
-            name = getPlotName(k)
-            values.append(
-                {name: round(MeanDict[f'{k}']*100)}
-            )
-            temptrace = go.Indicator(        
-            mode = "gauge+number+delta",
-            value = round(MeanDict[f'{k}']*100),
-            number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'#000000'}},
-            domain = {'x': [start, end], 'y': [0, 1]},
-            delta = {'reference': 0, 'increasing': {'color': "black"},'font': {'size': 12}},
-            gauge = {
-                'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "black"},
-                'bar': {'color': "grey",'thickness':0.3,},
-                'bgcolor': "white",
-                'borderwidth': 5,
-                'bordercolor': "white",
-                'steps': [
-                    {'range': [0, 20], 'color': '#FF8C19'},
-                    {'range': [20, 40], 'color': '#FFFF80'},                
-                    {'range': [40, 60], 'color': '#BFFFB3'},
-                    {'range': [60, 80], 'color': '#BBFF33'},                
-                    {'range': [80, 101], 'color': '#1EB300'}],
-                'threshold': {
-                    'line': {'color': "grey", 'width': 6},
-                    'thickness': 0.0,
-                    'value': 100}})
-            trace.append(temptrace)
-            start = end + delta
-            end   = start + increase
-            i += 1
-            if i > 4:
-                break
-
+            plot_count += 1
+    if plot_count>4:
+        trace = make_subplots(
+            rows=2,
+            cols=3,
+            specs=[
+                [{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}],
+                [{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}],
+            ]
+        )
+        for i, item in enumerate(MeanDict.items(), start=1):
+            k = item[0]
+            value = item[1]
+            if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Privacy' in k) or ('Efficacy' in k) or ('Likelihood' in k ): 
+                name = getPlotName(k)
+                values.append(
+                    {name: round(value*100)}
+                )
+                plot = go.Indicator(        
+                    mode = "gauge+number+delta",
+                    value = round(value*100),
+                    number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'#000000'}},
+                    delta = {'reference': 0, 'increasing': {'color': "black"},'font': {'size': 12}},
+                    gauge = {
+                        'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "black"},
+                        'bar': {'color': "grey",'thickness':0.3,},
+                        'bgcolor': "white",
+                        'borderwidth': 5,
+                        'bordercolor': "white",
+                        'steps': [
+                            {'range': [0, 20], 'color': '#FF8C19'},
+                            {'range': [20, 40], 'color': '#FFFF80'},                
+                            {'range': [40, 60], 'color': '#BFFFB3'},
+                            {'range': [60, 80], 'color': '#BBFF33'},                
+                            {'range': [80, 101], 'color': '#1EB300'}],
+                        'threshold': {
+                            'line': {'color': "grey", 'width': 6},
+                            'thickness': 0.0,
+                            'value': 100}}
+                )
+                import math
+                if i<4:
+                    trace.add_trace(plot, 1, i)
+                else:
+                    trace.add_trace(plot, 2, i-3)
+    else:
+        for k,v in MeanDict.items():
+            if ('Distribution' in k) or ('Dectection' in k) or ('Statistical' in k) or ('Privacy' in k) or ('Efficacy' in k) or ('Likelihood' in k ): 
+                name = getPlotName(k)
+                values.append(
+                    {name: round(MeanDict[f'{k}']*100)}
+                )
+                temptrace = go.Indicator(        
+                    mode = "gauge+number+delta",
+                    value = round(MeanDict[f'{k}']*100),
+                    number = {'prefix': f"<b>{name}<b>: ", 'font': {'size': sz,'family': "'Oswald', sans-serif",'color':'#000000'}},
+                    domain = {'x': [start, end], 'y': [0, 1]},
+                    delta = {'reference': 0, 'increasing': {'color': "black"},'font': {'size': 12}},
+                    gauge = {
+                        'axis': {'range': [None, 100], 'tickwidth': 0, 'tickcolor': "black"},
+                        'bar': {'color': "grey",'thickness':0.3,},
+                        'bgcolor': "white",
+                        'borderwidth': 5,
+                        'bordercolor': "white",
+                        'steps': [
+                            {'range': [0, 20], 'color': '#FF8C19'},
+                            {'range': [20, 40], 'color': '#FFFF80'},                
+                            {'range': [40, 60], 'color': '#BFFFB3'},
+                            {'range': [60, 80], 'color': '#BBFF33'},                
+                            {'range': [80, 101], 'color': '#1EB300'}],
+                        'threshold': {
+                            'line': {'color': "grey", 'width': 6},
+                            'thickness': 0.0,
+                            'value': 100}}
+                )
+                trace.append(temptrace)
+                start = end + delta
+                end   = start + increase
+                i += 1
+                if i > 4:
+                    break
+    
     # layout and figure production
     layout = go.Layout(height = 300,
                        width  = 1500, 
                        autosize = False,
                        title = '')
-    fig = go.Figure(data = trace, layout = layout)
+    fig = go.Figure(data=trace, layout = layout)
     fig.update_layout(xaxis={'showgrid': False, 'showticklabels':True,'range':[0,1]},
                       yaxis={'showgrid': False, 'showticklabels':True,'range':[0,1]},
                      plot_bgcolor='rgba(0,0,0,0)',
