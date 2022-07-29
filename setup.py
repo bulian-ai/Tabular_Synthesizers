@@ -29,6 +29,7 @@ install_requires = [
     'jupyter-dash>=0.4.2',
     'dash-bootstrap-components>=1.2.0',
     'dash_daq>=0.5.0',
+    'pomegranate>=0.14.1,<0.15',
     ]
 
 pomegranate_requires = [

@@ -1,4 +1,5 @@
 """BaseMetric class."""
+from curses import raw
 import numpy as np
 
 from ..metrics.goal import Goal
@@ -88,10 +89,12 @@ class BaseMetric:
             score = (raw_score - min_value) / (max_value - min_value)
 
         elif not is_min_finite and is_max_finite:
-            score = np.exp(raw_score - max_value)
+            score = np.exp(raw_score - max_value)  ### too flat, doesn't rise up faster
+            # score = np.sqrt(2)**(raw_score-max_value)
 
         elif is_min_finite and not is_max_finite:
-            score = 1.0 - np.exp(min_value - raw_score)
+            score = 1.0 - np.exp(min_value - raw_score) ### too flat, doesn't rise up faster
+            # score = 1-(np.sqrt(2)**(min_value-raw_score))
 
         else:
             score = 1 / (1 + np.exp(-raw_score))

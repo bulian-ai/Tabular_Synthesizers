@@ -99,7 +99,8 @@ def get_metric_info(metric_name):
         return str(METRIC_INFO[metric_name])
     return None
 
-# To Do: We are not paying attention to whether the goal is to maximize or minimize; we assume it all maximize
+# To Do: We are not paying attention to whether the goal is to maximize or minimize; we assume it all maximize -- ignore, normalization of metric takes care of this
+# Likelyhood metrics are not part of avg efficacy calcs, but are shown in graph
 
 def get_full_report(real_data, synthetic_data, discrete_columns, 
     numeric_columns, target=None, key_fields=None, sensitive_fields=None, show_dashboard=False, port=8050):
@@ -107,7 +108,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                             'Statistical Test Metric',
                             'Distribution Similarity Metric',
                             'ML Efficacy Metric: R-Sq or F1',
-                            'Privacy Metric']
+                            'Privacy Metric',
+                            ]
 
     import warnings
     warnings.filterwarnings('ignore')
@@ -117,8 +119,6 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
 
     nonPrivacy_metrics = {k:v for k,v in metrics.items() if k not in privacyMetrics}
     privacy_metrics = {k:v for k,v in metrics.items() if k in privacyMetrics}
-
-    #### Non privacy metrics
 
     #### Non privacy metrics
     ML_Efficacy = None
@@ -135,7 +135,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
     else:
         o = overall
     
-    del overall       
+    del overall
 
     #### Privacy metrics
     if (key_fields is not None) & (sensitive_fields is not None):
@@ -147,7 +147,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
 
     o = o[~np.isnan(o['normalized_score'])]
     o_overall = o[o['MetricType'].isin(_OVERALL_SCORE_GRPS)]
-    multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()
+    multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()   
 
     try:
         avg_efficiency = 100*(o_overall['normalized_score'].mean())
