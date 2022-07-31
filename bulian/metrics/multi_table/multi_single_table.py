@@ -121,42 +121,55 @@ class CSTest(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable CSTest."""
 
     single_table_metric = single_table.multi_single_column.CSTest
+    MetricType = single_table_metric.MetricType
 
 
 class KSTest(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable KSTest."""
 
     single_table_metric = single_table.multi_single_column.KSTest
+    MetricType = single_table_metric.MetricType
+
 
 
 class KSTestExtended(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable KSTestExtended."""
 
     single_table_metric = single_table.multi_single_column.KSTestExtended
+    MetricType = single_table_metric.MetricType
+
 
 
 class LogisticDetection(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable LogisticDetection."""
 
     single_table_metric = single_table.detection.LogisticDetection
+    MetricType = single_table_metric.MetricType
+
 
 
 class SVCDetection(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable SVCDetection."""
 
     single_table_metric = single_table.detection.SVCDetection
+    MetricType = single_table_metric.MetricType
+
 
 
 class BNLikelihood(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable BNLikelihood."""
 
     single_table_metric = single_table.bayesian_network.BNLikelihood
+    MetricType = single_table_metric.MetricType
+
 
 
 class BNLogLikelihood(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable BNLogLikelihood."""
 
     single_table_metric = single_table.bayesian_network.BNLogLikelihood
+    MetricType = single_table_metric.MetricType
+
 
     @classmethod
     def normalize(cls, raw_score):
