@@ -74,6 +74,7 @@ Once trained, these GAN models can perpetually generate high-fidelity, different
 - threadpoolctl>=3.1.0,<4
 - matplotlib>=3.2.0,<4
 - tqdm>=4.15,<5
+- pomegranate>=0.14.1,<0.15
 
 
 ---

@@ -3,9 +3,6 @@ from setuptools import find_packages, setup
 with open('README.md', encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-# with open('HISTORY.md', encoding='utf-8') as history_file:
-#     history = history_file.read()
-
 install_requires = [
     'packaging>=20,<22',
     'scipy>=1.5.4,<1.8',

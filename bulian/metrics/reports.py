@@ -273,6 +273,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             real = go.Histogram(
                 x=real_data[categ_feat],
                 opacity=0.75,
+                histnorm ='percent',
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
@@ -280,6 +281,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             )
             synthetic = go.Histogram(
                 x=synthetic_data[categ_feat],
+                histnorm ='percent',
                 opacity=0.75, 
                 name='Synthetic Data', 
                 marker_color='#03b1fc', 
@@ -296,7 +298,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 category_feat_plot.add_trace(data[1], ceil(i/2), 1)
 
         category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False)
+        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
         category_feat_plot.update_layout(
             plot_bgcolor=colors['sub-background'],
             paper_bgcolor=colors['sub-background'],
@@ -304,7 +306,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             height=1500
         )
         graph_objects.append(html.Hr())
-        graph_objects.append(html.H1('Categorical Count Distribution'))
+        graph_objects.append(html.H1('Categorical Proportion Distribution'))
         graph_objects.append(
             dcc.Graph(
                 id=f'category-feat',
@@ -841,6 +843,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             real = go.Histogram(
                 x=real_data[categ_feat],
                 opacity=0.75,
+                histnorm ='percent',
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
@@ -849,6 +852,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             synthetic = go.Histogram(
                 x=synthetic_data[categ_feat],
                 opacity=0.75, 
+                histnorm ='percent',
                 name='Synthetic Data', 
                 marker_color='#03b1fc',
                 legendgroup='Sythentic Data',
@@ -864,9 +868,9 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 category_feat_plot.add_trace(data[1], ceil(i/2), 1)
 
         category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False)
+        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
         category_feat_plot.update_layout(
-            title=f'Categorical Count Distribution',
+            title=f'Categorical Proportion Distribution',
             height=1500
         )
         category_feat_plot.show()
@@ -1069,6 +1073,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
             real = go.Histogram(
                 x=current_real_data[categ_feat],
                 opacity=0.75,
+                histnorm ='percent',
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
@@ -1077,6 +1082,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
             synthetic = go.Histogram(
                 x=current_synthetic_data[categ_feat],
                 opacity=0.75, 
+                histnorm ='percent',
                 name='Synthetic Data', 
                 marker_color='#03b1fc', 
                 legendgroup='Sythentic Data',
@@ -1092,8 +1098,8 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
                 category_feat_plot.add_trace(data[1], ceil(i/2), 1)
 
         category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False)
+        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
         category_feat_plot.update_layout(
-            title=f'Categorical Count Distribution for {table_name}'
+            title=f'Categorical Proportion Distribution for {table_name}'
         )
         category_feat_plot.show()
