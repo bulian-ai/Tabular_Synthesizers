@@ -110,9 +110,11 @@ class LogisticParentChildDetection(ParentChildDetectionMetric):
     """ParentChild detection metric based on a LogisticRegression."""
 
     single_table_metric = LogisticDetection
+    MetricType = single_table_metric.MetricType
 
 
 class SVCParentChildDetection(ParentChildDetectionMetric):
     """ParentChild detection metric based on a SVC."""
 
     single_table_metric = SVCDetection
+    MetricType = single_table_metric.MetricType

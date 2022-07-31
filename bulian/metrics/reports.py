@@ -10,6 +10,7 @@ from .utils import get_correlation_matrix, gauge, gauge_multi, compute_pca, coun
 import numpy as np
 from ..metrics import compute_metrics
 from ..metrics.single_table import *
+from ..metrics.multi_table import MultiTableMetric
 import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
@@ -23,6 +24,7 @@ from jupyter_dash import JupyterDash
 import pandas as pd
 from math import ceil
 from datetime import datetime
+from typing import Dict
 
 
 privacyMetrics =[
@@ -210,7 +212,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         chart = go.Heatmap(z=real_corr, x=real_corr.columns, y=real_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=-1, zmax=1)
         correlation_fig.add_trace(chart, 1, 2)
 
-        diff_corr = np.abs(real_corr)-np.abs(syn_corr)
+        diff_corr = np.abs(real_corr-syn_corr)
         diff_mask = np.zeros_like(diff_corr, dtype=np.bool)
         diff_mask[np.triu_indices_from(diff_mask)] = True
         diff_corr[diff_mask] = np.nan
@@ -772,41 +774,326 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         sns.heatmap(data=real_corr,mask = real_mask,cbar=False,ax=axes[1],cmap='YlGn')
         axes[1].set_title('Real Data Correlation')
 
-        diff_corr = np.abs(real_corr)-np.abs(syn_corr)
+        diff_corr = np.abs(real_corr-syn_corr)
         diff_mask = np.zeros_like(diff_corr, dtype=np.bool)
         diff_mask[np.triu_indices_from(diff_mask)] = True
         sns.heatmap(data=diff_corr,mask = diff_mask,ax=axes[2],cmap='YlGn')
-        axes[2].set_title('Diff (Δ) of Absolute Correlations')
+        axes[2].set_title('Absolute Diff (Δ) of Correlations')
         plt.show()
 
-        for i,numeric_feat in enumerate(numeric_columns):
-            plt.figure(figsize=(20,4))
-            fig = sns.kdeplot(synthetic_data[numeric_feat], shade=True,label='Synthetic Data')
-            fig = sns.kdeplot(real_data[numeric_feat], shade=True, label='Real Data')
-            if i == 0:
-                plt.title(f"Density Distribution Analysis of Real vs Synthetic Data", fontsize = 26,y=1.3)
-                fig.figure.suptitle(f"Numeric Density Distribution : {numeric_feat} ", fontsize = 16,y=1.02)
+
+        # PCA plot
+        real_pca = compute_pca(real_data)
+        synthetic_pca = compute_pca(synthetic_data)
+
+        real_pca_fig = go.Figure(data=go.Scattergl(
+            x = real_pca['pc1'],
+            y = real_pca['pc2'],
+            mode='markers',
+            name='Real Data',
+            opacity=0.6,
+            marker_color='#e04e14',
+        ))
+
+        synthetic_pca_fig = go.Figure(data=go.Scattergl(
+            x = synthetic_pca['pc1'],
+            y = synthetic_pca['pc2'],
+            mode='markers',
+            name='Synthetic Data',
+            opacity=0.6,
+            marker_color='#03b1fc',
+        ))
+
+        layout = go.Layout(
+            height=700,
+        )
+        pca_fig = go.Figure(data=[real_pca_fig.data[0], synthetic_pca_fig.data[0]], layout=layout)
+        pca_fig.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
+        pca_fig.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+        pca_fig.show()
+
+        for i, numeric_feat in enumerate(numeric_columns):
+            density_fig = ff.create_distplot(
+                [synthetic_data[numeric_feat], real_data[numeric_feat]],
+                group_labels=['Synthetic Data', 'Real Data'],
+                show_hist=False,
+                show_rug=False)
+
+            density_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
+            density_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
+            density_fig.update_layout(
+                title=f"Numeric Density Distribution : {numeric_feat}",
+                title_x=0.5
+            )
+            density_fig.show()
+
+        # Categorical Count Plots
+        category_subplot_titles = []
+        for i, categ_feat in enumerate(discrete_columns):
+            category_subplot_titles.append(f'{categ_feat}')
+        category_feat_plot = make_subplots(
+            rows=ceil(len(discrete_columns)/2),
+            cols=2,
+            subplot_titles=tuple(category_subplot_titles),
+        )
+
+        for i, categ_feat in enumerate(discrete_columns, start=1):
+            real = go.Histogram(
+                x=real_data[categ_feat],
+                opacity=0.75,
+                name='Real Data',
+                marker_color='#e04e14',
+                legendgroup='Real Data',
+                showlegend=True if i==1 else False
+            )
+            synthetic = go.Histogram(
+                x=synthetic_data[categ_feat],
+                opacity=0.75, 
+                name='Synthetic Data', 
+                marker_color='#03b1fc',
+                legendgroup='Sythentic Data',
+                showlegend=True if i==1 else False
+            )           
+            data = [real, synthetic]
+
+            if i%2==0:
+                category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
             else:
-                fig.figure.suptitle(f"Numeric Density Distribution : {numeric_feat} ", fontsize = 16,y=1.02)
+                category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                category_feat_plot.add_trace(data[1], ceil(i/2), 1)
 
-            plt.xlabel(f'{numeric_feat}', fontsize=10)
-            plt.ylabel('Density Distribution', fontsize=10)
-            plt.legend(loc='upper right')
-            plt.show()
+        category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False)
+        category_feat_plot.update_layout(
+            title=f'Categorical Count Distribution',
+            height=1500
+        )
+        category_feat_plot.show()
 
-        #print("\n------------------------------------ CATEGORICAL FEATURE DISTRIBUTIONS ------------------------------------\n")
-        for categ_feat in discrete_columns:
-            plt.figure(figsize=(20,4))
-            plt.hist(real_data[categ_feat], 
-                    label='Real Data',alpha=0.2,density=True)
 
-            plt.hist(synthetic_data[categ_feat], 
-                    label='Synthetic Data',alpha=0.2,density=True)
-            plt.ylabel('Mass Distribution', fontsize=10)
-            plt.legend(loc='upper right',)
-            plt.title(f'Categorical Count Distribution : {categ_feat}',fontsize=16,y=1.02)
-            plt.tick_params(axis='x', rotation=90)
-            plt.show()
+def get_foregin_keys(table, metadata):
+    fks = []
+    parents = metadata.get_parents(table)
+    if len(parents)>0:
+        for p in parents:
+            fks += (metadata.get_foreign_keys(parent=p, child=table))
+    return fks
 
-# if __name__ == '__main__':
-#     get_gauge(20)   
+def remove_id_fields(tables, metadata):
+    for table in tables:
+        pk = metadata.get_primary_key(table)
+        fk = get_foregin_keys(table, metadata)
+        tables[table] = tables[table].loc[:, tables[table].columns.drop([pk]+fk)]
+        tables[table].fillna("", inplace=True)
+    return tables
+
+def get_numeric_discrete_columns(df:pd.DataFrame=None):
+    numeric_columns = df.select_dtypes(include=np.number)
+    discrete_columns = df.select_dtypes(exclude=np.number)
+    return numeric_columns, discrete_columns
+
+def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features:Dict[str, str]=None, discrete_features:Dict[str, str]=None):
+    metrics = MultiTableMetric.get_subclasses()
+    table_names = list(real_data.keys())
+
+    overall = compute_metrics(metrics, real_data, synthetic_data, metadata)
+    overall = overall.replace(np.nan, 0)
+    real_data = remove_id_fields(real_data, metadata)
+    synthetic_data = remove_id_fields(synthetic_data, metadata)
+
+    try:
+        avg_efficacy = 100*(overall['normalized_score'].mean())
+    except ValueError:
+        ValueError("Some of the Relevant metrics are NaN")
+    multi_metrics = overall.groupby('MetricType')['normalized_score'].mean().to_dict()
+
+    gauge(avg_efficacy)
+    if len(multi_metrics)>0:
+        gauge_multi(multi_metrics)
+
+    # Correlation Plots
+    for table_name in table_names:
+        current_real_data = real_data[table_name]
+        current_synthetic_data = synthetic_data[table_name]
+
+        if not numeric_features:
+            numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
+        else:
+            numeric_columns = numeric_features[table_name]
+
+        if not discrete_features:
+            discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+        else:
+            discrete_columns = discrete_features[table_name]
+        
+        correlation_fig = make_subplots(
+            rows=1,
+            cols=3,
+            print_grid=False,
+            shared_yaxes=True,
+            subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
+        syn_corr = get_correlation_matrix(df=current_synthetic_data, discrete_columns=discrete_columns)
+        syn_mask = np.zeros_like(syn_corr, dtype=bool)
+        syn_mask[np.triu_indices_from(syn_mask)] = True
+        syn_corr[syn_mask] = np.nan
+        chart = go.Heatmap(z=syn_corr, x=syn_corr.columns, y=syn_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        correlation_fig.add_trace(chart, 1, 1)
+
+        real_corr = get_correlation_matrix(df=current_real_data, discrete_columns = discrete_columns)
+        real_mask = np.zeros_like(real_corr, dtype=bool)
+        real_mask[np.triu_indices_from(real_mask)] = True
+        real_corr[real_mask] = np.nan
+        chart = go.Heatmap(z=real_corr, x=real_corr.columns, y=real_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        correlation_fig.add_trace(chart, 1, 2)
+
+        diff_corr = np.abs(real_corr-syn_corr)
+        diff_mask = np.zeros_like(diff_corr, dtype=bool)
+        diff_mask[np.triu_indices_from(diff_mask)] = True
+        diff_corr[diff_mask] = np.nan
+        chart = go.Heatmap(z=diff_corr, x=diff_corr.columns, y=diff_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        correlation_fig.add_trace(chart, 1, 3)
+        correlation_fig.update_layout(title=f'Correlation Analysis for {table_name}')
+        correlation_fig.show()
+    
+    # PCA Plots
+    pca_plot = make_subplots(
+        rows=ceil(len(table_names)/2),
+        cols=2,
+        subplot_titles=tuple(table_names)
+    )
+
+    for i, table_name in enumerate(table_names, start=1):
+        current_real_data = real_data[table_name]
+        current_synthetic_data = synthetic_data[table_name]
+
+        # Removing datetime column
+        current_real_data = current_real_data.select_dtypes(exclude=['datetime64'])
+        current_synthetic_data = current_synthetic_data.select_dtypes(exclude=['datetime64'])
+
+        real_pca = compute_pca(current_real_data)
+        synthetic_pca = compute_pca(current_synthetic_data)
+
+        real_pca_fig = go.Scattergl(
+            x = real_pca['pc1'],
+            y = real_pca['pc2'],
+            mode='markers',
+            name='Real Data',
+            opacity=0.6,
+            marker_color='#e04e14',
+            showlegend=True if i==1 else False
+        )
+        synthetic_pca_fig = go.Scattergl(
+            x = synthetic_pca['pc1'],
+            y = synthetic_pca['pc2'],
+            mode='markers',
+            name='Synthetic Data',
+            opacity=0.6,
+            marker_color='#03b1fc',
+            showlegend=True if i==1 else False
+        )
+        if i%2==0:
+            pca_plot.add_trace(real_pca_fig, ceil(i/2), 2)
+            pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 2)                    
+        else:
+            pca_plot.add_trace(real_pca_fig, ceil(i/2), 1)
+            pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 1)
+
+    pca_plot.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
+    pca_plot.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+    pca_plot.update_layout(title=f'PCA', height=300*len(table_names))
+    pca_plot.show()
+
+    # Numeric Desnity
+    for table_name in table_names:
+        current_real_data = real_data[table_name]
+        current_synthetic_data = synthetic_data[table_name]
+
+        if not numeric_features:
+            numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
+        else:
+            numeric_columns = numeric_features[table_name]
+        
+        if len(numeric_columns)==0:
+            break
+        
+        numeric_subplot_titles = []
+        for i, numeric_feat in enumerate(numeric_columns):
+            numeric_subplot_titles.append(f'{numeric_feat}')
+
+        numeric_subplot = make_subplots(
+            rows=len(numeric_columns),
+            cols=1,
+            subplot_titles=tuple(numeric_subplot_titles),
+            vertical_spacing=(1/(len(numeric_columns)-1)) if len(numeric_columns)>1 else 0
+        )
+
+        for i, numeric_feat in enumerate(numeric_columns, start=1):
+            density_fig = ff.create_distplot(
+                [current_synthetic_data[numeric_feat], current_real_data[numeric_feat]],
+                group_labels=['Synthetic Data', 'Real Data'],
+                show_hist=False,
+                show_rug=False)
+            numeric_subplot.add_trace(density_fig.data[0], i, 1)
+            numeric_subplot.add_trace(density_fig.data[1], i, 1)
+        numeric_subplot.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
+        numeric_subplot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
+        numeric_subplot.update_layout(title=f"Numerical Density Distribution for {table_name}")
+        numeric_subplot.show()
+
+    # Categorical Count Plots    
+    for table_name in table_names:
+        current_real_data = real_data[table_name]
+        current_synthetic_data = synthetic_data[table_name]
+
+        if not discrete_features:
+            discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+        else:
+            discrete_columns = discrete_features[table_name]
+
+        if len(discrete_columns)==0:
+            break
+
+        category_subplot_titles = []
+        for i, categ_feat in enumerate(discrete_columns):
+            category_subplot_titles.append(f'{categ_feat}')
+        category_feat_plot = make_subplots(
+            rows=ceil(len(discrete_columns)/2),
+            cols=2,
+            subplot_titles=tuple(category_subplot_titles),
+            specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
+            vertical_spacing=(1/(ceil(len(discrete_columns)/2-1))) if len(discrete_columns)>2 else 0
+        )
+
+        for i, categ_feat in enumerate(discrete_columns, start=1):
+            real = go.Histogram(
+                x=current_real_data[categ_feat],
+                opacity=0.75,
+                name='Real Data',
+                marker_color='#e04e14',
+                legendgroup='Real Data',
+                showlegend=True if i==1 else False
+            )
+            synthetic = go.Histogram(
+                x=current_synthetic_data[categ_feat],
+                opacity=0.75, 
+                name='Synthetic Data', 
+                marker_color='#03b1fc', 
+                legendgroup='Sythentic Data',
+                showlegend=True if i==1 else False
+            )           
+            data = [real, synthetic]
+
+            if i%2==0:
+                category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+            else:
+                category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+
+        category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False)
+        category_feat_plot.update_layout(
+            title=f'Categorical Count Distribution for {table_name}'
+        )
+        category_feat_plot.show()
