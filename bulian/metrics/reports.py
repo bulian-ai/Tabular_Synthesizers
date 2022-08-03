@@ -277,7 +277,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )
             synthetic = go.Histogram(
                 x=synthetic_data[categ_feat],
@@ -286,7 +287,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 name='Synthetic Data', 
                 marker_color='#03b1fc', 
                 legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )           
             data = [real, synthetic]
 
@@ -847,7 +849,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )
             synthetic = go.Histogram(
                 x=synthetic_data[categ_feat],
@@ -856,7 +859,8 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 name='Synthetic Data', 
                 marker_color='#03b1fc',
                 legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )           
             data = [real, synthetic]
 
@@ -1077,7 +1081,8 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
                 name='Real Data',
                 marker_color='#e04e14',
                 legendgroup='Real Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )
             synthetic = go.Histogram(
                 x=current_synthetic_data[categ_feat],
@@ -1086,7 +1091,8 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
                 name='Synthetic Data', 
                 marker_color='#03b1fc', 
                 legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False
+                showlegend=True if i==1 else False,
+                hovertemplate='%{x} - %{y:.1f}%'
             )           
             data = [real, synthetic]
 
