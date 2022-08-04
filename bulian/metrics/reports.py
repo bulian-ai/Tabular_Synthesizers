@@ -44,6 +44,10 @@ privacyMetrics =[
     # 'NumericalSVR',
 ]
 
+
+# Custom color scale
+COLORSCALE = px.colors.sequential.Bluyl[::-1] + px.colors.sequential.Bluyl
+
 METRIC_INFO = {
     'BNLogLikelihood': 'Average log likelihood across all the rows in the synthetic dataset.',
     'LogisticDetection': 'Detection Metric based on a LogisticRegression from scikit-learn.',
@@ -202,23 +206,23 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         syn_mask = np.zeros_like(syn_corr, dtype=np.bool)
         syn_mask[np.triu_indices_from(syn_mask)] = True
         syn_corr[syn_mask] = np.nan
-        chart = go.Heatmap(z=syn_corr, x=syn_corr.columns, y=syn_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=-1, zmax=1)
+        chart = go.Heatmap(z=syn_corr, x=syn_corr.columns, y=syn_corr.columns, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 1)
 
         real_corr = get_correlation_matrix(df=real_data, discrete_columns = discrete_columns)
         real_mask = np.zeros_like(real_corr, dtype=np.bool)
         real_mask[np.triu_indices_from(real_mask)] = True
         real_corr[real_mask] = np.nan
-        chart = go.Heatmap(z=real_corr, x=real_corr.columns, y=real_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=-1, zmax=1)
+        chart = go.Heatmap(z=real_corr, x=real_corr.columns, y=real_corr.columns, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 2)
 
         diff_corr = np.abs(real_corr-syn_corr)
         diff_mask = np.zeros_like(diff_corr, dtype=np.bool)
         diff_mask[np.triu_indices_from(diff_mask)] = True
         diff_corr[diff_mask] = np.nan
-        chart = go.Heatmap(z=diff_corr, x=diff_corr.columns, y=diff_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=-1, zmax=1)
+        chart = go.Heatmap(z=diff_corr, x=diff_corr.columns, y=diff_corr.columns, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 3)
-
+        correlation_fig.update_yaxes(autorange='reversed')
         correlation_fig.update_layout(
             plot_bgcolor=colors['background'],
             paper_bgcolor=colors['sub-background'],
@@ -764,26 +768,29 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             ])
         app.run_server(debug=False, port=port)
     else:
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
-        fig.suptitle('Correlation Analysis\n',fontsize = 24,y=1.07)
+        correlation_fig = make_subplots(
+            rows=1,
+            cols=3,
+            print_grid=False,
+            shared_yaxes=True,
+            subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
         syn_corr = get_correlation_matrix(df=synthetic_data, discrete_columns=discrete_columns)
-        syn_mask = np.zeros_like(syn_corr, dtype=np.bool)
-        syn_mask[np.triu_indices_from(syn_mask)] = True
-        sns.heatmap(data=syn_corr,mask = syn_mask,cbar=False,ax=axes[0],cmap='YlGn')
-        axes[0].set_title('Synthetic Data Correlation')
+        syn_mask = np.triu(np.ones_like(syn_corr, dtype=bool))
+        chart = go.Heatmap(z=syn_corr.mask(syn_mask), x=syn_corr.columns.values, y=syn_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+        correlation_fig.add_trace(chart, 1, 1)
 
         real_corr = get_correlation_matrix(df=real_data, discrete_columns = discrete_columns)
-        real_mask = np.zeros_like(real_corr, dtype=np.bool)
-        real_mask[np.triu_indices_from(real_mask)] = True
-        sns.heatmap(data=real_corr,mask = real_mask,cbar=False,ax=axes[1],cmap='YlGn')
-        axes[1].set_title('Real Data Correlation')
+        real_mask = np.triu(np.ones_like(real_corr, dtype=bool))
+        chart = go.Heatmap(z=real_corr.mask(real_mask), x=real_corr.columns.values, y=real_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+        correlation_fig.add_trace(chart, 1, 2)
 
         diff_corr = np.abs(real_corr-syn_corr)
-        diff_mask = np.zeros_like(diff_corr, dtype=np.bool)
-        diff_mask[np.triu_indices_from(diff_mask)] = True
-        sns.heatmap(data=diff_corr,mask = diff_mask,ax=axes[2],cmap='YlGn')
-        axes[2].set_title('Absolute Diff (Δ) of Correlations')
-        plt.show()
+        diff_mask = np.triu(np.ones_like(diff_corr, dtype=bool))
+        chart = go.Heatmap(z=diff_corr.mask(diff_mask), x=diff_corr.columns.values, y=diff_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+        correlation_fig.add_trace(chart, 1, 3)
+        correlation_fig.update_yaxes(autorange='reversed')
+        correlation_fig.update_layout(title=f'<b>Correlation Analysis</b>', title_x=0.5)
+        correlation_fig.show()
 
 
         # PCA plot
@@ -814,6 +821,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         pca_fig = go.Figure(data=[real_pca_fig.data[0], synthetic_pca_fig.data[0]], layout=layout)
         pca_fig.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
         pca_fig.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+        pca_fig.update_layout(title=f'<b>Prinicpal Component Analysis</b>', title_x=0.5)
         pca_fig.show()
 
         for i, numeric_feat in enumerate(numeric_columns):
@@ -826,7 +834,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             density_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
             density_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
             density_fig.update_layout(
-                title=f"Numeric Density Distribution : {numeric_feat}",
+                title=f"<b>Numeric Density Distribution : {numeric_feat}</b>",
                 title_x=0.5
             )
             density_fig.show()
@@ -874,8 +882,9 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
         category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
         category_feat_plot.update_layout(
-            title=f'Categorical Proportion Distribution',
-            height=1500
+            title=f'<b>Categorical Proportion Distribution</b>',
+            height=1500,
+            title_x=0.5
         )
         category_feat_plot.show()
 
@@ -906,6 +915,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
     table_names = list(real_data.keys())
 
     overall = compute_metrics(metrics, real_data, synthetic_data, metadata)
+    print(overall)
     overall = overall.replace(np.nan, 0)
     real_data = remove_id_fields(real_data, metadata)
     synthetic_data = remove_id_fields(synthetic_data, metadata)
@@ -942,26 +952,21 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
             shared_yaxes=True,
             subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
         syn_corr = get_correlation_matrix(df=current_synthetic_data, discrete_columns=discrete_columns)
-        syn_mask = np.zeros_like(syn_corr, dtype=bool)
-        syn_mask[np.triu_indices_from(syn_mask)] = True
-        syn_corr[syn_mask] = np.nan
-        chart = go.Heatmap(z=syn_corr, x=syn_corr.columns, y=syn_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        syn_mask = np.triu(np.ones_like(syn_corr, dtype=bool))
+        chart = go.Heatmap(z=syn_corr.mask(syn_mask), x=syn_corr.columns.values, y=syn_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 1)
 
         real_corr = get_correlation_matrix(df=current_real_data, discrete_columns = discrete_columns)
-        real_mask = np.zeros_like(real_corr, dtype=bool)
-        real_mask[np.triu_indices_from(real_mask)] = True
-        real_corr[real_mask] = np.nan
-        chart = go.Heatmap(z=real_corr, x=real_corr.columns, y=real_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        real_mask = np.triu(np.ones_like(real_corr, dtype=bool))
+        chart = go.Heatmap(z=real_corr.mask(real_mask), x=real_corr.columns.values, y=real_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 2)
 
         diff_corr = np.abs(real_corr-syn_corr)
-        diff_mask = np.zeros_like(diff_corr, dtype=bool)
-        diff_mask[np.triu_indices_from(diff_mask)] = True
-        diff_corr[diff_mask] = np.nan
-        chart = go.Heatmap(z=diff_corr, x=diff_corr.columns, y=diff_corr.columns, hoverongaps=False, colorscale=px.colors.diverging.RdYlGn, zmin=0, zmax=1)
+        diff_mask = np.triu(np.ones_like(diff_corr, dtype=bool))
+        chart = go.Heatmap(z=diff_corr.mask(diff_mask), x=diff_corr.columns.values, y=diff_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
         correlation_fig.add_trace(chart, 1, 3)
-        correlation_fig.update_layout(title=f'Correlation Analysis for {table_name}')
+        correlation_fig.update_yaxes(autorange='reversed')
+        correlation_fig.update_layout(title=f'<b>Correlation Analysis for "{table_name}" table</b>', title_x=0.5)
         correlation_fig.show()
     
     # PCA Plots
@@ -1009,7 +1014,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
 
     pca_plot.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
     pca_plot.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
-    pca_plot.update_layout(title=f'PCA', height=300*len(table_names))
+    pca_plot.update_layout(title=f'<b>Prinicpal Component Analysis</b>', height=300*len(table_names), title_x=0.5)
     pca_plot.show()
 
     # Numeric Desnity
@@ -1046,7 +1051,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
             numeric_subplot.add_trace(density_fig.data[1], i, 1)
         numeric_subplot.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
         numeric_subplot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
-        numeric_subplot.update_layout(title=f"Numerical Density Distribution for {table_name}")
+        numeric_subplot.update_layout(title=f'<b>Numerical Density Distribution for "{table_name}" table</b>', title_x=0.5)
         numeric_subplot.show()
 
     # Categorical Count Plots    
@@ -1106,6 +1111,7 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
         category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
         category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
         category_feat_plot.update_layout(
-            title=f'Categorical Proportion Distribution for {table_name}'
+            title=f'<b>Categorical Proportion Distribution for "{table_name}" table</b>',
+            title_x=0.5
         )
         category_feat_plot.show()

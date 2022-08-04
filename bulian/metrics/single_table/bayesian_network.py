@@ -58,7 +58,7 @@ class BNLikelihood(SingleTableMetric):
 
             bn = BayesianNetwork.from_structure(real_data[fields].to_numpy(), structure)
         else:
-            bn = BayesianNetwork.from_samples(real_data[fields].to_numpy(), algorithm='chow-liu')
+            bn = BayesianNetwork.from_samples(real_data[fields].to_numpy())
 
         LOGGER.debug('Evaluating likelihood of the synthetic data')
         probabilities = []
