@@ -1,12 +1,16 @@
-from ast import excepthandler
 import enum
 from re import L
 from unicodedata import category
-import warnings
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import seaborn as sns
-from .utils import get_correlation_matrix, gauge, gauge_multi, compute_pca, count_memorized_lines
+from .utils import (
+    get_correlation_matrix,
+    gauge, gauge_multi,
+    compute_pca,
+    count_memorized_lines,
+    get_numeric_discrete_columns,
+    remove_id_fields,
+    get_column_name,
+    get_metric_info
+)
 import numpy as np
 from ..metrics import compute_metrics
 from ..metrics.single_table import *
@@ -44,66 +48,8 @@ privacyMetrics =[
     # 'NumericalSVR',
 ]
 
-
 # Custom color scale
 COLORSCALE = px.colors.sequential.Bluyl[::-1] + px.colors.sequential.Bluyl
-
-METRIC_INFO = {
-    'BNLogLikelihood': 'Average log likelihood across all the rows in the synthetic dataset.',
-    'LogisticDetection': 'Detection Metric based on a LogisticRegression from scikit-learn.',
-    'SVCDetection': 'Detection Metric based on a SVC from scikit-learn.',
-    'BinaryDecisionTreeClassifier': 'ML Efficacy Metric for binary classifications problems, based on a DecisionTreeClassifier from scikit-learn.',
-    'BinaryAdaBoostClassifier': 'ML Efficacy Metric for binary classifications problems, based on an AdaBoostClassifier from scikit-learn.',
-    'BinaryLogisticRegression': 'ML Efficacy Metric for binary classifications problems, based on a LogisticRegression from scikit-learn.',
-    'BinaryMLPClassifier': 'ML Efficacy Metric for binary classifications problems, based on an MLPClassifier from scikit-learn.',
-    'MulticlassDecisionTreeClassifier': 'ML Efficacy Metric for multiclass classifications problems, based on a DecisionTreeClassifier from scikit-learn.',
-    'MulticlassMLPClassifier': 'ML Efficacy Metric for multiclass classifications problems, based on an MLPClassifier from scikit-learn.',
-    'LinearRegression': 'ML Efficacy Metric for regression problems, based on a LinearRegression from scikit-learn.',
-    'MLPRegressor': 'ML Efficacy Metric for regression problems, based on an MLPRegressor from scikit-learn.',
-    'GMLogLikelihood': 'Average log likelihood of multiple GMMs fit over real data and scored synthetic data.',
-    'CSTest': 'Chi-Squared test to compare the distributions of two categorical columns.',
-    'KSTest': 'Kolmogorov-Smirnov test to compare the distributions of two numerical columns',
-    'KSTestExtended': 'KSTest on all the RDT transformed numerical variables.',
-    'CategoricalCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
-    'CategoricalZeroCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
-    'CategoricalGeneralizedCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
-    'CategoricalNB': 'Privacy Metric for categorical columns, based on CategoricalNB from scikit-learn.',
-    'CategoricalKNN': 'Privacy Metric for categorical columns, based on KNeighborsClassifier from scikit-learn.',
-    'CategoricalRF': 'Privacy Metric for categorical columns, based on RandomForestClassifier from scikit-learn.',
-    'CategoricalSVM': 'Privacy Metric for categorical columns, based on SVMClassifier from scikit-learn.',
-    'CategoricalEnsemble': 'Privacy Metric for categorical columns, based on an ensemble of categorical Privacy Metrics.',
-    'NumericalLR': 'Privacy Metric for numerical columns, based on LinearRegression from scikit-learn.',
-    'NumericalMLP': 'Privacy Metric for numerical columns, based on MLPRegressor from scikit-learn.',
-    'NumericalSVR': 'Privacy Metric for numerical columns, based on SVR from scikit-learn.',
-    'NumericalRadiusNearestNeighbor': 'Privacy Metric for numerical columns, based on an implementation of the Radius Nearest Neighbor method.',
-    'ContinuousKLDivergence': 'KL-Divergence Metric applied to all possible pairs of numerical columns.',
-    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.',
-    'MLEfficacy': 'Generic ML Efficacy metric that detects the type of ML Problem associated with the dataset'
-}
-
-def get_map(avg_efficacy):
-    if avg_efficacy < 0.25:
-        return 1
-    elif avg_efficacy < 0.5:
-        return 2
-    elif avg_efficacy < 0.75:
-        return 3
-    elif avg_efficacy <= 1:
-        return 4
-    else:
-         print(f"Avg Efficacy {avg_efficacy} is not within 0-1 bounds")
-         return 0
-
-def get_column_name(name):
-    name = name.replace('_', ' ')
-    if name == 'MetricType':
-        return 'Metric Type'
-    return name
-
-def get_metric_info(metric_name):
-    if metric_name in METRIC_INFO:
-        return str(METRIC_INFO[metric_name])
-    return None
 
 # To Do: We are not paying attention to whether the goal is to maximize or minimize; we assume it all maximize -- ignore, normalization of metric takes care of this
 # Likelyhood metrics are not part of avg efficacy calcs, but are shown in graph
@@ -293,7 +239,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                 legendgroup='Sythentic Data',
                 showlegend=True if i==1 else False,
                 hovertemplate='%{x} - %{y:.1f}%'
-            )           
+            )
             data = [real, synthetic]
 
             if i%2==0:
@@ -391,7 +337,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
                         pagebreak: { mode: ['avoid-all'], before: 'hr' },
                     };
                     html2pdf().from(elmnt).set(opt).toPdf().get('pdf').then(function(pdf){
-                        var image_data = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAADuCAYAAAC+sc50AAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAj4SURBVHic7VxLciS5DX0gsyT1RIdj2iufwldpX8WX8CXmEjPrOcLsvJoj9Ko3/o1aScALkpn8VCK1SIK1aERIKBSzJBQIPDyymEUiIngwcbMduCffnXqvfHfqvfLdqffKUhr009+B33+z9+L5A+Qfv25m5RSIAEcAARDYaV9PWO2Un+SUI8Up13ttIqpTRIC39Kb4v4U0kSLAOfvpW84itYVSor1dP9A+j1S+oL5wqK1WX3bMWpraaiDBPSokzADPs5yaglNaTjnMadFqTjkHOP9gva9qyAlHthePtM8SfUNXQ5xSEd25OTj1PkQ3Tiq1+nIfIgBSTONoWwfPSTilgidRwgzj6dNzygFLjlRbhQO1zqfyD0UcKd/JaPvQqcw8geJCGm/r1SeTep9U5gEdfiicoj7MFrpOqdqpjwT8ewodriNVWc+ZdWZNB/ry8drHKlIfqPDa004rSp3/wpXjGiQ8Z0TPOEI5ERt7xPihUw77BZY41WwVVE693OnYJqJN39Mj8qklV0R0305r1fdUbnAIuosruXJcW2It264IAXQS9ivH9Ujhzq6LgW6Kqwqczzme135WWovU7R6fstBq9YE6zDARDadc3uAo24CFbqqvMrfqc2KrtUjdiPbVTHbXQms5tVWfsfyoVd9SsgRD+ajiFFDghuyPB9sfSVnNOEf4ExFeAPxRJN9o+4OW6AuAT2n8A2oZad+0nHIEvExYjD5pdNhTbMoLgBWG2vGxUzcCfkheP+V3YaBfznbyngAwRbC10guU6rsR7TlFdvqm5hSAG3KfFBBR0TfH2c+FDyv+2bOE2xapzHfG22VKCX7uI/U0ofeVOCX42iP64ghCAAnM9FLkFOHPPU55ig2RDXW5Y034W4vogqcJiH4rGvKCvzaQgIhTQgQSMdM3rSF7okQ88wLRRqtOuSKnjnCFcf34ovEpT4QbUfoj1CRksoHLx/1ZpNpPQY74/pXjS1NctVN+/xAr48j2NwbaXu19Ep8gJGBDsVcy0PZQ+JS707EtZDljngvs8CnrRU90B+/SVu0d3jNKe1KYZzzqEq/etrmTZHzJcuW4hxopgseOH6WzZSpePa7jFGi7oD2aN9L2oji1EGHJOdVt746zFyg5RUTFO2ihYZxNevURnHMgCARkptszeE1OOXggXV6+m1pfPe616XMELA1mWIjTcIqowIyjDwyyXDjenCppI+VB5LaGGT1FbQOXjztXA0btlBAc0fbCUkba7yB5aX7tYGoLxH2nQF0fspCT3ufiDwpuDQy3W5ZQWbH6JCG7nVanL/a+TNLt9Ami0wZkmRluURxo0xmie6KEI9QQ/XG20xKdQDFaspMwAobbavUtcFtOuYa/th3xynG1IcMRfCjeQr3Er+XCcRXRPTKfsmVU6mqG4FIoCQxJQSUDW11iOTjy6XEtI20PhSXk+ouP6pQYa6s5tU/fMUu7XquRosQTrEVHdDgsySlDOpWWKwdORZ/tFw5qpHysP1jnVBuIOzkVf+eXsIF9GqlcCbQ9h+F2W1wdS2ibo4W0q4LOqTyFM3cTupzKib6v9qmwW33NuEryXJFTlqImeuKdpg7l/1tKV32S6mGnFlFqInn1+Gnvc+mRoKT6vgG9a8fVSFGKlK2oOCWTcuqUT+XfXPTxbDvsHyJeOV5Gqj8sAUozvc95Bjl3oK8Z32enOyyRUz0+stW7U1/b6mMAAdbUpcyp7rBERBPBTumt9P7JTXdYIkYpwFrKKewOSwCSptBalI9rI/iv2Of6SK4eV3AqXsiwT/Q6ZepICQPC99/IUJurYDVtJkWqjfxwW3GKOEDEvvqgbQUBApIAIRenMnepwbbKp8AMYUZul3upDrZJSXRA4vwaS4uNXU6Bg/lBwdOcinmFpOmOxvXjTTnWTkmMlLUIhQrTG6fm5JTTc4oBtu99Qk6J1FZ9tr2PSIkUcu8zFmEtp2bhlHakEryCwmrPElhrM5JZQjP3w22tzbAAPIMOa06JACE7VS99htrqlzhwAMIEPiUaJDDiFFpTdN2pcvoMRbvDCMJTGrK67gPzpOo7jRTD/O5atfcFmVN9eqQkJru16L2PHzBSjAgJea4dJdwabKtthte6+tpCHGWr676M6NZCtdlDwpo4OknBee4QoivHZVWcYtl7Xzn3hAZXLh7XblGJiD6h+oIWKeHEPo2l+Z89oq+11zaiMs80feTiYyvNKnhKA2ZGWnVKJjVkHTzDHOapNuSASU6dMc/Hc0qA9dEWDkGAdUKiq04xomPW675Vc2rlSdOn0mHM4VPhbC/h7d6e52BbBc8gCfnbaA221UitmFN9/rT3ZaP8lKnUA8bXIlJfPrfTF4C3t/KJA33xuCue/8sv2k6eofBZTuWk47RYLF84yl7Pqq8EzxazRtnat1SCueDohljlVZJXVoIhVqlOzVrN3E6pSzYscar2safDVU7lx9zoi8fV6uMQnTLux23K3GnI6d1kEnYkV47r1GUSR1eZZ5VThqLnlABvE5jnrTb7nOIUqaMKHmHrOQVgYy4BCD5q+MIeMP6k5hQ3ObUe6IvHg5ZTECC8wlx0ji5pNYOe/7Ry5fjb2e5wuSl6toa4ary5rj9pltd9LEr1XDtOepsB8A0AJB64Kq6t7YvHg1Z9zAgrTE+ZCQHutb5Jo4uUrEB5yMJCixYpYYG87qzCSnPgau1QOxUE+AP28u2kIct/4rMcAOexfUXpSFs+adMXAPkvgGeAXgF5BvA63qY3JVLCAfyaXgg7Tf+rW1v1SZs0PchKhLVIhUn3gvzr27FTEDGHg+hU5UXtFK/x9LM9TilOSdgvnCkdR7c/etp/bUE9fTLnrplWaqdYJtxf1KfM40dK1jk4pTrFgimQIM1OyF1EtxbVKQ6zckpzSlDds2al1S8GEaZJOVVvuzwETrU12EHCjJxSb7jnIJPurVU4OoubQ13UnArS7SBZiKg5xXNyqv3+tyZSs+7XVhJdeE5O6dRlnYNT7X5fl1MznFK/VSk0OZVltO3V6gt7Th0lJgaMBy1S/Donp0IZqS+fQSIzjsDqMuOrSU7lIZ36P2Ozg3d0XGbEAAAAAElFTkSuQmCC';
+                        var image_data = 'data:image/png;base64,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';
                         pdf.setPage(2);
                         pdf.addImage(image_data, 'PNG', 39, 7);
                     }).save();
@@ -547,7 +493,7 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
             ),
             html.A(
                 id='docs_btn',
-                href="https://docs.bulian.ai/bulianai-overview/api-docs/getting-started-with-bulian-ai/metrics/single-table-metrics",
+                href="https://docs.bulian.ai/bulianai-overview/api-docs/getting-started-with-bulian-ai/metrics",
                 target="_blank",
                 children=[
                     dbc.Button("View Docs", color="warning", className="me-1"),
@@ -888,35 +834,35 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         )
         category_feat_plot.show()
 
+def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features:Dict[str, str]=None, discrete_features:Dict[str, str]=None, show_dashboard=False, port=8050):
+    """Multi Table Data Quality Report.
+    This API provides data quality report metrics for multi table /relational methods
 
-def get_foregin_keys(table, metadata):
-    fks = []
-    parents = metadata.get_parents(table)
-    if len(parents)>0:
-        for p in parents:
-            fks += (metadata.get_foreign_keys(parent=p, child=table))
-    return fks
+    Args:
+        real_data (Dict(pandas.DataFrame)):
+            Dictionary containing related tables as pandas.DataFrame
 
-def remove_id_fields(tables, metadata):
-    for table in tables:
-        pk = metadata.get_primary_key(table)
-        fk = get_foregin_keys(table, metadata)
-        tables[table] = tables[table].loc[:, tables[table].columns.drop([pk]+fk)]
-        tables[table].fillna("", inplace=True)
-    return tables
+        synthetic_data (pandas.DataFrame):
+            Dictionary containing related tables as pandas.DataFrame
+        
+        metadata (bulian.metadata.dataset.Metadata):
+            Metadata object for the related relational data tables
 
-def get_numeric_discrete_columns(df:pd.DataFrame=None):
-    numeric_columns = df.select_dtypes(include=np.number)
-    discrete_columns = df.select_dtypes(exclude=np.number)
-    return numeric_columns, discrete_columns
-
-def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features:Dict[str, str]=None, discrete_features:Dict[str, str]=None):
+        numeric_features (Dict):
+            Dictionary with keys as table name and values as a list of numeric column names
+    
+        discrete_features (Dict):
+            Dictionary with keys as table name and values as a list of discrete column names
+        
+        show_dashboard (Boolean):
+        port (int):
+    """
     metrics = MultiTableMetric.get_subclasses()
     table_names = list(real_data.keys())
 
     overall = compute_metrics(metrics, real_data, synthetic_data, metadata)
-    print(overall)
-    overall = overall.replace(np.nan, 0)
+    overall = overall.dropna(subset=['normalized_score'])
+
     real_data = remove_id_fields(real_data, metadata)
     synthetic_data = remove_id_fields(synthetic_data, metadata)
 
@@ -926,192 +872,758 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
         ValueError("Some of the Relevant metrics are NaN")
     multi_metrics = overall.groupby('MetricType')['normalized_score'].mean().to_dict()
 
-    gauge(avg_efficacy)
-    if len(multi_metrics)>0:
-        gauge_multi(multi_metrics)
+    if show_dashboard:
+        gauge_fig, gauge_value = gauge(avg_efficacy, show_dashboard)
+        if len(multi_metrics)>0:
+            gauge_multi_fig, gauge_multi_values = gauge_multi(multi_metrics, show_dashboard)
+    else:
+        gauge(avg_efficacy, show_dashboard)
+        if len(multi_metrics)>0:
+            gauge_multi(multi_metrics, show_dashboard)
 
-    # Correlation Plots
-    for table_name in table_names:
-        current_real_data = real_data[table_name]
-        current_synthetic_data = synthetic_data[table_name]
-
-        if not numeric_features:
-            numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
-        else:
-            numeric_columns = numeric_features[table_name]
-
-        if not discrete_features:
-            discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
-        else:
-            discrete_columns = discrete_features[table_name]
+    if show_dashboard:
+        app = JupyterDash(__name__)
+        app.title = 'Bulian AI Synthetic Data Quality Report'
+        app._favicon = 'apple-icon-57x57.png'
         
-        correlation_fig = make_subplots(
-            rows=1,
-            cols=3,
-            print_grid=False,
-            shared_yaxes=True,
-            subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
-        syn_corr = get_correlation_matrix(df=current_synthetic_data, discrete_columns=discrete_columns)
-        syn_mask = np.triu(np.ones_like(syn_corr, dtype=bool))
-        chart = go.Heatmap(z=syn_corr.mask(syn_mask), x=syn_corr.columns.values, y=syn_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
-        correlation_fig.add_trace(chart, 1, 1)
+        # Timestamp for report
+        date_time = 'Generated on \n'+ datetime.utcnow().strftime("%d/%m/%Y, %I:%M %p") + ' UTC'
 
-        real_corr = get_correlation_matrix(df=current_real_data, discrete_columns = discrete_columns)
-        real_mask = np.triu(np.ones_like(real_corr, dtype=bool))
-        chart = go.Heatmap(z=real_corr.mask(real_mask), x=real_corr.columns.values, y=real_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
-        correlation_fig.add_trace(chart, 1, 2)
-
-        diff_corr = np.abs(real_corr-syn_corr)
-        diff_mask = np.triu(np.ones_like(diff_corr, dtype=bool))
-        chart = go.Heatmap(z=diff_corr.mask(diff_mask), x=diff_corr.columns.values, y=diff_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
-        correlation_fig.add_trace(chart, 1, 3)
-        correlation_fig.update_yaxes(autorange='reversed')
-        correlation_fig.update_layout(title=f'<b>Correlation Analysis for "{table_name}" table</b>', title_x=0.5)
-        correlation_fig.show()
-    
-    # PCA Plots
-    pca_plot = make_subplots(
-        rows=ceil(len(table_names)/2),
-        cols=2,
-        subplot_titles=tuple(table_names)
-    )
-
-    for i, table_name in enumerate(table_names, start=1):
-        current_real_data = real_data[table_name]
-        current_synthetic_data = synthetic_data[table_name]
-
-        # Removing datetime column
-        current_real_data = current_real_data.select_dtypes(exclude=['datetime64'])
-        current_synthetic_data = current_synthetic_data.select_dtypes(exclude=['datetime64'])
-
-        real_pca = compute_pca(current_real_data)
-        synthetic_pca = compute_pca(current_synthetic_data)
-
-        real_pca_fig = go.Scattergl(
-            x = real_pca['pc1'],
-            y = real_pca['pc2'],
-            mode='markers',
-            name='Real Data',
-            opacity=0.6,
-            marker_color='#e04e14',
-            showlegend=True if i==1 else False
-        )
-        synthetic_pca_fig = go.Scattergl(
-            x = synthetic_pca['pc1'],
-            y = synthetic_pca['pc2'],
-            mode='markers',
-            name='Synthetic Data',
-            opacity=0.6,
-            marker_color='#03b1fc',
-            showlegend=True if i==1 else False
-        )
-        if i%2==0:
-            pca_plot.add_trace(real_pca_fig, ceil(i/2), 2)
-            pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 2)                    
-        else:
-            pca_plot.add_trace(real_pca_fig, ceil(i/2), 1)
-            pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 1)
-
-    pca_plot.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
-    pca_plot.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
-    pca_plot.update_layout(title=f'<b>Prinicpal Component Analysis</b>', height=300*len(table_names), title_x=0.5)
-    pca_plot.show()
-
-    # Numeric Desnity
-    for table_name in table_names:
-        current_real_data = real_data[table_name]
-        current_synthetic_data = synthetic_data[table_name]
-
-        if not numeric_features:
-            numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
-        else:
-            numeric_columns = numeric_features[table_name]
-        
-        if len(numeric_columns)==0:
-            break
-        
-        numeric_subplot_titles = []
-        for i, numeric_feat in enumerate(numeric_columns):
-            numeric_subplot_titles.append(f'{numeric_feat}')
-
-        numeric_subplot = make_subplots(
-            rows=len(numeric_columns),
-            cols=1,
-            subplot_titles=tuple(numeric_subplot_titles),
-            vertical_spacing=(1/(len(numeric_columns)-1)) if len(numeric_columns)>1 else 0
-        )
-
-        for i, numeric_feat in enumerate(numeric_columns, start=1):
-            density_fig = ff.create_distplot(
-                [current_synthetic_data[numeric_feat], current_real_data[numeric_feat]],
-                group_labels=['Synthetic Data', 'Real Data'],
-                show_hist=False,
-                show_rug=False)
-            numeric_subplot.add_trace(density_fig.data[0], i, 1)
-            numeric_subplot.add_trace(density_fig.data[1], i, 1)
-        numeric_subplot.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
-        numeric_subplot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
-        numeric_subplot.update_layout(title=f'<b>Numerical Density Distribution for "{table_name}" table</b>', title_x=0.5)
-        numeric_subplot.show()
-
-    # Categorical Count Plots    
-    for table_name in table_names:
-        current_real_data = real_data[table_name]
-        current_synthetic_data = synthetic_data[table_name]
-
-        if not discrete_features:
-            discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
-        else:
-            discrete_columns = discrete_features[table_name]
-
-        if len(discrete_columns)==0:
-            break
-
-        category_subplot_titles = []
-        for i, categ_feat in enumerate(discrete_columns):
-            category_subplot_titles.append(f'{categ_feat}')
-        category_feat_plot = make_subplots(
-            rows=ceil(len(discrete_columns)/2),
-            cols=2,
-            subplot_titles=tuple(category_subplot_titles),
-            specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
-            vertical_spacing=(1/(ceil(len(discrete_columns)/2-1))) if len(discrete_columns)>2 else 0
-        )
-
-        for i, categ_feat in enumerate(discrete_columns, start=1):
-            real = go.Histogram(
-                x=current_real_data[categ_feat],
-                opacity=0.75,
-                histnorm ='percent',
-                name='Real Data',
-                marker_color='#e04e14',
-                legendgroup='Real Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
-            )
-            synthetic = go.Histogram(
-                x=current_synthetic_data[categ_feat],
-                opacity=0.75, 
-                histnorm ='percent',
-                name='Synthetic Data', 
-                marker_color='#03b1fc', 
-                legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
-            )           
-            data = [real, synthetic]
-
-            if i%2==0:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 2)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+        # Multi Gauge plots
+        if gauge_multi_fig:
+            gauge_multi_figures = []
+            plot_count = len(gauge_multi_values)
+            row = []
+            row_2 = []
+            if plot_count>4:
+                for i, item in enumerate(gauge_multi_values, start=1):
+                    name = list(item.keys())[0]
+                    value = list(item.values())[0]
+                    if i>3:
+                            row_2.append(
+                                    dbc.Col(daq.Gauge(
+                                        id=f'gauge-{name}',
+                                        label=name,
+                                        labelPosition='bottom',
+                                        value=int(value),
+                                        max=100,
+                                        min=0,
+                                        showCurrentValue=True,
+                                        color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                        style={'font-weight':'bold', 'font-size': '1.2em'}
+                                )
+                            ))
+                    else:
+                        row.append(
+                                dbc.Col(daq.Gauge(
+                                    id=f'gauge-{name}',
+                                    label=name,
+                                    labelPosition='bottom',
+                                    value=int(value),
+                                    max=100,
+                                    min=0,
+                                    showCurrentValue=True,
+                                    color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                    style={'font-weight':'bold', 'font-size': '1.2em'}
+                            )
+                        ))
+                gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
+                gauge_multi_figures.append(dbc.Row(row_2, id='metrics_row_2'))
             else:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 1)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+                for item in gauge_multi_values:
+                    name = list(item.keys())[0]
+                    value = list(item.values())[0]
+                    row.append(
+                            dbc.Col(daq.Gauge(
+                                id=f'gauge-{name}',
+                                label=name,
+                                labelPosition='bottom',
+                                value=int(value),
+                                max=100,
+                                min=0,
+                                showCurrentValue=True,
+                                color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                style={'font-weight':'bold', 'font-size': '1.2em'}
+                        )
+                    ))
+                gauge_multi_figures.append(dbc.Row(row, id='metrics_row'))
+            gauge_multi_figures.append(
+                html.A(
+                    id='learn_more_btn',
+                    href="#cards",
+                    children=[
+                        dbc.Button("Metric Cards", color="warning", className="me-1"),
+                    ],
+                ),
+            )
 
-        category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
-        category_feat_plot.update_layout(
-            title=f'<b>Categorical Proportion Distribution for "{table_name}" table</b>',
-            title_x=0.5
+        # Correlation Plots
+        correlation_figures = []
+        for i, table_name in enumerate(table_names):
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not discrete_features:
+                discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+            else:
+                discrete_columns = discrete_features[table_name]
+                    
+            correlation_fig = make_subplots(
+                rows=1,
+                cols=3,
+                print_grid=False,
+                shared_yaxes=True,
+                subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
+            syn_corr = get_correlation_matrix(df=current_synthetic_data, discrete_columns=discrete_columns)
+            syn_mask = np.triu(np.ones_like(syn_corr, dtype=bool))
+            chart = go.Heatmap(z=syn_corr.mask(syn_mask), x=syn_corr.columns.values, y=syn_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 1)
+
+            real_corr = get_correlation_matrix(df=current_real_data, discrete_columns=discrete_columns)
+            real_mask = np.triu(np.ones_like(real_corr, dtype=bool))
+            chart = go.Heatmap(z=real_corr.mask(real_mask), x=real_corr.columns.values, y=real_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 2)
+
+            diff_corr = np.abs(real_corr-syn_corr)
+            diff_mask = np.triu(np.ones_like(diff_corr, dtype=bool))
+            chart = go.Heatmap(z=diff_corr.mask(diff_mask), x=diff_corr.columns.values, y=diff_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 3)
+            correlation_fig.update_yaxes(autorange='reversed')
+            correlation_fig.update_layout(title=f'<b>Table - "{table_name}"</b>', title_x=0.5)
+            if i!=0:
+                correlation_fig.update_traces(showscale=False)
+            correlation_figures.append(dcc.Graph(
+                            id=f'correlation-graphs-{i}',
+                            figure=correlation_fig,
+                            style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
+            ))
+
+        # PCA Plots
+        subplot_titles = []
+        for name in table_names:
+            subplot_titles.append(f'<b>Table - "{name}"</b>')
+
+        pca_plot = make_subplots(
+            rows=ceil(len(table_names)/2),
+            cols=2,
+            subplot_titles=tuple(subplot_titles)
         )
-        category_feat_plot.show()
+
+        for i, table_name in enumerate(table_names, start=1):
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            # Removing datetime column
+            current_real_data = current_real_data.select_dtypes(exclude=['datetime64'])
+            current_synthetic_data = current_synthetic_data.select_dtypes(exclude=['datetime64'])
+
+            real_pca = compute_pca(current_real_data)
+            synthetic_pca = compute_pca(current_synthetic_data)
+
+            real_pca_fig = go.Scattergl(
+                x = real_pca['pc1'],
+                y = real_pca['pc2'],
+                mode='markers',
+                name='Real Data',
+                opacity=0.6,
+                marker_color='#e04e14',
+                showlegend=True if i==1 else False
+            )
+            synthetic_pca_fig = go.Scattergl(
+                x = synthetic_pca['pc1'],
+                y = synthetic_pca['pc2'],
+                mode='markers',
+                name='Synthetic Data',
+                opacity=0.6,
+                marker_color='#03b1fc',
+                showlegend=True if i==1 else False
+            )
+            if i%2==0:
+                pca_plot.add_trace(real_pca_fig, ceil(i/2), 2)
+                pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 2)                    
+            else:
+                pca_plot.add_trace(real_pca_fig, ceil(i/2), 1)
+                pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 1)
+        pca_plot.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
+        pca_plot.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+        pca_plot.update_layout(height=300*len(table_names))
+
+        # Numeric Desnity
+        numeric_plots = []
+        for i, table_name in enumerate(table_names):
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not numeric_features:
+                numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
+            else:
+                numeric_columns = numeric_features[table_name]
+            
+            if len(numeric_columns)==0:
+                break
+            
+            numeric_subplot_titles = []
+            for i, numeric_feat in enumerate(numeric_columns):
+                numeric_subplot_titles.append(f'{numeric_feat}')
+
+            numeric_subplot = make_subplots(
+                rows=len(numeric_columns),
+                cols=1,
+                subplot_titles=tuple(numeric_subplot_titles),
+                vertical_spacing=(1/(len(numeric_columns)-1)) if len(numeric_columns)>1 else 0
+            )
+
+            for i, numeric_feat in enumerate(numeric_columns, start=1):
+                density_fig = ff.create_distplot(
+                    [current_synthetic_data[numeric_feat], current_real_data[numeric_feat]],
+                    group_labels=['Synthetic Data', 'Real Data'],
+                    show_hist=False,
+                    show_rug=False)
+                numeric_subplot.add_trace(density_fig.data[0], i, 1)
+                numeric_subplot.add_trace(density_fig.data[1], i, 1)
+            numeric_subplot.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
+            numeric_subplot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
+            numeric_subplot.update_layout(title=f'<b>Table - "{table_name}"</b>', title_x=0.5)
+            numeric_plots.append(dcc.Graph(
+                figure=numeric_subplot,
+                style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
+            ))
+
+        # Categorical Count Plots
+        categorical_count_plots = []
+        for table_name in table_names:
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not discrete_features:
+                discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+            else:
+                discrete_columns = discrete_features[table_name]
+
+            if len(discrete_columns)==0:
+                break
+
+            category_subplot_titles = []
+            for i, categ_feat in enumerate(discrete_columns):
+                category_subplot_titles.append(f'{categ_feat}')
+            category_feat_plot = make_subplots(
+                rows=ceil(len(discrete_columns)/2),
+                cols=2,
+                subplot_titles=tuple(category_subplot_titles),
+                specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
+                vertical_spacing=(1/(ceil(len(discrete_columns)/2-1))) if len(discrete_columns)>2 else 0
+            )
+
+            for i, categ_feat in enumerate(discrete_columns, start=1):
+                real = go.Histogram(
+                    x=current_real_data[categ_feat],
+                    opacity=0.75,
+                    histnorm ='percent',
+                    name='Real Data',
+                    marker_color='#e04e14',
+                    legendgroup='Real Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )
+                synthetic = go.Histogram(
+                    x=current_synthetic_data[categ_feat],
+                    opacity=0.75, 
+                    histnorm ='percent',
+                    name='Synthetic Data', 
+                    marker_color='#03b1fc', 
+                    legendgroup='Sythentic Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )           
+                data = [real, synthetic]
+
+                if i%2==0:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+                else:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+
+            category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+            category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
+            category_feat_plot.update_layout(
+                title=f'<b>Table - "{table_name}"</b>',
+                title_x=0.5
+            )
+            categorical_count_plots.append(
+                dcc.Graph(
+                    figure=category_feat_plot,
+                    style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
+                )
+            )
+
+        # Detailed Metrics Table
+        metrics_df = overall[['metric', 'name', 'normalized_score', 'MetricType']]
+        metrics_df = metrics_df.round(2)
+
+        metric_table = [html.Hr(), html.H1("Detailed Metrics View")]
+        metric_table.append(
+            html.Div(
+                children=[
+                    dash_table.DataTable(
+                        metrics_df.to_dict('records'),
+                        filter_action="native",
+                        columns=[{"name": get_column_name(i), "id": i} for i in metrics_df.columns],
+                        sort_action="native",
+                        sort_mode="multi",
+                        style_header={
+                            'backgroundColor': '#0a0c3d',
+                            'color': 'white',
+                            'text-transform': 'capitalize',
+                            'font-weight': 'bold',
+                            'font-size': '1.2em',
+                            'textAlign': 'center',
+                            'border': '1px solid #FAFAFA'                            
+                        },
+                        style_data={
+                            'backgroundColor': '#0a0c3d',
+                            'color': 'white',
+                            'height': 'auto',
+                            'minWidth': '120px', 'width': '120px', 'maxWidth': '120px',
+                            'overflow': 'hidden',
+                            'textOverflow': 'ellipsis',
+                            'border': '1px solid #FAFAFA',
+                            'border-collapse': 'collapse'
+                        },
+                        style_cell={
+                            'textAlign': 'left',
+                            'width':'85px',
+                            'padding': '5px',
+                            
+                        },
+                        style_cell_conditional=[
+                            {'if': {'column_id': 'normalized_score'},
+                            'width': '20%'},
+                            {'if': {'column_id': 'name'},
+                            'width': '30%'},
+                        ]
+                    )
+                ],
+                style={'width':'70%','margin-left':'auto', 'margin-right':'auto'}
+            )
+        )
+
+        # Metric Cards
+        if gauge_multi_fig:
+            metric_info_cards = [
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("Detection Score", className="card-title"),
+                                html.P(
+                                    "Quantifies ability of ML algorithms to separate real vs synthetic data. Indicates deep structural stability.",
+                                    className="card-text",
+                                    style={'font-size': '14px'}
+                                ),
+                            ]
+                        ),
+                        color='warning',
+                    ),
+                    width=4
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("Statistical Score", className="card-title"),
+                                html.P(
+                                    "Statistics based measure to quantify statistical distribution similarity. Based on K-S and C-S tests.",
+                                    className="card-text",
+                                    style={'font-size': '14px'}
+                                ),
+                            ]
+                        ),
+                        color='warning',
+                    ),
+                    width=4
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("Likelihood Score", className="card-title"),
+                                html.P(
+                                    "Metrics which learn the distribution of the real data and evaluate the likelihood of the synthetic data.",
+                                    className="card-text",
+                                    style={'font-size': '14px'}
+                                ),
+                            ]
+                        ),
+                        color='warning',
+                    ),
+                    width=4
+                )
+                
+                ]
+        else:
+            metric_info_cards = []
+
+        for i, row in enumerate(metrics_df.to_dict('records')):
+            metric_name = row['metric']
+            info = get_metric_info(row['metric'])
+            
+            element = dbc.Col(
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4(metric_name, className="card-title"),
+                            html.P(
+                                info,
+                                className="card-text",
+                            ),
+                        ]
+                    ),
+                    color="warning"
+                ),
+                width=4,
+            )
+            metric_info_cards.append(element)
+        metric_info_cards = [metric_info_cards[i:i+3] for i in range(0, len(metric_info_cards), 3)]
+
+        metric_info_cards_rows = []
+        for elements in metric_info_cards:
+            metric_info_cards_rows.append(
+                dbc.Row(elements)
+            )
+        metric_info_div = [
+            html.Br(),
+            html.H1("Metric Cards"),
+            html.A(id='cards'),
+            html.Div(
+                children=metric_info_cards_rows,
+                id='metric_info_div'
+            ),
+            html.A(
+                id='docs_btn',
+                href="https://docs.bulian.ai/bulianai-overview/api-docs/getting-started-with-bulian-ai/metrics",
+                target="_blank",
+                children=[
+                    dbc.Button("View Docs", color="warning", className="me-1"),
+                ],
+            ),
+        ]
+
+        # Download PDF
+        # TODO - Check other libraries with 
+        file_name = 'report-'+datetime.utcnow().strftime("%d/%m/%Y-%I:%M")+'.pdf'
+        app.clientside_callback(
+            """
+            function(n_clicks){
+                if(n_clicks > 0){
+                    var elmnt = document.getElementById("graphs");
+                    var opt = {
+                        margin:[0,0,0,1],
+                        filename: '"""+file_name+"""',
+                        image: { type: 'jpeg', quality: 1 },
+                        jsPDF: { unit: 'cm', format: 'a2', orientation: 'p', precision:40},
+                        html2canvas:  { dpi: 192, letterRendering: true},
+                        pagebreak: { mode: ['avoid-all'], before: 'hr' },
+                    };
+                    html2pdf().from(elmnt).set(opt).toPdf().get('pdf').then(function(pdf){
+                        var image_data = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAD/CAYAAACU5wQzAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAnrSURBVHic7VxdjuS4Df4o2dU7C0ySPUzOF+Qg+76HCZAD5ArZvATo9FbZYh70Y4q0q4Fpi+6H5qCHRbGqTFMkRVIqEzMzPgGEqwWoMAHAX//2K/7xz3/5X/3nF/Bvf98ESYGASP6C0HbNCQCYqBsEAZCWM4oOSpCEfrC9eTStBVmnAIQL7DZu15zaK7rARqCnphorEcDsh8XUhCZZ1YgnFpOwaSTQZs1N8sG0CBkTACyRNjVVHjnQ2msCV69pIvvgEHtBHkFIDEesbWQNoXgNfG0kqDiSCL0Vk5J4FK1tZGleI+aw+vtIWmtkAXobqRKPprWNIARgigATQOyHtUbe6rTQnsQjsbaRFlyErgzw+XxtrA/pNYfxZwRfCbJWr5EpScJ4Wq81IAARPXjQQrAsSKSLMjStEeC5nY0CNlNDNnn2AO01IDyv+WoAOpsv7GaLrO/ayHsa+wG+dt88qAOOA23XGmSNPA1AA+hpkyS0/2V09cS9RqR0jtjWNRq0YQ2irY3QZiMV6pyOpKPRiJozPYejaBNZA66xkS14FI1cUfd2Qkkbab0KR43YfIS1gBYGZIoSRBb/7FsGgYmsxOhiP8GHljJlBnX9LPHusfSnydAElJwVNrn1AJMYyajnCXr1DaH00bxBlxO/APj9ChvRq+8cQsnSsFVkLljFke/g/OpZ/20EX09N1HWvF2hBbsDn8JpNI0VvFABO42ld6d26OFLf7EBrrwkR/VZaNajRtF5rZgCmNnVY8+Q1SxzZW30dQNtIJFyz+mobuRH61feoL3o23wQ0UuJVWuPT+XpqPks+kmPZk47PKNA2MgUUC362ag3AuzbSNOKItUbiZV1FJUjZYYTrtOxpJDQbATbuePxdrzXv7pDoResk/je91ky1Qe88M38yG9AAIjECCMkRz1ojFIBfIuFBwMx++EVrZCbgu7CllUT0HUjHoDQSCHgJ5Q0li2PONAD8hI0+k/9Na2QC8FPtxWuMg/ET+FHbSAiEWwglTSA3PBuvodxFan17JzwDvSBTYEyT/ybnrBMjAvACBhOBuMeB82kKPX4G38SRGIFbi/sa42D84/xJa2TiPF+pjEegnbJYBX0238QRmoD5IGed9odP4c969Y0ApgMbGYknKI3MnOMIAHhuDLyQOj9CkdsJwaNOU53zM/mkbSQS4XbBtu+L8RpiRDACERgMAmElRhQ7TInP5wdKvSCBCLPawYrqFiLO55s4ElW25AWTWX0pYCLaDtA54UmfuiJihFLXEPlhk49MJOerasbis/ly06xMDedCXILDGijDf9FI7hp5H8yLOkOjwAhHOWe7o/P5s15rJsj80S8fMRrJ52rpyl2SzUbmYqw1LfHAN5OzEhACI3CpTb0w1FozUd0qycbDkTGl8fRhXdOgFmmD6Wi8hvqqywsmnaEZjbgJYjSSteIdWa1GWOzhOGKz6MWQo6u3vUaboeW6xj0xMjYSCHPJG5rE5QMjablp1mxEzhcB8ojYMFqmQK2ukRm1F8hMv/RZc11DINGPHU/Lur/kIwEzArbyB+1jI+mgNRKbRqrkm7vlDwP9nZ3DN2tNBDCbjGo8GI0EQNiIVmIGPX4G33oNCFMb1rEYB+Mf5+/YSH7hHuIFXaaGMKMakydWGpnA5R+JN42nob0my7bJR21sLC2hWCjjatgOX18A8qpNI0lpxYNmMdY0EsycedAkaABfNmIF6X16GxtLyxGhkaO1wYf+shF91a848hVH9uArjjyjP5+NJMXwpstzAxgrGGsbzpmlH10EYQDLBTZiCqwFWSv7tdo4TFqQtQizGa0PNhpZwXiA3XcnTDcgFa1U4/HCpsDapqYCoY8tY2hpJQeC+IR7OZqfLQHGg4/KZfnhc/lJ91mZgdQ+R93HzPecyJdQHvsBPFKRqANFn8xP4pB+9hoGlgvWPbMBvSbGIx3N6UCauLWNNq9hlGY9g4hE834grd03MbAytjl0wqQD2sKEpRzLAurhpPG0bP8XQaqNlLnrIuE4mrVGqtd47+lJ7y6CcHZfZxtB2iTJXsPZTjgAlOCGSe/pLQw8EiMkQoLGQEjYGf84X0KzkcQ1k9c4n96mEXxWGkkJuHO/z9JhPl5bP8RP6rTEylmYbgOQx9OreTAbGHeu7xQyD6aD9pqUAhaWe28++KEja2LGomtAB5h0QFuZsLA48Eo55tS6gwV9Jn81yTMzFj6ay/LycK5/nH/Xaw0Xr9mCv8Y4GP8Yn7WNLMx4yFEnMJUeM2FdD98/DJKJI8y4p5zC1XNiNaUbSUfrvpT7IwyAqdSm4+lVrzVLyhoJZUHKbjaeNqc3E/J6sxbGVrWPpWW93fKRe6tr9G8cUFK78/nmjFEuJ+p8lblsGBt9Mt/YSFqBP1KV3A/ftEYeAO6cf0O3osf1jvT4GfxHUhrhBDzWLFAVTGIcjH+crzSygHLJ6QzWRkoc8YZlz2vensgxQffYzuHLnkxLnu9PMrT7k4t8hP+2p5HXC2zkz9prlgT8OzF+BuEVfvgvJh9JwGsivAKoldgbxtOPvdpX7uS8KRWOov/Y67Oa9NIB7iYfYYiOrx9+1Taylswpgx/+j9bIymx3+zxA28h6kY1AR9aUkINJffSTF4YS5A5sNuKJtUZ4RamO4ek0ck8tF+wrI/9OWuaabrTQyL3GkaN989pPOJsv9m9yC0N6zR5Og/haIw8tLfVvGkaLNCAAJXtq7en650Brjbw1+9BRbTBtuortP2cQ18xek3vg8A0itLM7kUi4EqO1/UbTxmvM6utkK1ojb0AXXAx0d3Qi32gkd2mewJOLfIQvnqQQgFIUs/jDAT6bz2pq/tu8Zot0+3d1Ml+77/8AdG3gXRjA1zaSV8YLIpr2mt0l2gN2NbKWQCPfJLVpfvF3Al94av8IGe3rJg6dzIeeGuacC8gTasmBNg+crsd6dFAbTes40p92kovUYNrYSMspWUk6mN7XiChsujuow0d3+AG+iSMtNzi6Ayj6JL7RSI0j3qWejSNKI1742GucwdjISllNXUh2oHXHSOxAZ/Cq9MSBhP3a15MuULym2Egz6uLno2lhI9syVKNrXXdcaBNHUvkTQrlg474wc+YC4poiVXwiibb6s/ir0Qg//6L3tPWj/P215qitKL/tZL6xkad3pb/wRL62kVtKZZfTedEzNgKgS2R272QArTXyfWH8vqT8+J7EfnhWZxVvzFkjq1LZaKyNlcHX1L6sNDIlRpfcXpUqprYSOnuNkGQCgG+MLsq5gdZIzKev/QXRXsPEKnFxwnatWS/qGCmNzCuuSRX3CywRcuWWxlBaTU2UrSt2xLbSSz3DC+sQT7rA8gIT4quxesOipwb9fPmBEiS0H2E5w7pNDTFfogoD7z1m2g0+jSD/ByPzwVeTMCA0AAAAAElFTkSuQmCC';
+                        pdf.setPage(2);
+                        pdf.addImage(image_data, 'PNG', 39.5, 6.7);
+                    }).save();
+                }
+            }
+            """,
+            Output('js','n_clicks'),
+            Input('js','n_clicks'),
+            running=[
+                (Output('js', 'disabled'), True, False),
+            ]
+        )
+
+        # Data summary table
+        summary_tables = []
+        for i, table in enumerate(table_names):
+            if i==0:
+                table_header = [
+                    html.Thead(html.Tr([html.Th(f'Table - "{table}"'), html.Th("Real Data"), html.Th("Synthetic Data")]))
+                ]
+            else:
+                table_header = [
+                    html.Thead(html.Tr([html.Th(f'Table - "{table}"')]))
+                ]
+            row1 = html.Tr([html.Td("Row Count"), html.Td(len(real_data[table])), html.Td(len(synthetic_data[table]))])
+            row2 = html.Tr([html.Td("Column Count"), html.Td(len(real_data[table].columns)), html.Td(len(synthetic_data[table].columns))])
+            row3 = html.Tr([html.Td("Duplicated lines"), html.Td(len(real_data[table])-len(real_data[table].drop_duplicates())), html.Td(count_memorized_lines(real_data[table], synthetic_data[table]))])
+            table_body = [html.Tbody([row1, row2, row3])]
+            summary_tables += table_header+table_body
+        
+        app.layout = html.Div(
+            children=[
+                dbc.Button("Download PDF", color="warning", className="me-1", id='js', n_clicks=0),
+                html.Div(
+                    id='graphs',
+                    children=[
+                        html.H1("Bulian AI Synthetic Data Quality Report", id='main_heading'),
+                        html.H4(date_time, id='date_time'),
+                        html.Div(
+                            id='gauge-div',
+                            children=[
+                                daq.Gauge(
+                                    id='gauge',
+                                    label="Synthetic Data Quality Score",
+                                    labelPosition='bottom',
+                                    value=int(gauge_value),
+                                    max=100,
+                                    min=0,
+                                    size=400,
+                                    showCurrentValue=True,
+                                    color={"gradient":True,"ranges":{"red":[0,33],"yellow":[33,66],"green":[66,100]}},
+                                )],
+                        ),
+                        html.Div(
+                            id='gauge-multi-div',
+                            style={'align': 'center', 'margin-bottom':'2em'}, 
+                            children=gauge_multi_figures
+                        ),
+                        html.H3('Data Summary Statistics', id='data_summary_heading'),
+                        dbc.Table(summary_tables, bordered=True, id='data_summary_table', size='sm'),
+                        html.Hr(),
+                        html.Div(
+                            id='correlation-div',
+                            style={'align': 'center'},
+                            children=[
+                                html.H1("Correlation Analysis of Real vs Synthetic Data"),
+                                html.Div(children=correlation_figures)
+                            ]
+                        ),
+                        html.Div(id="divider"),
+                        html.Div(
+                            id='pca-div',
+                            style={'align': 'center'},
+                            children=[
+                                html.H1("PCA Overlap: Real vs Synthetic Data"),
+                                dcc.Graph(
+                                    id='pca-graph',
+                                    figure=pca_plot
+                                )
+                            ]
+                        ),
+                        html.Hr(),
+                        html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading"),
+                        html.Div(
+                            children=numeric_plots
+                        ),
+                        html.Hr(),
+                        html.H1("Categorical Proportion Distribution"),
+                        html.Div(
+                            children=categorical_count_plots
+                        ),
+                        dbc.Tooltip(
+                            "Higher overlap between Real and Synthetic Data PCA components represents higher structural stability",
+                            target="pca-graph",
+                        ),
+                        dbc.Tooltip(
+                            "The overall score represents the utility score or confidence score for Synthetic Datasets.",
+                            target="gauge",
+                        ),
+                        dbc.Tooltip(
+                            "Quantifies ability of ML algorithms to separate Real vs Synthetic Data. Indicates deep structural stability.",
+                            target="gauge-Detection Score",
+                        ),
+                        dbc.Tooltip(
+                            "Statistics based measure to quantify statistical distribution similarity. Based on K-S and C-S tests.",
+                            target="gauge-Statistical Score",
+                        ),
+                        dbc.Tooltip(
+                            "Metrics which learn the distribution of the Real Data and evaluate the likelihood of the Synthetic Data belonging to the learned distribution.",
+                            target="gauge-Likelihood Score",
+                        )]+metric_table+metric_info_div
+                )]
+        )
+        app.run_server(debug=True, port=port)
+    else:
+        # Correlation Plots
+        for table_name in table_names:
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not numeric_features:
+                numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
+            else:
+                numeric_columns = numeric_features[table_name]
+
+            if not discrete_features:
+                discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+            else:
+                discrete_columns = discrete_features[table_name]
+                    
+            correlation_fig = make_subplots(
+                rows=1,
+                cols=3,
+                print_grid=False,
+                shared_yaxes=True,
+                subplot_titles=("Synthetic Data Correlation", "Real Data Correlation", "Absolute Diff (Δ) of Correlations"))
+            syn_corr = get_correlation_matrix(df=current_synthetic_data, discrete_columns=discrete_columns)
+            syn_mask = np.triu(np.ones_like(syn_corr, dtype=bool))
+            chart = go.Heatmap(z=syn_corr.mask(syn_mask), x=syn_corr.columns.values, y=syn_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 1)
+
+            real_corr = get_correlation_matrix(df=current_real_data, discrete_columns = discrete_columns)
+            real_mask = np.triu(np.ones_like(real_corr, dtype=bool))
+            chart = go.Heatmap(z=real_corr.mask(real_mask), x=real_corr.columns.values, y=real_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 2)
+
+            diff_corr = np.abs(real_corr-syn_corr)
+            diff_mask = np.triu(np.ones_like(diff_corr, dtype=bool))
+            chart = go.Heatmap(z=diff_corr.mask(diff_mask), x=diff_corr.columns.values, y=diff_corr.columns.values, hoverongaps=False, colorscale=COLORSCALE, zmin=-2, zmax=2)
+            correlation_fig.add_trace(chart, 1, 3)
+            correlation_fig.update_yaxes(autorange='reversed')
+            correlation_fig.update_layout(title=f'<b>Correlation Analysis for "{table_name}" table</b>', title_x=0.5)
+            correlation_fig.show()
+        
+        # PCA Plots
+        pca_plot = make_subplots(
+            rows=ceil(len(table_names)/2),
+            cols=2,
+            subplot_titles=tuple(table_names)
+        )
+
+        for i, table_name in enumerate(table_names, start=1):
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            # Removing datetime column
+            current_real_data = current_real_data.select_dtypes(exclude=['datetime64'])
+            current_synthetic_data = current_synthetic_data.select_dtypes(exclude=['datetime64'])
+
+            real_pca = compute_pca(current_real_data)
+            synthetic_pca = compute_pca(current_synthetic_data)
+
+            real_pca_fig = go.Scattergl(
+                x = real_pca['pc1'],
+                y = real_pca['pc2'],
+                mode='markers',
+                name='Real Data',
+                opacity=0.6,
+                marker_color='#e04e14',
+                showlegend=True if i==1 else False
+            )
+            synthetic_pca_fig = go.Scattergl(
+                x = synthetic_pca['pc1'],
+                y = synthetic_pca['pc2'],
+                mode='markers',
+                name='Synthetic Data',
+                opacity=0.6,
+                marker_color='#03b1fc',
+                showlegend=True if i==1 else False
+            )
+            if i%2==0:
+                pca_plot.add_trace(real_pca_fig, ceil(i/2), 2)
+                pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 2)                    
+            else:
+                pca_plot.add_trace(real_pca_fig, ceil(i/2), 1)
+                pca_plot.add_trace(synthetic_pca_fig, ceil(i/2), 1)
+
+        pca_plot.update_xaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 1')
+        pca_plot.update_yaxes(showline=True, linewidth=2, linecolor='black', showgrid=False, title='Component 2')
+        pca_plot.update_layout(title=f'<b>Prinicpal Component Analysis</b>', height=300*len(table_names), title_x=0.5)
+        pca_plot.show()
+
+        # Numeric Desnity
+        for table_name in table_names:
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not numeric_features:
+                numeric_columns = get_numeric_discrete_columns(current_real_data)[0]
+            else:
+                numeric_columns = numeric_features[table_name]
+            
+            if len(numeric_columns)==0:
+                break
+            
+            numeric_subplot_titles = []
+            for i, numeric_feat in enumerate(numeric_columns):
+                numeric_subplot_titles.append(f'{numeric_feat}')
+
+            numeric_subplot = make_subplots(
+                rows=len(numeric_columns),
+                cols=1,
+                subplot_titles=tuple(numeric_subplot_titles),
+                vertical_spacing=(1/(len(numeric_columns)-1)) if len(numeric_columns)>1 else 0
+            )
+
+            for i, numeric_feat in enumerate(numeric_columns, start=1):
+                density_fig = ff.create_distplot(
+                    [current_synthetic_data[numeric_feat], current_real_data[numeric_feat]],
+                    group_labels=['Synthetic Data', 'Real Data'],
+                    show_hist=False,
+                    show_rug=False)
+                numeric_subplot.add_trace(density_fig.data[0], i, 1)
+                numeric_subplot.add_trace(density_fig.data[1], i, 1)
+            numeric_subplot.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
+            numeric_subplot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
+            numeric_subplot.update_layout(title=f'<b>Numerical Density Distribution for "{table_name}" table</b>', title_x=0.5)
+            numeric_subplot.show()
+
+        # Categorical Count Plots    
+        for table_name in table_names:
+            current_real_data = real_data[table_name]
+            current_synthetic_data = synthetic_data[table_name]
+
+            if not discrete_features:
+                discrete_columns = get_numeric_discrete_columns(current_real_data)[1]
+            else:
+                discrete_columns = discrete_features[table_name]
+
+            if len(discrete_columns)==0:
+                break
+
+            category_subplot_titles = []
+            for i, categ_feat in enumerate(discrete_columns):
+                category_subplot_titles.append(f'{categ_feat}')
+            category_feat_plot = make_subplots(
+                rows=ceil(len(discrete_columns)/2),
+                cols=2,
+                subplot_titles=tuple(category_subplot_titles),
+                specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
+                vertical_spacing=(1/(ceil(len(discrete_columns)/2-1))) if len(discrete_columns)>2 else 0
+            )
+
+            for i, categ_feat in enumerate(discrete_columns, start=1):
+                real = go.Histogram(
+                    x=current_real_data[categ_feat],
+                    opacity=0.75,
+                    histnorm ='percent',
+                    name='Real Data',
+                    marker_color='#e04e14',
+                    legendgroup='Real Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )
+                synthetic = go.Histogram(
+                    x=current_synthetic_data[categ_feat],
+                    opacity=0.75, 
+                    histnorm ='percent',
+                    name='Synthetic Data', 
+                    marker_color='#03b1fc', 
+                    legendgroup='Sythentic Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )           
+                data = [real, synthetic]
+
+                if i%2==0:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+                else:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+
+            category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+            category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
+            category_feat_plot.update_layout(
+                title=f'<b>Categorical Proportion Distribution for "{table_name}" table</b>',
+                title_x=0.5
+            )
+            category_feat_plot.show()

@@ -24,6 +24,43 @@ from matplotlib import cm
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+
+METRIC_INFO = {
+    'BNLogLikelihood': 'Average log likelihood across all the rows in the synthetic dataset.',
+    'LogisticDetection': 'Detection Metric based on a LogisticRegression from scikit-learn.',
+    'SVCDetection': 'Detection Metric based on a SVC from scikit-learn.',
+    'BinaryDecisionTreeClassifier': 'ML Efficacy Metric for binary classifications problems, based on a DecisionTreeClassifier from scikit-learn.',
+    'BinaryAdaBoostClassifier': 'ML Efficacy Metric for binary classifications problems, based on an AdaBoostClassifier from scikit-learn.',
+    'BinaryLogisticRegression': 'ML Efficacy Metric for binary classifications problems, based on a LogisticRegression from scikit-learn.',
+    'BinaryMLPClassifier': 'ML Efficacy Metric for binary classifications problems, based on an MLPClassifier from scikit-learn.',
+    'MulticlassDecisionTreeClassifier': 'ML Efficacy Metric for multiclass classifications problems, based on a DecisionTreeClassifier from scikit-learn.',
+    'MulticlassMLPClassifier': 'ML Efficacy Metric for multiclass classifications problems, based on an MLPClassifier from scikit-learn.',
+    'LinearRegression': 'ML Efficacy Metric for regression problems, based on a LinearRegression from scikit-learn.',
+    'MLPRegressor': 'ML Efficacy Metric for regression problems, based on an MLPRegressor from scikit-learn.',
+    'GMLogLikelihood': 'Average log likelihood of multiple GMMs fit over real data and scored synthetic data.',
+    'CSTest': 'Chi-Squared test to compare the distributions of two categorical columns.',
+    'KSTest': 'Kolmogorov-Smirnov test to compare the distributions of two numerical columns',
+    'KSTestExtended': 'KSTest on all the RDT transformed numerical variables.',
+    'CategoricalCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
+    'CategoricalZeroCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
+    'CategoricalGeneralizedCAP': 'Privacy Metric for categorical columns, based on the Correct Attribution Probability method.',
+    'CategoricalNB': 'Privacy Metric for categorical columns, based on CategoricalNB from scikit-learn.',
+    'CategoricalKNN': 'Privacy Metric for categorical columns, based on KNeighborsClassifier from scikit-learn.',
+    'CategoricalRF': 'Privacy Metric for categorical columns, based on RandomForestClassifier from scikit-learn.',
+    'CategoricalSVM': 'Privacy Metric for categorical columns, based on SVMClassifier from scikit-learn.',
+    'CategoricalEnsemble': 'Privacy Metric for categorical columns, based on an ensemble of categorical Privacy Metrics.',
+    'NumericalLR': 'Privacy Metric for numerical columns, based on LinearRegression from scikit-learn.',
+    'NumericalMLP': 'Privacy Metric for numerical columns, based on MLPRegressor from scikit-learn.',
+    'NumericalSVR': 'Privacy Metric for numerical columns, based on SVR from scikit-learn.',
+    'NumericalRadiusNearestNeighbor': 'Privacy Metric for numerical columns, based on an implementation of the Radius Nearest Neighbor method.',
+    'ContinuousKLDivergence': 'KL-Divergence Metric applied to all possible pairs of numerical columns.',
+    'DiscreteKLDivergence': 'KL-Divergence Metric applied to all the possible pairs of categorical and boolean columns.',
+    'MLEfficacy': 'Generic ML Efficacy metric that detects the type of ML Problem associated with the dataset',
+    'SVCParentChildDetection': 'Parent-child detection metric based on a SVCDetection',
+    'LogisticParentChildDetection': 'Parent-child detection metric based on a LogisticDetection',
+    'BNLikelihood': 'Multi Single Table metric based on the Single Table BNLikelihood metric'
+}
+
 def nested_attrs_meta(nested):
     """Metaclass factory that defines a Metaclass with a dynamic attribute name."""
 
@@ -759,3 +796,61 @@ def gauge_multi(MeanDict, show_dashboard=False):
     if show_dashboard:
         return fig, values
     fig.show()
+
+
+def get_foregin_keys(table, metadata):
+    '''
+        Return a list of foregin key column name for a given table
+    '''
+    fks = []
+    parents = metadata.get_parents(table)
+    if len(parents)>0:
+        for p in parents:
+            fks += (metadata.get_foreign_keys(parent=p, child=table))
+    return fks
+
+def remove_id_fields(tables, metadata):
+    '''
+        Helper function to remove ID fields (Foreign Key and Primary Key) from relational datasets
+    '''
+    for table in tables:
+        pk = metadata.get_primary_key(table)
+        fk = get_foregin_keys(table, metadata)
+        tables[table] = tables[table].loc[:, tables[table].columns.drop([pk]+fk)]
+        tables[table].fillna("", inplace=True)
+    return tables
+
+def get_numeric_discrete_columns(df:pd.DataFrame=None):
+    '''
+        Returns numeric and discrete column names as lists of strings
+    '''
+    numeric_columns = df.select_dtypes(include=np.number)
+    discrete_columns = df.select_dtypes(exclude=np.number)
+    return numeric_columns, discrete_columns
+
+def get_map(avg_efficacy):
+    if avg_efficacy < 0.25:
+        return 1
+    elif avg_efficacy < 0.5:
+        return 2
+    elif avg_efficacy < 0.75:
+        return 3
+    elif avg_efficacy <= 1:
+        return 4
+    else:
+         print(f"Avg Efficacy {avg_efficacy} is not within 0-1 bounds")
+         return 0
+
+def get_column_name(name):
+    '''
+        Helper function to clean the column names for the detailed metrics table output on Dash
+    '''
+    name = name.replace('_', ' ')
+    if name == 'MetricType':
+        return 'Metric Type'
+    return name
+
+def get_metric_info(metric_name):
+    if metric_name in METRIC_INFO:
+        return str(METRIC_INFO[metric_name])
+    return None
