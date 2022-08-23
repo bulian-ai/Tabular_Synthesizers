@@ -855,7 +855,10 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
             Dictionary with keys as table name and values as a list of discrete column names
         
         show_dashboard (Boolean):
+            Enable or disable dashboard application
+
         port (int):
+            Change the default port for the Dash local server
     """
     metrics = MultiTableMetric.get_subclasses()
     table_names = list(real_data.keys())
