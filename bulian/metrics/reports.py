@@ -177,95 +177,97 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
         )
 
         # Density Distribution
-        graph_objects = [
-            html.Hr(),
-            html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading")
-        ]
-        for i, numeric_feat in enumerate(numeric_columns):
-            density_fig = ff.create_distplot(
-                [synthetic_data[numeric_feat], real_data[numeric_feat]],
-                group_labels=['Synthetic Data', 'Real Data'],
-                show_hist=False,
-                show_rug=False)
+        if len(numeric_columns)>0:
+            graph_objects = [
+                html.Hr(),
+                html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading")
+            ]
+            for i, numeric_feat in enumerate(numeric_columns):
+                density_fig = ff.create_distplot(
+                    [synthetic_data[numeric_feat], real_data[numeric_feat]],
+                    group_labels=['Synthetic Data', 'Real Data'],
+                    show_hist=False,
+                    show_rug=False)
 
-            density_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
-            density_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
-            density_fig.update_layout(
-                plot_bgcolor=colors['background'],
-                paper_bgcolor=colors['background'],
-                font_color=colors['text'],
-                title_x=0.5
-            )
-            graph_objects.append(
-                html.H3(f"Numeric Density Distribution : {numeric_feat}")
-            )
-            graph_objects.append(
-                dcc.Graph(
-                    id=f'density-distribution-{i}',
-                    figure=density_fig,
-                    style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
+                density_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Value')
+                density_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False, title='Density', showticksuffix='last')
+                density_fig.update_layout(
+                    plot_bgcolor=colors['background'],
+                    paper_bgcolor=colors['background'],
+                    font_color=colors['text'],
+                    title_x=0.5
                 )
-            )
+                graph_objects.append(
+                    html.H3(f"Numeric Density Distribution : {numeric_feat}")
+                )
+                graph_objects.append(
+                    dcc.Graph(
+                        id=f'density-distribution-{i}',
+                        figure=density_fig,
+                        style={'width':'75%','margin-left':'auto', 'margin-right':'auto'}
+                    )
+                )
         
         # Categorical Count Plots
-        category_subplot_titles = []
-        for i, categ_feat in enumerate(discrete_columns):
-            category_subplot_titles.append(f'{categ_feat}')
-        category_feat_plot = make_subplots(
-            rows=ceil(len(discrete_columns)/2),
-            cols=2,
-            subplot_titles=tuple(category_subplot_titles),
-            specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
-            vertical_spacing=0.11
-        )
-
-        for i, categ_feat in enumerate(discrete_columns, start=1):
-            real = go.Histogram(
-                x=real_data[categ_feat],
-                opacity=0.75,
-                histnorm ='percent',
-                name='Real Data',
-                marker_color='#e04e14',
-                legendgroup='Real Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
+        if len(discrete_columns)>0:
+            category_subplot_titles = []
+            for i, categ_feat in enumerate(discrete_columns):
+                category_subplot_titles.append(f'{categ_feat}')
+            category_feat_plot = make_subplots(
+                rows=ceil(len(discrete_columns)/2),
+                cols=2,
+                subplot_titles=tuple(category_subplot_titles),
+                specs=[[{}, {}] for x in range(ceil(len(discrete_columns)/2))],
+                vertical_spacing=0.11
             )
-            synthetic = go.Histogram(
-                x=synthetic_data[categ_feat],
-                histnorm ='percent',
-                opacity=0.75, 
-                name='Synthetic Data', 
-                marker_color='#03b1fc', 
-                legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
-            )
-            data = [real, synthetic]
 
-            if i%2==0:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 2)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
-            else:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 1)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+            for i, categ_feat in enumerate(discrete_columns, start=1):
+                real = go.Histogram(
+                    x=real_data[categ_feat],
+                    opacity=0.75,
+                    histnorm ='percent',
+                    name='Real Data',
+                    marker_color='#e04e14',
+                    legendgroup='Real Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )
+                synthetic = go.Histogram(
+                    x=synthetic_data[categ_feat],
+                    histnorm ='percent',
+                    opacity=0.75, 
+                    name='Synthetic Data', 
+                    marker_color='#03b1fc', 
+                    legendgroup='Sythentic Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )
+                data = [real, synthetic]
 
-        category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
-        category_feat_plot.update_layout(
-            plot_bgcolor=colors['sub-background'],
-            paper_bgcolor=colors['sub-background'],
-            font_color=colors['text'],
-            height=1500
-        )
-        graph_objects.append(html.Hr())
-        graph_objects.append(html.H1('Categorical Proportion Distribution'))
-        graph_objects.append(
-            dcc.Graph(
-                id=f'category-feat',
-                figure=category_feat_plot,
-                style={'width':'75%','margin-left':'auto', 'margin-right':'auto', 'height':'100%'}
+                if i%2==0:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+                else:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+
+            category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+            category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
+            category_feat_plot.update_layout(
+                plot_bgcolor=colors['sub-background'],
+                paper_bgcolor=colors['sub-background'],
+                font_color=colors['text'],
+                height=1500
             )
-        )
+            graph_objects.append(html.Hr())
+            graph_objects.append(html.H1('Categorical Proportion Distribution'))
+            graph_objects.append(
+                dcc.Graph(
+                    id=f'category-feat',
+                    figure=category_feat_plot,
+                    style={'width':'75%','margin-left':'auto', 'margin-right':'auto', 'height':'100%'}
+                )
+            )
 
 
         # Detailed Metrics Table
@@ -787,52 +789,53 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
 
         # Categorical Count Plots
         category_subplot_titles = []
-        for i, categ_feat in enumerate(discrete_columns):
-            category_subplot_titles.append(f'{categ_feat}')
-        category_feat_plot = make_subplots(
-            rows=ceil(len(discrete_columns)/2),
-            cols=2,
-            subplot_titles=tuple(category_subplot_titles),
-        )
-
-        for i, categ_feat in enumerate(discrete_columns, start=1):
-            real = go.Histogram(
-                x=real_data[categ_feat],
-                opacity=0.75,
-                histnorm ='percent',
-                name='Real Data',
-                marker_color='#e04e14',
-                legendgroup='Real Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
+        if len(discrete_columns)>0:
+            for i, categ_feat in enumerate(discrete_columns):
+                category_subplot_titles.append(f'{categ_feat}')
+            category_feat_plot = make_subplots(
+                rows=ceil(len(discrete_columns)/2),
+                cols=2,
+                subplot_titles=tuple(category_subplot_titles),
             )
-            synthetic = go.Histogram(
-                x=synthetic_data[categ_feat],
-                opacity=0.75, 
-                histnorm ='percent',
-                name='Synthetic Data', 
-                marker_color='#03b1fc',
-                legendgroup='Sythentic Data',
-                showlegend=True if i==1 else False,
-                hovertemplate='%{x} - %{y:.1f}%'
-            )           
-            data = [real, synthetic]
 
-            if i%2==0:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 2)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
-            else:
-                category_feat_plot.add_trace(data[0], ceil(i/2), 1)
-                category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+            for i, categ_feat in enumerate(discrete_columns, start=1):
+                real = go.Histogram(
+                    x=real_data[categ_feat],
+                    opacity=0.75,
+                    histnorm ='percent',
+                    name='Real Data',
+                    marker_color='#e04e14',
+                    legendgroup='Real Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )
+                synthetic = go.Histogram(
+                    x=synthetic_data[categ_feat],
+                    opacity=0.75, 
+                    histnorm ='percent',
+                    name='Synthetic Data', 
+                    marker_color='#03b1fc',
+                    legendgroup='Sythentic Data',
+                    showlegend=True if i==1 else False,
+                    hovertemplate='%{x} - %{y:.1f}%'
+                )           
+                data = [real, synthetic]
 
-        category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
-        category_feat_plot.update_layout(
-            title=f'<b>Categorical Proportion Distribution</b>',
-            height=1500,
-            title_x=0.5
-        )
-        category_feat_plot.show()
+                if i%2==0:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 2)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 2)                    
+                else:
+                    category_feat_plot.add_trace(data[0], ceil(i/2), 1)
+                    category_feat_plot.add_trace(data[1], ceil(i/2), 1)
+
+            category_feat_plot.update_xaxes(showline=True, linewidth=1, linecolor='black')
+            category_feat_plot.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=False,title='Proportion %')
+            category_feat_plot.update_layout(
+                title=f'<b>Categorical Proportion Distribution</b>',
+                height=1500,
+                title_x=0.5
+            )
+            category_feat_plot.show()
 
 def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features:Dict[str, str]=None, discrete_features:Dict[str, str]=None, show_dashboard=False, port=8050):
     """Multi Table Data Quality Report.
@@ -1412,12 +1415,12 @@ def get_multi_table_report(real_data, synthetic_data, metadata, numeric_features
                             ]
                         ),
                         html.Hr(),
-                        html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading"),
+                        html.H1("Density Distribution Analysis of Real vs Synthetic Data", id="numeric_density_heading") if len(numeric_plots)>0 else html.H1(),
                         html.Div(
                             children=numeric_plots
                         ),
                         html.Hr(),
-                        html.H1("Categorical Proportion Distribution"),
+                        html.H1("Categorical Proportion Distribution") if len(categorical_count_plots)>0 else html.H1(),
                         html.Div(
                             children=categorical_count_plots
                         ),
