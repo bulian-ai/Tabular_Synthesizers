@@ -9,7 +9,7 @@ class SingleColumnMetric(BaseMetric):
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.
@@ -40,3 +40,19 @@ class SingleColumnMetric(BaseMetric):
                 Metric output.
         """
         raise NotImplementedError()
+        
+    @classmethod
+    def compute_breakdown(cls, real_data, synthetic_data):
+        """Compute this metric breakdown.
+        Args:
+            real_data (Union[numpy.ndarray, pandas.Series]):
+                The values from the real dataset, passed as a 1d numpy
+                array or as a pandas.Series.
+            synthetic_data (Union[numpy.ndarray, pandas.Series]):
+                The values from the synthetic dataset, passed as a 1d numpy
+                array or as a pandas.Series.
+        Returns:
+            dict
+                Mapping of the metric output. Must include the key 'score'.
+        """
+        return {'score': cls.compute(real_data, synthetic_data)}

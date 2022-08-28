@@ -16,8 +16,10 @@ from ...metrics.single_table.efficacy.multiclass import (
 from ...metrics.single_table.efficacy.regression import (
     LinearRegression, MLPRegressor, RegressionEfficacyMetric)
 from ...metrics.single_table.gaussian_mixture import GMLogLikelihood
+
 from ...metrics.single_table.multi_column_pairs import (
-    ContinuousKLDivergence, DiscreteKLDivergence, MultiColumnPairsMetric)
+    ContingencySimilarity, CorrelationSimilarity,ContinuousKLDivergence, DiscreteKLDivergence, MultiColumnPairsMetric)
+
 from ...metrics.single_table.multi_single_column import (
     CSTest, KSTest, KSTestExtended, MultiSingleColumnMetric)
 
@@ -39,7 +41,8 @@ __all__ = [
     'privacy',
     'efficacy',
     'gaussian_mixture',
-    'multi_single_column',
+    'multi_column_pairs',
+    'multi_column_pairs',
     'SingleTableMetric',
     'BNLikelihood',
     'BNLogLikelihood',
@@ -61,6 +64,8 @@ __all__ = [
     'MLPRegressor',
     'GMLogLikelihood',
     'MultiColumnPairsMetric',
+    'ContingencySimilarity', 
+    'CorrelationSimilarity',
     'ContinuousKLDivergence',
     'DiscreteKLDivergence',
     'MultiSingleColumnMetric',

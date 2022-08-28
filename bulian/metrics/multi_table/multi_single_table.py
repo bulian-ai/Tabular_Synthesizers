@@ -10,13 +10,14 @@ from ...metrics.utils import nested_attrs_meta
 
 
 class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('single_table_metric')):
-    """MultiTableMetric subclass that applies a SingleTableMetric on each table.
-
+    """
+    
+    MultiTableMetric subclass that applies a SingleTableMetric on each table.
     This class can either be used by creating a subclass that inherits from it and
     sets the SingleTable Metric as the ``single_table_metric`` attribute,
     or by creating an instance of this class passing the underlying SingleTable
     metric as an argument.
-
+    
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
@@ -28,6 +29,7 @@ class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('sing
             Maximum value or values that this metric can take.
         single_table_metric (sdmetrics.single_table.base.SingleTableMetric):
             SingleTableMetric to apply.
+    
     """
 
     single_table_metric = None
@@ -37,11 +39,11 @@ class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('sing
         self.compute = self._compute
 
     def _compute(self, real_data, synthetic_data, metadata=None):
-        """Compute this metric.
-
+        """
+        Compute this metric.
         This applies the underlying single table metric to all the tables
         found in the dataset and then returns the average score obtained.
-
+        
         Args:
             real_data (dict[str, pandas.DataFrame]):
                 The tables from the real dataset.
@@ -53,7 +55,7 @@ class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('sing
             **kwargs:
                 Any additional keyword arguments will be passed down
                 to the single table metric
-
+        
         Returns:
             Union[float, tuple[float]]:
                 Metric output.
@@ -66,23 +68,33 @@ class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('sing
         elif not isinstance(metadata, dict):
             metadata = metadata.to_dict()
 
-        values = []
+        scores = {}
+        errors = {}
         for table_name, real_table in real_data.items():
             synthetic_table = synthetic_data[table_name]
             table_meta = metadata['tables'][table_name]
 
-            score = self.single_table_metric.compute(real_table, synthetic_table, table_meta)
-            values.append(score)
+            try:
+                score_breakdown = self.single_table_metric.compute_breakdown(
+                    real_table, synthetic_table, table_meta)
+                scores[table_name] = score_breakdown
+            except AttributeError:
+                score = self.single_table_metric.compute(
+                    real_table, synthetic_table, table_meta)
+                scores[table_name] = score
+            except Exception as error:
+                errors[table_name] = error
 
-        return np.nanmean(values)
+        if not scores:
+            raise NotImplementedError(f'Encountered the following errors: {errors}')
+
+        return scores
 
     @classmethod
     def compute(cls, real_data, synthetic_data, metadata=None, **kwargs):
         """Compute this metric.
-
         This applies the underlying single table metric to all the tables
         found in the dataset and then returns the average score obtained.
-
         Args:
             real_data (dict[str, pandas.DataFrame]):
                 The tables from the real dataset.
@@ -94,28 +106,54 @@ class MultiSingleTableMetric(MultiTableMetric, metaclass=nested_attrs_meta('sing
             **kwargs:
                 Any additional keyword arguments will be passed down
                 to the single table metric
-
         Returns:
             Union[float, tuple[float]]:
                 Metric output.
+        """
+        scores = cls._compute(cls, real_data, synthetic_data, metadata, **kwargs)
+        scores = list(scores.values())
+        if len(scores) > 0 and isinstance(scores[0], dict):
+            scores = [
+                result['score'] for table_scores in scores for result in table_scores.values()
+                if 'score' in result
+            ]
+
+        return np.nanmean(scores)
+
+    @classmethod
+    def compute_breakdown(cls, real_data, synthetic_data, metadata=None, **kwargs):
+        """Compute this metric broken down by tables and columns.
+        This applies the underlying single table metric to all the tables
+        found in the dataset and then returns the breakdown of the obtained scores.
+        Args:
+            real_data (dict[str, pandas.DataFrame]):
+                The tables from the real dataset.
+            synthetic_data (dict[str, pandas.DataFrame]):
+                The tables from the synthetic dataset.
+            metadata (dict):
+                Multi-table metadata dict. If not passed, it is build based on the
+                real_data fields and dtypes.
+            **kwargs:
+                Any additional keyword arguments will be passed down
+                to the single table metric
+        Returns:
+            dict[string -> dict[string -> Union[float, tuple[float]]]]:
+                A mapping of table name to column metric breakdowns.
         """
         return cls._compute(cls, real_data, synthetic_data, metadata, **kwargs)
 
     @classmethod
     def normalize(cls, raw_score):
         """Return the `raw_score` as is, since it is already normalized.
-
         Args:
             raw_score (float):
                 The value of the metric from `compute`.
-
         Returns:
             float:
                 The normalized value of the metric
         """
         assert cls.min_value == 0.0
         return super().normalize(raw_score)
-
 
 class CSTest(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable CSTest."""
@@ -130,15 +168,21 @@ class KSTest(MultiSingleTableMetric):
     single_table_metric = single_table.multi_single_column.KSTest
     MetricType = single_table_metric.MetricType
 
-
-
 class KSTestExtended(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable KSTestExtended."""
 
     single_table_metric = single_table.multi_single_column.KSTestExtended
     MetricType = single_table_metric.MetricType
 
+class CorrelationSimilarity(MultiSingleTableMetric):
+    """MultiSingleTableMetric based on SingleTable CorrelationSimilarity."""
+    single_table_metric = single_table.multi_column_pairs.CorrelationSimilarity
+    MetricType = single_table_metric.MetricType
 
+class ContingencySimilarity(MultiSingleTableMetric):
+    """MultiSingleTableMetric based on SingleTable ContingencySimilarity."""
+    single_table_metric = single_table.multi_column_pairs.ContingencySimilarity
+    MetricType = single_table_metric.MetricType
 
 class LogisticDetection(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable LogisticDetection."""
@@ -158,7 +202,6 @@ class SVCDetection(MultiSingleTableMetric):
 
 class BNLikelihood(MultiSingleTableMetric):
     """MultiSingleTableMetric based on SingleTable BNLikelihood."""
-
     single_table_metric = single_table.bayesian_network.BNLikelihood
     MetricType = single_table_metric.MetricType
 

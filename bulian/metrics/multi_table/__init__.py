@@ -3,11 +3,14 @@
 from ...metrics.multi_table import detection, multi_single_table
 from ...metrics.multi_table.base import MultiTableMetric
 from ...metrics.multi_table.detection.base import DetectionMetric
+from ...metrics.multi_table.statistical.cardinality_shape_similarity import CardinalityShapeSimilarity
+from ...metrics.multi_table.statistical.cardinality_statistic_similarity import CardinalityStatisticSimilarity
+
 from ...metrics.multi_table.detection.parent_child import (
     LogisticParentChildDetection, ParentChildDetectionMetric, SVCParentChildDetection)
 from ...metrics.multi_table.multi_single_table import (
     BNLikelihood, BNLogLikelihood, CSTest, KSTest, KSTestExtended, LogisticDetection,
-    MultiSingleTableMetric, SVCDetection)
+    MultiSingleTableMetric, SVCDetection,CorrelationSimilarity,ContingencySimilarity)
 
 __all__ = [
     'detection',
@@ -25,4 +28,8 @@ __all__ = [
     'LogisticDetection',
     'SVCDetection',
     'MultiSingleTableMetric',
+    'CardinalityShapeSimilarity',
+    'CardinalityStatisticSimilarity',
+    'CorrelationSimilarity',
+    'ContingencySimilarity'
 ]

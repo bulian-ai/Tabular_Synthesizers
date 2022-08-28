@@ -13,7 +13,7 @@ from ....metrics.utils import get_frequencies
 
 
 class ContinuousKLDivergence(ColumnPairsMetric):
-    """Continuous Kullback–Leibler Divergence based metric.
+    """Continuous Kullback-Leibler Divergence based metric.
 
     This approximates the KL divergence by binning the continuous values
     to turn them into categorical values and then computing the relative
@@ -22,7 +22,7 @@ class ContinuousKLDivergence(ColumnPairsMetric):
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.

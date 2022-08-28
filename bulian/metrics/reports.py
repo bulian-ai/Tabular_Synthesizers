@@ -103,7 +103,6 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
 
     try:
         avg_efficiency = 100*(o_overall['normalized_score'].mean())
-        # print('avg_efficiency',avg_efficiency)
     except:
          ValueError("Some of the Relevant metrics are NaN")
     if show_dashboard:

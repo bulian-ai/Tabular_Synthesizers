@@ -121,9 +121,6 @@ class GMLogLikelihood(SingleTableMetric):
         """
         metadata = cls._validate_inputs(real_data, synthetic_data, metadata)
         fields = cls._select_fields(metadata, 'numerical')
-        if not fields:
-            LOGGER.debug('No numerical fields found. Returning NaN.')
-            return np.nan
 
         real_data = real_data[fields]
         synthetic_data = synthetic_data[fields]
@@ -151,18 +148,19 @@ class GMLogLikelihood(SingleTableMetric):
             except ValueError:
                 pass
 
+        if not scores:
+            metric_name = cls.name
+            raise NotImplementedError(f'{metric_name}: Exhausted retries for GaussianMixture')
+
         return np.mean(scores)
 
     @classmethod
     def normalize(cls, raw_score):
         """Normalize the log-likelihood value.
-
         Notice that this is not the mean likelihood.
-
         Args:
             raw_score (float):
                 The value of the metric from `compute`.
-
         Returns:
             float:
                 The normalized value of the metric

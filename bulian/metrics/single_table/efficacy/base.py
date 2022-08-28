@@ -8,6 +8,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import RobustScaler
 
 from ....metrics.single_table.base import SingleTableMetric
+from ....metrics.utils import HyperTransformer
 
 
 class MLEfficacyMetric(SingleTableMetric):
@@ -19,7 +20,7 @@ class MLEfficacyMetric(SingleTableMetric):
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.
@@ -48,11 +49,9 @@ class MLEfficacyMetric(SingleTableMetric):
         if len(unique_labels) == 1:
             predictions = np.full(len(real_data), unique_labels[0])
         else:
-            transformer = rdt.HyperTransformer(default_data_type_transformers={
-                        'categorical': OneHotEncodingTransformer(error_on_unknown=False),
-                    })
-            real_data = transformer.fit_transform(real_data)
-            synthetic_data = transformer.transform(synthetic_data)
+            ht = HyperTransformer()
+            real_data = ht.fit_transform(real_data)
+            synthetic_data = ht.transform(synthetic_data)
 
             real_data[np.isin(real_data, [np.inf, -np.inf])] = None
             synthetic_data[np.isin(synthetic_data, [np.inf, -np.inf])] = None
@@ -94,17 +93,13 @@ class MLEfficacyMetric(SingleTableMetric):
     @classmethod
     def compute(cls, real_data, synthetic_data, metadata=None, target=None, scorer=None):
         """Compute this metric.
-
         This fits a Machine Learning model on the synthetic data and
         then evaluates it making predictions on the real data.
-
         A ``target`` column name must be given, either directly or as a first level
         entry in the ``metadata`` dict, which will be used as the target column for the
         Machine Learning prediction.
-
         Optionally, a list of ML scorer functions can be given. Otherwise, the default
         one for the type of problem is used.
-
         Args:
             real_data (Union[numpy.ndarray, pandas.DataFrame]):
                 The values from the real dataset.
@@ -115,7 +110,6 @@ class MLEfficacyMetric(SingleTableMetric):
             scorer (Union[callable, list[callable], NoneType]):
                 Scorer (or list of scorers) to apply. If not passed, use the default
                 one for the type of metric.
-
         Returns:
             union[float, tuple[float]]:
                 Scores obtained by the models when evaluated on the real data.

@@ -73,11 +73,6 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=Fals
         })
     out = pd.DataFrame(scores)
 
-    # if 'target' not in kwargs:
-    #     out = out[out['MetricType']!=MetricType.EFFICACY.value].reset_index(drop=True)
-    # else:
-    #     out = out[out['MetricType']==MetricType.EFFICACY.value].reset_index(drop=True)
-        
     return out
 
 

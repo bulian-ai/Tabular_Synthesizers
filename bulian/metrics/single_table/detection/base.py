@@ -3,14 +3,15 @@
 import logging
 
 import numpy as np
-from rdt import HyperTransformer
 from rdt.transformers import OneHotEncodingTransformer
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 
+from ....metrics.utils import HyperTransformer
 from ....metrics.goal import Goal
 from ....metrics.type import MetricType
 from ....metrics.single_table.base import SingleTableMetric
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ class DetectionMetric(SingleTableMetric):
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.
@@ -68,20 +69,20 @@ class DetectionMetric(SingleTableMetric):
                 One minus the ROC AUC Cross Validation Score obtained by the classifier.
         """
         metadata = cls._validate_inputs(real_data, synthetic_data, metadata)
-        transformer = HyperTransformer(default_data_type_transformers={
-            'categorical': OneHotEncodingTransformer(error_on_unknown=False),
-        })
-        real_data = transformer.fit_transform(real_data).to_numpy()
-        synthetic_data = transformer.transform(synthetic_data).to_numpy()
+        ht = HyperTransformer()
+        transformed_real_data = ht.fit_transform(real_data).to_numpy()
+        transformed_synthetic_data = ht.transform(synthetic_data).to_numpy()
 
-        X = np.concatenate([real_data, synthetic_data])
-        y = np.hstack([np.ones(len(real_data)), np.zeros(len(synthetic_data))])
+        X = np.concatenate([transformed_real_data, transformed_synthetic_data])
+        y = np.hstack([
+            np.ones(len(transformed_real_data)), np.zeros(len(transformed_synthetic_data))
+        ])
         if np.isin(X, [np.inf, -np.inf]).any():
             X[np.isin(X, [np.inf, -np.inf])] = np.nan
 
         try:
             scores = []
-            kf = StratifiedKFold(n_splits=3, shuffle=True)
+            kf = StratifiedKFold(n_splits=3, shuffle=True,random_state=42)
             for train_index, test_index in kf.split(X, y):
                 y_pred = cls._fit_predict(X[train_index], y[train_index], X[test_index])
                 roc_auc = roc_auc_score(y[test_index], y_pred)
@@ -90,17 +91,14 @@ class DetectionMetric(SingleTableMetric):
 
             return 1 - np.mean(scores)
         except ValueError as err:
-            LOGGER.info('DetectionMetric: Skipping due to %s', err)
-            return np.nan
+            raise NotImplementedError(f'DetectionMetric: Unable to be fit with error {err}')
 
     @classmethod
     def normalize(cls, raw_score):
         """Return the `raw_score` as is, since it is already normalized.
-
         Args:
             raw_score (float):
                 The value of the metric from `compute`.
-
         Returns:
             float:
                 Simply returns `raw_score`.

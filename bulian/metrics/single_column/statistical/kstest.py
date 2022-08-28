@@ -5,6 +5,7 @@ from scipy.stats import ks_2samp
 
 from ....metrics.goal import Goal
 from ....metrics.type import MetricType
+from ....metrics.utils import is_datetime
 
 from ....metrics.single_column.base import SingleColumnMetric
 
@@ -51,8 +52,13 @@ class KSTest(SingleColumnMetric):
             float:
                 1 minus the Kolmogorov–Smirnov D statistic.
         """
-        real_data = pd.Series(real_data).fillna(0)
-        synthetic_data = pd.Series(synthetic_data).fillna(0)
+        real_data = pd.Series(real_data).dropna()
+        synthetic_data = pd.Series(synthetic_data).dropna()
+
+        if is_datetime(real_data):
+            real_data = pd.to_numeric(real_data)
+            synthetic_data = pd.to_numeric(synthetic_data)
+
         statistic, _ = ks_2samp(real_data, synthetic_data)
 
         return 1 - statistic
@@ -60,11 +66,9 @@ class KSTest(SingleColumnMetric):
     @classmethod
     def normalize(cls, raw_score):
         """Return the `raw_score` as is, since it is already normalized.
-
         Args:
             raw_score (float):
                 The value of the metric from `compute`.
-
         Returns:
             float:
                 The normalized value of the metric

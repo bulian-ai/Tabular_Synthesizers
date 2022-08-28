@@ -6,10 +6,10 @@ import hashlib
 import os
 import time
 from collections import defaultdict, deque, OrderedDict
-
+import random
 import torch
 import torch.distributed as dist
-
+import numpy as np
 
 class SmoothedValue:
     """Track a series of values and provide access to smoothed values over a
@@ -311,3 +311,12 @@ def display_tables(tables, max_rows=10, datetime_fmt='%Y-%m-%d %H:%M:%S', row=Tr
         html = '<table>{}</table>'.format(''.join(rows))
 
     return HTML(html)
+
+
+def set_seed(x=42):
+    random.seed(x)
+    np.random.seed(x)
+    torch.manual_seed(x)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    if torch.cuda.is_available(): torch.cuda.manual_seed_all(x)
