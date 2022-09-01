@@ -24,6 +24,7 @@ jobs:
     - name: Generate Report
       run: |
         pip install PyYaml==5.4.1
+        pip install sktime==0.13.2
         python setup.py install
         pip install coverage
         coverage run --source=. -m unittest discover -s .
