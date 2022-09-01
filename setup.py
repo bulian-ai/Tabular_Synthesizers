@@ -6,7 +6,7 @@ with open('README.md', encoding='utf-8') as readme_file:
 install_requires = [
     'packaging>=20,<22',
     'scipy>=1.5.4,<1.8',
-    'numpy>=1.20.0,<1.23',
+    'numpy>=1.20.0,<1.23.0',
     'pandas>=1.1.3,<2',
     'scikit-learn>=0.24,<2',
     'torch>=1.8.0,<2',
@@ -31,7 +31,7 @@ install_requires = [
 
 pomegranate_requires = [
     # "pomegranate>=0.13.4,<0.14.2;python_version<'3.7'",
-    'pomegranate>=0.14.1,<0.15',
+    # 'pomegranate>=0.14.1,<0.15',
 ]
 
 setup_requires = [
