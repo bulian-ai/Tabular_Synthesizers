@@ -23,6 +23,7 @@ jobs:
         python-version: 3.8
     - name: Generate Report
       run: |
+        pip install PyYaml==5.4.1
         python setup.py install
         pip install coverage
         coverage run --source=. -m unittest discover -s .
