@@ -128,7 +128,7 @@ class ContinuousKLDivergence(MultiColumnPairsMetric):
             Minimum value or values that this metric can take.
         max_value (Union[float, tuple[float]]):
             Maximum value or values that this metric can take.
-        column_pairs_metric (sdmetrics.column_pairs.base.ColumnPairsMetric):
+        column_pairs_metric (bulian.metrics.column_pairs.base.ColumnPairsMetric):
             ColumnPairs ContinuousKLDivergence.
         field_types (dict):
             Field types to which the SingleColumn metric will be applied.
@@ -152,7 +152,7 @@ class DiscreteKLDivergence(MultiColumnPairsMetric):
             Minimum value or values that this metric can take.
         max_value (Union[float, tuple[float]]):
             Maximum value or values that this metric can take.
-        column_pairs_metric (sdmetrics.column_pairs.base.ColumnPairsMetric):
+        column_pairs_metric (bulian.metrics.column_pairs.base.ColumnPairsMetric):
             ColumnPairs DiscreteKLDivergence.
         field_types (dict):
             Field types to which the SingleColumn metric will be applied.
@@ -170,13 +170,13 @@ class ContingencySimilarity(MultiColumnPairsMetric):
         Attributes:
             name (str):
                 Name to use when reports about this metric are printed.
-            goal (sdmetrics.goal.Goal):
+            goal (bulian.metrics.goal.Goal):
                 The goal of this metric.
             min_value (Union[float, tuple[float]]):
                 Minimum value or values that this metric can take.
             max_value (Union[float, tuple[float]]):
                 Maximum value or values that this metric can take.
-            column_pairs_metric (sdmetrics.column_pairs.base.ColumnPairsMetric):
+            column_pairs_metric (bulian.metrics.column_pairs.base.ColumnPairsMetric):
                 ColumnPairs DiscreteKLDivergence.
             field_types (dict):
                 Field types to which the SingleColumn metric will be applied.
@@ -193,13 +193,13 @@ class CorrelationSimilarity(MultiColumnPairsMetric):
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.
         max_value (Union[float, tuple[float]]):
             Maximum value or values that this metric can take.
-        column_pairs_metric (sdmetrics.column_pairs.base.ColumnPairsMetric):
+        column_pairs_metric (bulian.metrics.column_pairs.base.ColumnPairsMetric):
             ColumnPairs DiscreteKLDivergence.
         field_types (dict):
             Field types to which the SingleColumn metric will be applied.

@@ -5,12 +5,12 @@ import numpy as np
 from ..metrics.goal import Goal
 
 class BaseMetric:
-    """Base class for all the metrics in SDMetrics.
+    """Base class for all the metrics in bulian.metrics.
 
     Attributes:
         name (str):
             Name to use when reports about this metric are printed.
-        goal (sdmetrics.goal.Goal):
+        goal (bulian.metrics.goal.Goal):
             The goal of this metric.
         min_value (Union[float, tuple[float]]):
             Minimum value or values that this metric can take.

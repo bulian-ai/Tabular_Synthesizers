@@ -28,7 +28,7 @@ def compute_metrics(metrics, real_data, synthetic_data, metadata=None, plot=Fals
     """Compute a collection of metrics on the given data.
 
     Args:
-        metrics (list[sdmetrics.base.BaseMetric]):
+        metrics (list[bulian.metrics.base.BaseMetric]):
             Metrics to compute.
         real_data:
             Data from the real dataset

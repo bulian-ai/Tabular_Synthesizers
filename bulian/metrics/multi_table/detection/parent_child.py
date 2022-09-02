@@ -28,7 +28,7 @@ class ParentChildDetectionMetric(DetectionMetric,
             Minimum value or values that this metric can take.
         max_value (Union[float, tuple[float]]):
             Maximum value or values that this metric can take.
-        single_table_metric (sdmetrics.single_table.detection.base.DetectionMetric):
+        single_table_metric (bulian.metrics.single_table.detection.base.DetectionMetric):
             The single table detection metric to use.
     """
 
