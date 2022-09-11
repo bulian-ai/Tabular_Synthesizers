@@ -27,7 +27,7 @@ jobs:
         pip install sktime==0.13.2
         python setup.py install
         pip install coverage
-        coverage run --source=. -m unittest discover -s .
+        coverage run --source=bulian -m unittest discover -s tests -p "runner.py"
         coverage report
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v1
