@@ -1,21 +1,25 @@
 import streamlit as st
 import pandas as pd
 import warnings
-from utils import calculate_metrics
+
+from utils import build_correlation_plot, build_distribution_plots, build_gauge_plots, build_pca_plot
+from custom_components import footer
 
 pd.set_option('display.max_columns', None)
 warnings.filterwarnings('ignore')
 
+
 # Main App
 st.set_page_config(
     page_title='Bulian AI',
-    initial_sidebar_state='expanded',
+    initial_sidebar_state='collapsed',
     layout='wide'
 )
 
-st.title("Bulian AI Demo")
+st.image(image='assets/logo.png', width=400)
+st.subheader('Safe, artificial data that acts like your production data')
 
-uploaded_file = st.file_uploader("Upload CSV")
+uploaded_file = st.sidebar.file_uploader("Upload CSV")
 
 if uploaded_file is not None:
     real_data = pd.read_csv(uploaded_file)
@@ -35,7 +39,8 @@ discrete_columns = []
 if uploaded_file:
     discrete_columns = st.sidebar.multiselect(
         'Select Discrete Columns',
-        options=real_data.columns
+        options=real_data.columns,
+        help='Select all the categorical columns present in real data.'
     )
 
 
@@ -47,23 +52,26 @@ if select_box_option == 'Twin Synthesizer':
 
 sample_count = st.sidebar.number_input(
     'No. of Samples',
-    min_value=10
+    min_value=10,
+    help='No. of synthetic data rows to be generated.'
 )
 
 epochs = st.sidebar.number_input(
     'Epochs',
     value=10,
+    help='Modify the number of passes for the model.'
 )
 
 batch_size = st.sidebar.number_input(
     'Batch Size',
-    value=200
+    value=200,
+    help='Modify the batch size used by the model.'
 )
 
-device = st.sidebar.selectbox('Select Device', ('cpu', 'cuda'))
+device = st.sidebar.selectbox('Select Device', ('cpu', 'cuda'), help='Select cuda if GPU is available otherwise cpu')
 
 if uploaded_file:
-    define_target = st.sidebar.checkbox('Define Target', value=False)
+    define_target = st.sidebar.checkbox('Define Target', value=False, help='A target column is required for calculating efficacy metrics. This is an optional parameter')
     if define_target:
         target = st.sidebar.selectbox('Target Column', real_data.columns)
 
@@ -73,7 +81,7 @@ else:
     run_model_button = st.sidebar.button('Run Model', disabled=False)
 
 if run_model_button:
-    with st.spinner('Working...'):
+    with st.spinner('Generating synthetic data...'):
         if not uploaded_file:
             st.error("File not uploaded")
         else:
@@ -82,26 +90,47 @@ if run_model_button:
             synthetic_data = model.sample(sample_count)
             st.session_state['synthetic_data'] = synthetic_data
             st.success("Synthetic data generated")
-
-            if 'synthetic_data' in st.session_state:
-                expander = st.expander('See Synthetic Data')
-                expander.download_button(
-                    'Download as CSV',
-                    data=st.session_state['synthetic_data'].to_csv().encode('utf-8'),
-                    file_name='synthetic_data.csv',
-                    mime='text/csv'
-                )
-                expander.dataframe(st.session_state['synthetic_data'].head())
-
-            overall_metrics, gauge_fig, gauge_multi_fig = calculate_metrics(
-                real_data=st.session_state['real_data'],
-                synthetic_data=st.session_state['synthetic_data'],
-                target=target if define_target else None
+    with st.spinner('Generating data quality report...'):
+        if 'synthetic_data' in st.session_state:
+            expander = st.expander('See Synthetic Data')
+            expander.download_button(
+                'Download as CSV',
+                data=st.session_state['synthetic_data'].to_csv().encode('utf-8'),
+                file_name='synthetic_data.csv',
+                mime='text/csv'
             )
-            st.plotly_chart(figure_or_data=gauge_fig, use_container_width=True)
-            st.plotly_chart(figure_or_data=gauge_multi_fig, use_container_width=True)
+            expander.dataframe(st.session_state['synthetic_data'].head())
 
+        gauge_fig, gauge_multi_fig = build_gauge_plots(
+            real_data=st.session_state['real_data'],
+            synthetic_data=st.session_state['synthetic_data'],
+            target=target if define_target else None
+        )
+        st.plotly_chart(figure_or_data=gauge_fig, use_container_width=True)
+        st.plotly_chart(figure_or_data=gauge_multi_fig, use_container_width=True)
+        
+        correlation_fig = build_correlation_plot(
+            real_data=st.session_state['real_data'],
+            synthetic_data=st.session_state['synthetic_data'],
+            discrete_columns=discrete_columns
+        )
+        st.plotly_chart(figure_or_data=correlation_fig, use_container_width=True)
 
-            metrics_df = overall_metrics[['metric', 'normalized_score', 'MetricType']]
-            metrics_df = metrics_df.round(2)
-            st.dataframe(data=metrics_df)
+        pca_fig = build_pca_plot(
+            real_data=st.session_state['real_data'],
+            synthetic_data=st.session_state['synthetic_data']
+        )
+        st.plotly_chart(figure_or_data=pca_fig, use_container_width=True)
+
+        numeric_density_figs, categorical_plot = build_distribution_plots(
+            real_data=st.session_state['real_data'],
+            synthetic_data=st.session_state['synthetic_data'],
+            discrete_columns=discrete_columns
+        )
+
+        for plot in numeric_density_figs:
+            st.plotly_chart(figure_or_data=plot, use_container_width=True)
+        
+        st.plotly_chart(figure_or_data=categorical_plot, use_container_width=True)
+
+#footer()
