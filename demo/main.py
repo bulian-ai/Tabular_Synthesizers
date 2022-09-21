@@ -19,7 +19,7 @@ st.set_page_config(
 st.image(image='assets/logo.png', width=400)
 st.subheader('Safe, artificial data that acts like your production data')
 
-uploaded_file = st.sidebar.file_uploader("Upload CSV")
+uploaded_file = st.file_uploader("Upload CSV")
 
 if uploaded_file is not None:
     real_data = pd.read_csv(uploaded_file)
@@ -40,7 +40,7 @@ if uploaded_file:
     discrete_columns = st.sidebar.multiselect(
         'Select Discrete Columns',
         options=real_data.columns,
-        help='Select all the categorical columns present in real data.'
+        help='List of discrete columns to be used to generate the Conditional Vector. This list should contatin the column names.'
     )
 
 
@@ -56,22 +56,29 @@ sample_count = st.sidebar.number_input(
     help='No. of synthetic data rows to be generated.'
 )
 
-epochs = st.sidebar.number_input(
-    'Epochs',
-    value=10,
-    help='Modify the number of passes for the model.'
-)
+if select_box_option == 'Private Twin Synthesizer':
+    e_factor = st.sidebar.number_input(
+        'Epsilon',
+        value=10,
+        help='We perform generator iterations until our privacy constraint, has been reached. Generally, high-utilizty datasets need higher privacy budgets. Defaults to `1`.'
+    )
+else:
+    e_factor = st.sidebar.number_input(
+        'Epochs',
+        value=10,
+        help='Number of training epochs.'
+    )
 
 batch_size = st.sidebar.number_input(
     'Batch Size',
     value=200,
-    help='Modify the batch size used by the model.'
+    help='Modify the batch size used for model training.'
 )
 
 device = st.sidebar.selectbox('Select Device', ('cpu', 'cuda'), help='Select cuda if GPU is available otherwise cpu')
 
 if uploaded_file:
-    define_target = st.sidebar.checkbox('Define Target', value=False, help='A target column is required for calculating efficacy metrics. This is an optional parameter')
+    define_target = st.sidebar.checkbox('Specify target column?', value=False, help='Name of the column to use as the target.')
     if define_target:
         target = st.sidebar.selectbox('Target Column', real_data.columns)
 
@@ -86,7 +93,10 @@ if run_model_button:
             st.error("File not uploaded")
         else:
             model = synth_model(batch_size=batch_size, device=device)
-            model.fit(data=real_data, discrete_columns=discrete_columns, epochs=epochs)
+            if select_box_option=='Private Twin Synthesizer':
+                model.fit(data=real_data, discrete_columns=discrete_columns, update_epsilon=e_factor)
+            else:
+                model.fit(data=real_data, discrete_columns=discrete_columns, epochs=e_factor)
             synthetic_data = model.sample(sample_count)
             st.session_state['synthetic_data'] = synthetic_data
             st.success("Synthetic data generated")

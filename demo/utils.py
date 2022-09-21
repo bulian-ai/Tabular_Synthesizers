@@ -312,7 +312,7 @@ def build_pca_plot(real_data, synthetic_data):
         mode='markers',
         name='Real Data',
         opacity=0.6,
-        marker_color='#e04e14',
+        marker_color='#ffa114',
     ))
 
     synthetic_pca_fig = go.Figure(data=go.Scattergl(
@@ -374,7 +374,7 @@ def build_distribution_plots(real_data, synthetic_data, discrete_columns):
                 opacity=0.75,
                 histnorm ='percent',
                 name='Real Data',
-                marker_color='#e04e14',
+                marker_color='#ffa114',
                 legendgroup='Real Data',
                 showlegend=True if i==1 else False,
                 hovertemplate='%{x} - %{y:.1f}%'

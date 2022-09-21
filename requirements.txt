@@ -6,7 +6,6 @@ backcall==0.2.0
 backports.zoneinfo==0.2.1
 blinker==1.5
 Brotli==1.0.9
-bulian==0.0.1.dev0
 cachetools==5.2.0
 category-encoders==2.5.0
 certifi==2022.6.15
