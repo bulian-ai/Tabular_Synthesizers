@@ -6,6 +6,16 @@ import plotly.express as px
 import plotly.figure_factory as ff
 
 from plotly.subplots import make_subplots
+
+
+if __name__ == "__main__" and __package__ is None:
+    from sys import path
+    from os.path import dirname as dir
+
+    path.append(dir(path[0]))
+    __package__ = "bulian"
+
+
 from bulian.metrics import compute_metrics
 from bulian.metrics.single_table import SingleTableMetric
 from bulian.metrics.utils import compute_pca, get_correlation_matrix
