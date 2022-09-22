@@ -123,6 +123,6 @@ setup(
     test_suite='tests',
     tests_require=tests_require,
     version='0.0.1.dev0',
-    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
+    url = 'https://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@github.com/bulian-ai/Tabular_Synthesizers.git@0.0.1.dev0',
     zip_safe=False,
 )
