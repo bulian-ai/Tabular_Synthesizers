@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import warnings
 
-from utils import build_correlation_plot, build_distribution_plots, build_gauge_plots, build_pca_plot
-from custom_components import footer
+from app_utils import build_correlation_plot, build_distribution_plots, build_gauge_plots, build_pca_plot
+from app_components import footer
 
 pd.set_option('display.max_columns', None)
 warnings.filterwarnings('ignore')
