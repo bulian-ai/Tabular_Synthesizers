@@ -1,1 +1,0 @@
-web: streamlit run demo/app.py
