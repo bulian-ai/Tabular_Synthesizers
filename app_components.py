@@ -1,5 +1,5 @@
 import streamlit as st
-from htbuilder import HtmlElement, div, br, hr, a, p, img, styles
+from htbuilder import HtmlElement, div, br, hr, a, p, img, styles, i
 from htbuilder.units import percent, px
 
 
@@ -30,7 +30,8 @@ def layout(*args):
         color="white",
         text_align="center",
         height="auto",
-        opacity=1
+        opacity=1,
+        z_index=-1
     )
 
     style_hr = styles(
@@ -65,6 +66,9 @@ def layout(*args):
 def footer():
     footer_args = [
         'Connect with us on',
+        br(),
+        a(href='https://www.linkedin.com/company/bulianai/', style=styles(padding=px(10))) (i(_class="fa-brands fa-linkedin fa-xl")),
+        a(href='mailto:contact@bulian.ai')(i(_class="fa-solid fa-envelope fa-xl")),
         br(),
         image('https://i.imgur.com/0pHPHA6.png', width=px(150)),
     ]
