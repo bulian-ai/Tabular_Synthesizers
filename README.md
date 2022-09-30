@@ -8,6 +8,8 @@
 [![Linkedin Badge](https://img.shields.io/badge/-Bulian%20AI-1DA1F2?style=flat-square&logo=twitter&logoColor=white&link=https://twitter.com/Bulian_AI)]( https://twitter.com/Bulian_AI)
 [![Linkedin Badge](https://img.shields.io/badge/-Bulian%20AI-0A66C2?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/company/bulianai/)](https://www.linkedin.com/company/bulianai/)
 [![Gmail Badge](https://img.shields.io/badge/-contact@bulian.ai-ffcc33?style=flat-square&logo=gmail&logoColor=black&link=mailto:contact@bulian.ai)](mailto:contact@bulian.ai)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_white.svg)](https://product.bulian.ai/)
+
 
 
 **Overview**
