@@ -99,20 +99,20 @@ def get_full_report(real_data, synthetic_data, discrete_columns,
 
     o = o[~np.isnan(o['normalized_score'])]
     o_overall = o[o['MetricType'].isin(_OVERALL_SCORE_GRPS)]
-    multi_metrics = o.groupby('MetricType')['normalized_score'].mean().to_dict()   
+    multi_metrics = o_overall.groupby('MetricType')['normalized_score'].mean().to_dict()   
 
     try:
-        avg_efficiency = 100*(o_overall['normalized_score'].mean())
+        avg_efficacy = 100*(o_overall['normalized_score'].mean())
     except:
          ValueError("Some of the Relevant metrics are NaN")
     if show_dashboard:
-        gauge_fig, gauge_value = gauge(avg_efficiency, show_dashboard)
+        gauge_fig, gauge_value = gauge(avg_efficacy, show_dashboard)
         if len(o)>0:
             gauge_multi_fig, gauge_multi_values = gauge_multi(multi_metrics, show_dashboard)
         else:
             gauge_multi_fig = None
     else:
-        gauge(avg_efficiency)
+        gauge(avg_efficacy)
         if len(o)>0:
             gauge_multi(multi_metrics)
 
