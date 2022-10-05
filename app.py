@@ -8,23 +8,37 @@ from app_components import footer
 pd.set_option('display.max_columns', None)
 warnings.filterwarnings('ignore')
 
-if __name__ == "__main__" and __package__ is None:
-    from sys import path
-    from os.path import dirname as dir
-
-    path.append(dir(path[0]))
-    __package__ = "bulian"
-
-
 # Main App
 st.set_page_config(
     page_title='Bulian AI',
-    initial_sidebar_state='collapsed',
     layout='wide'
 )
 
 st.image(image='assets/logo.png', width=400)
 st.subheader('Safe, artificial data that acts like your production data')
+st.markdown('Generate safe, realistic, and scalable synthetic data on demand. Safely share it across teams, businesses, and borders.')
+
+st.markdown('<hr>', unsafe_allow_html=True)
+
+st.subheader('Dive into Bulian AI\'s synthetic data models')
+col1, col2 = st.columns(2)
+
+
+with col1:
+    expander = st.expander('Twin Synthesizer')
+    expander.subheader('Single table deep learning based synthesizer')
+    expander.markdown('GAN models inherits from BaseSynthesizer class; generate non-privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.')
+
+with col2:
+    expander = st.expander('Private Twin Synthesizer')
+    expander.subheader('Single table deep learning based synthesizer with enhanced privacy protection mechanisms')
+    expander.markdown('Differentially private GAN models inherits from BaseSynthesizerPrivate class and generate privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.')
+
+st.markdown('>Twin Synthesizer should be leveraged if data privacy is not a key consideration. Example use cases include addressing data imbalance, generating novel test cases, sharing non-private data externally/internally.')
+st.markdown('>Learn more about Bulian AI on our [Docs](https://docs.bulian.ai/bulianai-overview/) \n <hr>', unsafe_allow_html=True)
+
+
+st.markdown('#### Try Bulian AI')
 
 uploaded_file = st.file_uploader("Upload CSV")
 
@@ -83,6 +97,7 @@ batch_size = st.sidebar.number_input(
 )
 
 device = st.sidebar.selectbox('Select Device', ('cpu', 'cuda'), help='Select cuda if GPU is available otherwise cpu')
+device = 'cpu' # Streamlit cloud does not support GPU
 
 if uploaded_file:
     define_target = st.sidebar.checkbox('Specify target column?', value=False, help='Name of the column to use as the target.')
@@ -151,4 +166,3 @@ if run_model_button:
         st.plotly_chart(figure_or_data=categorical_plot, use_container_width=True)
 
 st.markdown(body='<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />', unsafe_allow_html=True)
-footer()
