@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import warnings
 
+from streamlit_elements import elements, mui, html
 from app_utils import build_correlation_plot, build_distribution_plots, build_gauge_plots, build_pca_plot
 from app_components import footer
 
@@ -18,30 +19,271 @@ st.image(image='assets/logo.png', width=400)
 st.subheader('Safe, artificial data that acts like your production data')
 st.markdown('Generate safe, realistic, and scalable synthetic data on demand. Safely share it across teams, businesses, and borders.')
 
+with st.expander('Dive into Bulian AI\'s synthetic data models'):
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        with elements('card_frame'):
+            mui.Card(
+                mui.Typography(mui.icon.ModelTraining(), ' Twin Synthesizer', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
+                mui.Typography(
+                    'GAN models inherits from BaseSynthesizer class; generate non-privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.',
+                    sx={
+                        'text-algin':'justify',
+                    }
+                ),
+                sx={
+                    "padding":"12px",
+                    "height":"190px",
+                },
+                variant="outlined"
+            )
+    with col2:
+        with elements('card_frame_2'):
+            mui.Card(
+                mui.Typography(mui.icon.Security(), ' Private Twin Synthesizer', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
+                mui.Typography(
+                    'Differentially private GAN models inherits from BaseSynthesizerPrivate class and generate privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.',
+                    sx={
+                        'text-algin':'justify',
+                    }
+                ),
+                sx={
+                    "padding":"12px",
+                    "height":"190px",
+                },
+                variant="outlined"              
+            )
+    with col3:
+        with elements('card_frame_3'):
+            mui.Card(
+                mui.Typography(mui.icon.MultipleStop(), ' Relational Model (HMA)', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
+                mui.Typography(
+                    'Gaussian Copula based HMA1 models inherits from BaseRelationalModel class and generates multi-table complex synthetic datasets given an input metadata python dictand relational tables as dict.',
+                    sx={
+                        'text-algin':'justify',
+                    }
+                ),
+                sx={
+                    "padding":"12px",
+                    "height":"190px",
+                },
+                variant="outlined"          
+            )
+    with elements('info'):
+        mui.Alert('Currently only Twin and Private Twin Synthesizers have been implemented on the app', severity="info")
+
+with st.expander('Examples'):
+    col1, col2 = st.columns([3,1])
+    with col1:
+        with elements("notebook-links"):
+            mui.List(
+                mui.ListItem(
+                    mui.ListItemIcon(
+                        mui.icon.DoubleArrow,
+                        sx={
+                            'color':'#fc3',
+                        }
+                    ),
+                    mui.ListItemText(
+                        html.a(
+                            'single-table-trainer-notebook-CPU',
+                            css={
+                                "color":"#fafafa",
+                                "text-decoration":"none",
+                                "&:hover": {
+                                    "color": "#fc3"
+                                }
+                            },
+                            target='_blank',
+                            href='https://github.com/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemIcon(
+                        mui.icon.DoubleArrow,
+                        sx={
+                            'color':'#fc3'
+                        }
+                    ),
+                    mui.ListItemText(
+                        html.a(
+                            'single-table-trainer-notebook-GPU',
+                            css={
+                                "color":"#fafafa",
+                                "text-decoration":"none",
+                                "&:hover": {
+                                    "color": "#fc3"
+                                }
+                            },
+                            target='_blank',
+                            href='https://github.com/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_GPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemIcon(
+                        mui.icon.DoubleArrow,
+                        sx={
+                            'color':'#fc3'
+                        }
+                    ),
+                    mui.ListItemText(
+                        html.a(
+                            'Finance churn class imbalance trainer notebook ',
+                            css={
+                                "color":"#fafafa",
+                                "text-decoration":"none",
+                                "&:hover": {
+                                    "color": "#fc3"
+                                }
+                            },
+                            target='_blank',
+                            href='https://github.com/bulian-ai/public_docs/blob/main/notebooks/Boost_financial_churn_models.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemIcon(
+                        mui.icon.DoubleArrow,
+                        sx={
+                            'color':'#fc3'
+                        }
+                    ),
+                    mui.ListItemText(
+                        html.a(
+                            'Relational HMA1 Trainer',
+                            css={
+                                "color":"#fafafa",
+                                "text-decoration":"none",
+                                "&:hover": {
+                                    "color": "#fc3"
+                                }
+                            },
+                            target='_blank',
+                            href='https://github.com/bulian-ai/public_docs/blob/main/notebooks/relational_demo.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemIcon(
+                        mui.icon.DoubleArrow,
+                        sx={
+                            'color':'#fc3'
+                        }
+                    ),
+                    mui.ListItemText(
+                        html.a(
+                            'Metadata Tutorial',
+                            css={
+                                "color":"#fafafa",
+                                "text-decoration":"none",
+                                "&:hover": {
+                                    "color": "#fc3"
+                                }
+                            },
+                            target='_blank',
+                            href='https://github.com/bulian-ai/public_docs/blob/main/notebooks/Relational%20Metadata.ipynb'),
+                    )
+                )
+        )
+    with col2:
+        with elements('colab-links'):
+            mui.List(
+                mui.ListItem(
+                    mui.ListItemText(
+                        'View in ',
+                        html.a(
+                            'Colab',
+                            css={
+                                "color":"#fc3",
+                                "text-decoration":"none",
+                            },
+                            target='_blank',
+                            href='https://colab.research.google.com/github/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemText(
+                        'View in ',
+                        html.a(
+                            'Colab',
+                            css={
+                                "color":"#fc3",
+                                "text-decoration":"none",
+                            },
+                            target='_blank',
+                            href='https://colab.research.google.com/github/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemText(
+                        'View in ',
+                        html.a(
+                            'Colab',
+                            css={
+                                "color":"#fc3",
+                                "text-decoration":"none",
+                            },
+                            target='_blank',
+                            href='https://colab.research.google.com/github/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemText(
+                        'View in ',
+                        html.a(
+                            'Colab',
+                            css={
+                                "color":"#fc3",
+                                "text-decoration":"none",
+                            },
+                            target='_blank',
+                            href='https://colab.research.google.com/github/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+                mui.ListItem(
+                    mui.ListItemText(
+                        'View in ',
+                        html.a(
+                            'Colab',
+                            css={
+                                "color":"#fc3",
+                                "text-decoration":"none",
+                            },
+                            target='_blank',
+                            href='https://colab.research.google.com/github/bulian-ai/public_docs/blob/main/notebooks/single_table_demo_CPU.ipynb'),
+                    )
+                ),
+            )
+
+with elements("docs_button"):
+    mui.Button(
+        mui.icon.EmojiPeople,
+        mui.icon.DoubleArrow,
+        html.a(
+            "Learn more about Bulian AI on our Docs",
+            href='https://docs.bulian.ai/bulianai-overview/',
+            target='_blank',
+            css={
+                'text-decoration':'none',
+                'color':'#fafafa',
+            }),
+        sx={
+            'background': 'linear-gradient(285.02deg,#3347ff -48.87%,#f33 77.92%)',
+            'color':'#FAFAFA'
+        }
+    )
+
 st.markdown('<hr>', unsafe_allow_html=True)
 
-st.subheader('Dive into Bulian AI\'s synthetic data models')
-col1, col2 = st.columns(2)
-
-
-with col1:
-    expander = st.expander('Twin Synthesizer')
-    expander.subheader('Single table deep learning based synthesizer')
-    expander.markdown('GAN models inherits from BaseSynthesizer class; generate non-privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.')
-
-with col2:
-    expander = st.expander('Private Twin Synthesizer')
-    expander.subheader('Single table deep learning based synthesizer with enhanced privacy protection mechanisms')
-    expander.markdown('Differentially private GAN models inherits from BaseSynthesizerPrivate class and generate privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.')
-
-st.markdown('>Twin Synthesizer should be leveraged if data privacy is not a key consideration. Example use cases include addressing data imbalance, generating novel test cases, sharing non-private data externally/internally.')
-st.markdown('>Learn more about Bulian AI on our [Docs](https://docs.bulian.ai/bulianai-overview/) \n <hr>', unsafe_allow_html=True)
-
-
-st.markdown('#### Try Bulian AI')
+with elements('app_heading'):
+    mui.Typography('Discover the Product', variant='h4', sx={
+        'color': '#fc3',
+        'font-weight': 'bold',
+        'margin-bottom':'20px',
+        'text-align':'center'
+    })
+st.markdown('<img src="https://i.imgur.com/Vv8KTDZ.png" class="flow_chart"/>', unsafe_allow_html=True)
+st.markdown('<hr>', unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload CSV")
-
 if uploaded_file is not None:
     real_data = pd.read_csv(uploaded_file)
     st.session_state['real_data'] = real_data
@@ -165,4 +407,24 @@ if run_model_button:
         
         st.plotly_chart(figure_or_data=categorical_plot, use_container_width=True)
 
+st.markdown(
+    '''<style>
+        .streamlit-expanderHeader{
+            font-size:1.2em;
+            font-weight:bold;
+            color:#fc3;
+        }
+        .flow_chart{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%;
+        }
+        a {
+        text-decoration: none !important;
+        color: #fc3;
+        }
+    </style>''',
+    unsafe_allow_html=True
+)
 st.markdown(body='<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />', unsafe_allow_html=True)
