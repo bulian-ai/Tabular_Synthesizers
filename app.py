@@ -4,7 +4,6 @@ import warnings
 
 from streamlit_elements import elements, mui, html
 from app_utils import build_correlation_plot, build_distribution_plots, build_gauge_plots, build_pca_plot
-from app_components import footer
 
 pd.set_option('display.max_columns', None)
 warnings.filterwarnings('ignore')
@@ -16,8 +15,7 @@ st.set_page_config(
 )
 
 st.image(image='assets/logo.png', width=400)
-st.subheader('Safe, artificial data that acts like your production data')
-st.markdown('Generate safe, realistic, and scalable synthetic data on demand. Safely share it across teams, businesses, and borders.')
+st.subheader('Generate safe, realistic, and scalable synthetic data on demand. Safely share it across teams, businesses, and borders.')
 
 with st.expander('Dive into Bulian AI\'s synthetic data models'):
     col1, col2, col3 = st.columns(3)
@@ -26,14 +24,14 @@ with st.expander('Dive into Bulian AI\'s synthetic data models'):
             mui.Card(
                 mui.Typography(mui.icon.ModelTraining(), ' Twin Synthesizer', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
                 mui.Typography(
-                    'GAN models inherits from BaseSynthesizer class; generate non-privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.',
+                    'Deep learning based synthetic data generator for single table datasets',
                     sx={
                         'text-algin':'justify',
                     }
                 ),
                 sx={
                     "padding":"12px",
-                    "height":"190px",
+                    "height":"130px",
                 },
                 variant="outlined"
             )
@@ -42,14 +40,14 @@ with st.expander('Dive into Bulian AI\'s synthetic data models'):
             mui.Card(
                 mui.Typography(mui.icon.Security(), ' Private Twin Synthesizer', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
                 mui.Typography(
-                    'Differentially private GAN models inherits from BaseSynthesizerPrivate class and generate privacy preserving synthetic datasets given an input python pandas.DataFrame and column list broken by numeric and categorical columns passes as python list.',
+                    'Deep learning based synthetic data generator for single table datasets with enhanced privacy protection mechanisms',
                     sx={
                         'text-algin':'justify',
                     }
                 ),
                 sx={
                     "padding":"12px",
-                    "height":"190px",
+                    "height":"130px",
                 },
                 variant="outlined"              
             )
@@ -58,14 +56,14 @@ with st.expander('Dive into Bulian AI\'s synthetic data models'):
             mui.Card(
                 mui.Typography(mui.icon.MultipleStop(), ' Relational Model (HMA)', variant="h5", sx={'padding':'12px', 'font-weight':'bold', 'text-align':'center'}),
                 mui.Typography(
-                    'Gaussian Copula based HMA1 models inherits from BaseRelationalModel class and generates multi-table complex synthetic datasets given an input metadata python dictand relational tables as dict.',
+                    'Copula model based synthetic data generator for complex relational datasets exhibiting parent-child relationships across tables',
                     sx={
                         'text-algin':'justify',
                     }
                 ),
                 sx={
                     "padding":"12px",
-                    "height":"190px",
+                    "height":"130px",
                 },
                 variant="outlined"          
             )
@@ -274,13 +272,13 @@ with elements("docs_button"):
 st.markdown('<hr>', unsafe_allow_html=True)
 
 with elements('app_heading'):
-    mui.Typography('Discover the Product', variant='h4', sx={
+    mui.Typography('Get Started with Bulian AI', variant='h4', sx={
         'color': '#fc3',
         'font-weight': 'bold',
         'margin-bottom':'20px',
         'text-align':'center'
     })
-st.markdown('<img src="https://i.imgur.com/Vv8KTDZ.png" class="flow_chart"/>', unsafe_allow_html=True)
+st.markdown('<img src="https://i.imgur.com/GJJKZ5z.png" class="flow_chart"/>', unsafe_allow_html=True)
 st.markdown('<hr>', unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload CSV")
@@ -418,13 +416,52 @@ st.markdown(
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 70%;
+            width: 100%;
         }
         a {
         text-decoration: none !important;
         color: #fc3;
         }
+        .effi0qh3{
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fc3 !important;
+        }
+        .exg6vvm12{
+            font-size: 1.2em;
+            font-weight: bold;
+        }
     </style>''',
     unsafe_allow_html=True
 )
 st.markdown(body='<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />', unsafe_allow_html=True)
+
+
+footer="""<style>
+a:link , a:visited{
+color: #fc3;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background: linear-gradient(285.02deg,#3347ff -48.87%,#f33 77.92%);
+color: #fafafa;
+text-align:center;
+}
+
+</style>
+<div class="footer">
+    <p>Made with ❤ <br>
+        <a style='display: block;' href="https://bulian.ai/" target="_blank">
+            <img src="https://i.imgur.com/0pHPHA6.png" width=150/>
+        </a>
+    <a href='mailto:contact@bulian.ai'><i class="fa-solid fa-envelope"></i></a>  &nbsp; &nbsp; <a href='https://www.linkedin.com/company/bulianai/'><i class="fa-brands fa-linkedin"></i></a>
+    </p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)
