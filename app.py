@@ -444,12 +444,14 @@ background-color: transparent;
 text-decoration: underline;
 }
 
+.egzxvld0{
+    display: none;
+}
+
 .footer {
-position: fixed;
-left: 0;
-bottom: 0;
+position: relative;
+bottom: -20vh;
 width: 100%;
-background: linear-gradient(285.02deg,#3347ff -48.87%,#f33 77.92%);
 color: #fafafa;
 text-align:center;
 }
