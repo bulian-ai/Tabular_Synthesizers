@@ -278,7 +278,7 @@ with elements('app_heading'):
         'margin-bottom':'20px',
         'text-align':'center'
     })
-st.markdown('<img src="https://i.imgur.com/GJJKZ5z.png" class="flow_chart"/>', unsafe_allow_html=True)
+st.markdown('<img src="https://i.imgur.com/k5qejJQ.png" class="flow_chart"/>', unsafe_allow_html=True)
 st.markdown('<hr>', unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload CSV")
