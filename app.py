@@ -367,7 +367,7 @@ if run_model_button:
             expander = st.expander('See Synthetic Data')
             expander.download_button(
                 'Download as CSV',
-                data=st.session_state['synthetic_data'].to_csv().encode('utf-8'),
+                data=synthetic_data.to_csv().encode('utf-8'),
                 file_name='synthetic_data.csv',
                 mime='text/csv'
             )
@@ -394,16 +394,19 @@ if run_model_button:
         )
         st.plotly_chart(figure_or_data=pca_fig, use_container_width=True)
 
-        numeric_density_figs, categorical_plot = build_distribution_plots(
+        density_plots = build_distribution_plots(
             real_data=st.session_state['real_data'],
             synthetic_data=st.session_state['synthetic_data'],
             discrete_columns=discrete_columns
         )
 
+        if len(density_plots['numeric'])>0:
+            numeric_density_figs = density_plots['numeric']
         for plot in numeric_density_figs:
             st.plotly_chart(figure_or_data=plot, use_container_width=True)
         
-        st.plotly_chart(figure_or_data=categorical_plot, use_container_width=True)
+        if density_plots['discrete']:
+            st.plotly_chart(figure_or_data=density_plots['discrete'], use_container_width=True)
 
 st.markdown(
     '''<style>
