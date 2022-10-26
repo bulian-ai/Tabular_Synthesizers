@@ -28,6 +28,8 @@ from metrics.single_table_metric_tests import (
     sklearn_classifier_detection_test,
     svc_detection_test
 )
+from tabular.twin_synthesizer import PrivateTwinSynthesizerTest, TwinSynthesizerTest
+
 warnings.filterwarnings('ignore')
 testsuit = unittest.TestSuite()
 
@@ -88,8 +90,14 @@ def multi_table_test(testsuit):
     testsuit.addTest(cardinality_shape_similarity_tests('cardinality_shape_similarity_compute_test'))
     testsuit.addTest(cardinality_statistic_similarity_tests('cardinality_statistic_similarity_compute_test'))
 
+
+def twin_synthesizer_tests(testsuit):
+    testsuit.addTest(TwinSynthesizerTest('test_fit'))
+    #testsuit.addTest(PrivateTwinSynthesizerTest('test_fit'))
+
 single_table_tests(testsuit)
 multi_table_test(testsuit)
+twin_synthesizer_tests(testsuit)
 
 runner = unittest.TextTestRunner()
 runner.run(testsuit)
