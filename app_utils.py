@@ -337,7 +337,10 @@ def build_distribution_plots(real_data, synthetic_data, discrete_columns):
     '''
         Helper function to build numeric and categorical density distribution plots
     '''
-
+    plots = {
+        'numeric':[],
+        'discrete':None,
+    }
     numeric_columns = []
     for x in real_data.columns:
         if x not in discrete_columns:
@@ -357,7 +360,10 @@ def build_distribution_plots(real_data, synthetic_data, discrete_columns):
             title_x=0.5
         )
         numeric_density_figures.append(density_fig)
-    
+
+    if len(numeric_density_figures)>0:
+        plots['numeric'] = numeric_density_figures
+
     category_subplot_titles = []
     if len(discrete_columns)>0:
         for i, categ_feat in enumerate(discrete_columns):
@@ -405,5 +411,5 @@ def build_distribution_plots(real_data, synthetic_data, discrete_columns):
             height=1500,
             title_x=0.5
         )
-
-        return numeric_density_figures, category_feat_plot
+        plots['discrete'] = category_feat_plot
+    return plots
